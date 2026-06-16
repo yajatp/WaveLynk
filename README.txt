@@ -2,7 +2,7 @@ WaveLynk Product Site ULTRA v2 (Two Demos; No backend)
 
 Recommended run:
 1) Unzip
-2) Open Command Prompt in this folder
+2) Open Command Prompt in the site/ folder
 3) python -m http.server 8000
 4) Open http://127.0.0.1:8000/ and click index.html (or it opens automatically)
 
