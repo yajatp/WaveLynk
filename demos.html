@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>WaveLynk — Interactive Demos</title>
+    <meta name="description"
+        content="Three interactive simulations demonstrating predictive wireless reliability control." />
+    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        /* Demo-specific overrides */
+        .demo-panel {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: var(--sp-6);
+        }
+
+        @media (max-width: 900px) {
+            .demo-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .controls-pane {
+            display: flex;
+            flex-direction: column;
+            gap: var(--sp-5);
+        }
+
+        .output-pane {
+            display: flex;
+            flex-direction: column;
+            gap: var(--sp-4);
+        }
+
+        .metric-row {
+            display: flex;
+            gap: var(--sp-3);
+            flex-wrap: wrap;
+        }
+
+        .demo-number {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--r-full);
+            background: var(--accent);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .demo-title-row {
+            display: flex;
+            align-items: center;
+            gap: var(--sp-3);
+        }
+
+        /* Status message */
+        .status-msg {
+            padding: var(--sp-3) var(--sp-4);
+            border-radius: var(--r-md);
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .status-msg.warning {
+            border-left: 3px solid var(--yellow-500);
+        }
+
+        .status-msg.danger {
+            border-left: 3px solid var(--red-500);
+        }
+
+        .status-msg.success {
+            border-left: 3px solid var(--green-500);
+        }
+
+        /* CCI visual readout */
+        .cci-display {
+            display: flex;
+            gap: var(--sp-4);
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cci-display .mono-val {
+            font-family: var(--mono);
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: var(--r-sm);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="wave-canvas"></canvas>
+
+    <header>
+        <div class="wrap">
+            <nav>
+                <a class="brand" href="index.html">
+                    <img src="images/logo.png" alt="WaveLynk" class="logo-mark"
+                        style="width:28px;height:28px;border-radius:6px;" />
+                    WaveLynk
+                </a>
+                <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="science.html">Science</a>
+                    <a href="demos.html">Demos</a>
+                    <a href="evidence.html">Evidence</a>
+                    <a href="team.html">Team</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+                    </button>
+                    <a class="btn btn-primary" href="demos.html">Try Demos</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <div class="wrap">
+                <div class="badge reveal"><span class="dot dot-green"></span> Interactive Simulations</div>
+                <h1 class="reveal" style="margin-top:var(--sp-5)">Demos</h1>
+                <p class="reveal">Explore WaveLynk's predictive switching with three interactive models. Adjust
+                    parameters, stress the link, and see how predictive control maintains reliability.</p>
+            </div>
+        </section>
+
+
+        <!-- ═══════════════════════════════════════════
+         DEMO 1 — Reliability Simulator
+         ═══════════════════════════════════════════ -->
+        <section id="simulator" class="section reveal">
+            <div class="wrap">
+                <div class="demo-title-row reveal">
+                    <div class="demo-number">1</div>
+                    <div>
+                        <h2>Link Reliability Simulator</h2>
+                        <p style="margin:2px 0 0;">Set channel conditions, stress the link, and watch the predictive
+                            controller intervene.</p>
+                    </div>
+                </div>
+
+                <div class="card reveal" style="margin-top:var(--sp-6);">
+                    <div class="card-body">
+                        <div class="demo-panel">
+
+                            <!-- Left: Controls -->
+                            <div class="controls-pane">
+                                <div class="label-text">Channel Parameters</div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>CSI age τ<sub>f</sub> (ms)</span> <span
+                                            class="slider-value" id="tauFv">5.0</span></div>
+                                    <input type="range" id="tauF" min="1" max="50" step="1" value="5" />
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>Coherence time T<sub>c</sub> (ms)</span> <span
+                                            class="slider-value" id="tcV">20.0</span></div>
+                                    <input type="range" id="tc" min="2" max="50" step="1" value="20" />
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>Blockage factor β</span> <span class="slider-value"
+                                            id="betaV">0.00</span></div>
+                                    <input type="range" id="beta" min="0" max="1" step="0.01" value="0" />
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>Mobility v (m/s)</span> <span class="slider-value"
+                                            id="velV">1.0</span></div>
+                                    <input type="range" id="vel" min="0" max="30" step="0.5" value="1" />
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>User load K</span> <span class="slider-value"
+                                            id="kV">4</span></div>
+                                    <input type="range" id="K" min="1" max="16" step="1" value="4" />
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>Environment sensitivity α</span> <span
+                                            class="slider-value" id="alphaV">1.00</span></div>
+                                    <input type="range" id="alpha" min="0.5" max="2" step="0.01" value="1" />
+                                </div>
+
+                                <hr class="divider" />
+
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" id="runBtn">Stress Link</button>
+                                    <button class="btn" id="resetBtn">Reset</button>
+                                </div>
+
+                                <div class="status-msg success" id="statusBox">
+                                    Status: <strong>Stable</strong> — ZF beamforming is operating normally.
+                                </div>
+                            </div>
+
+                            <!-- Right: Outputs -->
+                            <div class="output-pane">
+                                <div class="label-text">Live Metrics</div>
+                                <div class="metric-row">
+                                    <span class="status-chip" id="cinOut">CIN = 0.25</span>
+                                    <span class="status-chip" id="riskOut">Risk = 0.06</span>
+                                    <span class="status-chip" id="snrOut">SNR = 24.0 dB</span>
+                                    <span class="status-chip" id="modeOut">Mode: ZF</span>
+                                </div>
+
+                                <div class="canvas-wrap">
+                                    <canvas id="chart" width="600" height="280"></canvas>
+                                </div>
+
+                                <div style="font-size:12px;color:var(--text-muted);">
+                                    Blue = throughput · Orange = latency · Vertical marker = ZF→MRT switch point
+                                </div>
+
+                                <details class="accordion" style="margin-top:var(--sp-2);">
+                                    <summary>About this simulation</summary>
+                                    <div class="accordion-body">
+                                        <p>This simulator uses physics-based models to approximate the behavior of a ZF
+                                            beamforming system under varying channel conditions. When channel
+                                            instability (measured by CCI) exceeds the switching threshold, WaveLynk
+                                            proactively transitions to MRT beamforming to prevent link collapse.</p>
+                                        <p style="margin-top:8px;"><strong>What it demonstrates:</strong> predictive
+                                            switching detects instability before the link degrades, maintaining
+                                            throughput and latency even as conditions worsen.</p>
+                                        <p style="margin-top:8px;"><strong>What it is not:</strong> a full PHY-layer
+                                            link simulator. The mappings from CCI to SNR/throughput are physics-inspired
+                                            approximations, not bit-accurate simulations.</p>
+                                    </div>
+                                </details>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- ═══════════════════════════════════════════
+         DEMO 2 — CCI Risk Engine
+         ═══════════════════════════════════════════ -->
+        <section id="riskEngine" class="section reveal">
+            <div class="wrap">
+                <div class="demo-title-row reveal">
+                    <div class="demo-number">2</div>
+                    <div>
+                        <h2>CCI Risk Engine</h2>
+                        <p style="margin:2px 0 0;">Explore how κ, τ, and Doppler interact to determine the instability
+                            boundary.</p>
+                    </div>
+                </div>
+
+                <div class="card reveal" style="margin-top:var(--sp-6);">
+                    <div class="card-body">
+                        <div class="demo-panel">
+
+                            <div class="controls-pane">
+                                <div class="label-text">Input Parameters</div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>κ (condition number)</span> <span
+                                            class="slider-value" id="kappaVal">5</span></div>
+                                    <input type="range" min="1" max="20" value="5" id="kappaRange" />
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>τ (CSI age, ms)</span> <span class="slider-value"
+                                            id="tauVal">10</span></div>
+                                    <input type="range" min="1" max="50" value="10" id="tauRange" />
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>f<sub>D</sub> (Doppler, Hz)</span> <span
+                                            class="slider-value" id="fdVal">50</span></div>
+                                    <input type="range" min="1" max="200" value="50" id="fdRange" />
+                                </div>
+
+                                <hr class="divider" />
+
+                                <div class="cci-display" id="cciReadout">
+                                    <span class="mono-val">CCI = 0.50</span>
+                                    <span class="mono-val">Risk = 0.22</span>
+                                    <span class="mono-val">P<sub>collapse</sub> = 0.22</span>
+                                </div>
+                            </div>
+
+                            <div class="output-pane">
+                                <div class="label-text">Phase Map — Stability Regions</div>
+                                <div class="canvas-wrap">
+                                    <canvas id="cciVisual" width="600" height="360"></canvas>
+                                </div>
+                                <div style="font-size:12px;color:var(--text-muted);">
+                                    Green = stable · Yellow = transition · Red = unstable · Dot = current state
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- ═══════════════════════════════════════════
+         DEMO 3 — Predictive Stability Engine
+         ═══════════════════════════════════════════ -->
+        <section id="predictive" class="section reveal">
+            <div class="wrap">
+                <div class="demo-title-row reveal">
+                    <div class="demo-number">3</div>
+                    <div>
+                        <h2>Predictive Stability Engine</h2>
+                        <p style="margin:2px 0 0;">Compare ZF performance with WaveLynk's predictive switching across
+                            the coherence cliff.</p>
+                    </div>
+                </div>
+
+                <div class="card reveal" style="margin-top:var(--sp-6);">
+                    <div class="card-body">
+                        <div class="demo-panel">
+
+                            <div class="controls-pane">
+                                <div class="label-text">Sweep Parameters</div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>τ / T<sub>c</sub></span> <span class="slider-value"
+                                            id="tau_val">0.40</span></div>
+                                    <input type="range" id="tau_control" min="0" max="2" step="0.02" value="0.4" />
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-label"><span>κ(H)</span> <span class="slider-value"
+                                            id="kappa_val">2.0</span></div>
+                                    <input type="range" id="kappa_control" min="1" max="6" step="0.1" value="2" />
+                                </div>
+
+                                <hr class="divider" />
+
+                                <div class="cci-display" id="d3readout">
+                                    <span class="mono-val">CCI = 0.80</span>
+                                    <span class="mono-val">ZF = 0.880</span>
+                                    <span class="mono-val">WaveLynk = 0.880</span>
+                                </div>
+
+                                <div class="status-msg success" id="d3status">
+                                    Stable Region — ZF operating normally.
+                                </div>
+                            </div>
+
+                            <div class="output-pane">
+                                <div class="label-text">Performance Comparison</div>
+                                <div class="canvas-wrap">
+                                    <canvas id="d3canvas" width="600" height="340"></canvas>
+                                </div>
+                                <div style="font-size:12px;color:var(--text-muted);">
+                                    Blue = WaveLynk (predictive) · Gray = ZF only · Dashed = coherence cliff (CCI = 1)
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="wrap">
+            © WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        /* ═══════════════════════════════════════════
+           DEMO 1 — Link Reliability Simulator
+           ═══════════════════════════════════════════ */
+        (function () {
+            const $ = id => document.getElementById(id);
+            const getTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
+            const MAX_POINTS = 120;
+            const noise = (amp) => (Math.random() - 0.5) * amp;
+
+            /* Sliders */
+            const tauF = $('tauF'), tc = $('tc'), beta = $('beta'),
+                vel = $('vel'), K = $('K'), alpha = $('alpha');
+            const tauFv = $('tauFv'), tcV = $('tcV'), betaV = $('betaV'),
+                velV = $('velV'), kV = $('kV'), alphaV = $('alphaV');
+            const runBtn = $('runBtn'), resetBtn = $('resetBtn');
+            const cinOut = $('cinOut'), riskOut = $('riskOut'), snrOut = $('snrOut'), modeOut = $('modeOut');
+            const statusBox = $('statusBox');
+            const canvas = $('chart'), ctx = canvas.getContext('2d');
+
+            let history = [], running = false, interval = null, switchIdx = -1;
+            let stressStep = 0;
+
+            function syncSliders() {
+                tauFv.textContent = parseFloat(tauF.value).toFixed(1);
+                tcV.textContent = parseFloat(tc.value).toFixed(1);
+                betaV.textContent = parseFloat(beta.value).toFixed(2);
+                velV.textContent = parseFloat(vel.value).toFixed(1);
+                kV.textContent = K.value;
+                alphaV.textContent = parseFloat(alpha.value).toFixed(2);
+            }
+
+            function computeState() {
+                const t = parseFloat(tauF.value), T = parseFloat(tc.value),
+                    b = parseFloat(beta.value), v = parseFloat(vel.value),
+                    k = parseInt(K.value), a = parseFloat(alpha.value);
+                const fD = v * 5.25e9 / 3e8;
+                const Tc_eff = T / (1 + fD * T * 0.01);
+                const kappa = 1 + 0.3 * (k - 1) + 2 * b;
+                const CIN = clamp(kappa * (t / Tc_eff) * a, 0, 5);
+                const Risk = 1 - Math.exp(-CIN * CIN);
+                const snr_peak = 25;
+                const snr_zf = snr_peak - 10 * Math.log10(1 + 10 * CIN * CIN);
+                const snr_mrt = snr_peak - 3 - 2 * CIN;
+                return { CIN, Risk, snr_zf: clamp(snr_zf, -5, 30), snr_mrt: clamp(snr_mrt, 0, 25), kappa };
+            }
+
+            /* Physics-based performance that produces large, visible swings */
+            function computePerformance(s, modeStr) {
+                const cin = s.CIN;
+                let thr, lat;
+                if (modeStr === 'ZF') {
+                    /* ZF: throughput drops sharply as CIN grows, hits a cliff near CIN=1 */
+                    thr = clamp(95 * Math.exp(-1.2 * cin * cin) + noise(3), 2, 98);
+                    /* ZF: latency spikes exponentially near the cliff */
+                    lat = clamp(4 + 6 * Math.pow(cin, 3) + 120 * Math.max(0, cin - 0.8) + noise(3), 2, 200);
+                } else {
+                    /* MRT: graceful degradation — lower peak but stable */
+                    thr = clamp(55 - 8 * cin + noise(2), 10, 60);
+                    lat = clamp(12 + 3 * cin + noise(2), 5, 40);
+                }
+                return { thr, lat };
+            }
+
+            function decideMode(s) {
+                const thresh = 0.3;
+                if (s.Risk >= thresh) return { mode: 'MRT', snr: s.snr_mrt };
+                return { mode: 'ZF', snr: s.snr_zf };
+            }
+
+            function updateReadouts(s, mode) {
+                cinOut.textContent = 'CIN = ' + fmt(s.CIN);
+                riskOut.textContent = 'Risk = ' + fmt(s.Risk);
+                snrOut.textContent = 'SNR = ' + fmt(mode.snr, 1) + ' dB';
+                modeOut.textContent = 'Mode: ' + mode.mode;
+
+                cinOut.className = 'status-chip' + (s.CIN > 0.8 ? ' warning' : '');
+                riskOut.className = 'status-chip' + (s.Risk > 0.3 ? ' danger' : '');
+
+                if (mode.mode === 'MRT') {
+                    statusBox.className = 'status-msg warning';
+                    statusBox.innerHTML = 'Status: <strong>Approaching coherence cliff</strong> — WaveLynk switches to MRT to stabilize the link.';
+                } else {
+                    statusBox.className = 'status-msg success';
+                    statusBox.innerHTML = 'Status: <strong>Stable</strong> — ZF beamforming is operating normally.';
+                }
+            }
+
+            function drawChart() {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = canvas.clientWidth * dpr;
+                canvas.height = canvas.clientHeight * dpr;
+                ctx.scale(dpr, dpr);
+                const W = canvas.clientWidth, H = canvas.clientHeight;
+                const isDark = getTheme() === 'dark';
+                const gridColor = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+                const textColor = isDark ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.4)';
+
+                ctx.clearRect(0, 0, W, H);
+
+                const pad = { l: 55, r: 55, t: 30, b: 40 };
+                const cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
+
+                /* ── Auto-scale Y axes based on actual data ── */
+                let thrMin = Infinity, thrMax = -Infinity;
+                let latMin = Infinity, latMax = -Infinity;
+                const dataSource = history.length > 0 ? history : (() => {
+                    const s = computeState(); const m = decideMode(s);
+                    const p = computePerformance(s, m.mode);
+                    return [p];
+                })();
+                dataSource.forEach(p => {
+                    thrMin = Math.min(thrMin, p.thr); thrMax = Math.max(thrMax, p.thr);
+                    latMin = Math.min(latMin, p.lat); latMax = Math.max(latMax, p.lat);
+                });
+                /* Add padding so lines aren't at edges */
+                const thrRange = thrMax - thrMin || 10;
+                const latRange = latMax - latMin || 5;
+                thrMin = Math.max(0, Math.floor((thrMin - thrRange * 0.15) / 5) * 5);
+                thrMax = Math.ceil((thrMax + thrRange * 0.15) / 5) * 5;
+                latMin = Math.max(0, Math.floor((latMin - latRange * 0.15) / 5) * 5);
+                latMax = Math.ceil((latMax + latRange * 0.15) / 5) * 5;
+                /* Ensure some minimum visible range */
+                if (thrMax - thrMin < 10) { thrMin = Math.max(0, thrMin - 5); thrMax += 5; }
+                if (latMax - latMin < 5) { latMin = Math.max(0, latMin - 3); latMax += 3; }
+
+                /* Helper: map value to Y pixel for each axis */
+                const thrToY = v => pad.t + cH * (1 - (v - thrMin) / (thrMax - thrMin));
+                const latToY = v => pad.t + cH * (1 - (v - latMin) / (latMax - latMin));
+
+                /* ── Grid lines ── */
+                const numGridLines = 5;
+                ctx.strokeStyle = gridColor;
+                ctx.lineWidth = 1;
+                for (let i = 0; i <= numGridLines; i++) {
+                    const y = pad.t + cH * i / numGridLines;
+                    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+                }
+
+                /* ── Left Y-axis: Throughput (Mbps) ── */
+                ctx.font = '11px Inter,sans-serif';
+                ctx.fillStyle = '#3b82f6';
+                ctx.textAlign = 'right';
+                for (let i = 0; i <= numGridLines; i++) {
+                    const val = thrMax - (thrMax - thrMin) * i / numGridLines;
+                    ctx.fillText(val.toFixed(0), pad.l - 8, pad.t + cH * i / numGridLines + 4);
+                }
+                /* Left axis title */
+                ctx.save();
+                ctx.translate(12, pad.t + cH / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 10px Inter,sans-serif';
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillText('Throughput (Mbps)', 0, 0);
+                ctx.restore();
+
+                /* ── Right Y-axis: Latency (ms) ── */
+                ctx.fillStyle = '#f97316';
+                ctx.textAlign = 'left';
+                ctx.font = '11px Inter,sans-serif';
+                for (let i = 0; i <= numGridLines; i++) {
+                    const val = latMax - (latMax - latMin) * i / numGridLines;
+                    ctx.fillText(val.toFixed(0), W - pad.r + 8, pad.t + cH * i / numGridLines + 4);
+                }
+                /* Right axis title */
+                ctx.save();
+                ctx.translate(W - 4, pad.t + cH / 2);
+                ctx.rotate(Math.PI / 2);
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 10px Inter,sans-serif';
+                ctx.fillStyle = '#f97316';
+                ctx.fillText('Latency (ms)', 0, 0);
+                ctx.restore();
+
+                /* X-axis label */
+                ctx.fillStyle = textColor;
+                ctx.textAlign = 'center';
+                ctx.font = '11px Inter,sans-serif';
+                ctx.fillText('Time →', pad.l + cW / 2, H - 4);
+
+                /* ── Current-state indicator when no history yet ── */
+                if (history.length === 0) {
+                    const s = computeState();
+                    const mode = decideMode(s);
+                    const perf = computePerformance(s, mode.mode);
+                    const thrY = thrToY(perf.thr);
+                    const latY = latToY(perf.lat);
+
+                    ctx.setLineDash([6, 4]);
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = 'rgba(59,130,246,.4)';
+                    ctx.beginPath(); ctx.moveTo(pad.l, thrY); ctx.lineTo(W - pad.r, thrY); ctx.stroke();
+                    ctx.strokeStyle = 'rgba(249,115,22,.4)';
+                    ctx.beginPath(); ctx.moveTo(pad.l, latY); ctx.lineTo(W - pad.r, latY); ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.beginPath(); ctx.arc(pad.l + 20, thrY, 5, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = '#f97316';
+                    ctx.beginPath(); ctx.arc(pad.l + 20, latY, 5, 0, Math.PI * 2); ctx.fill();
+
+                    ctx.font = '11px Inter';
+                    ctx.textAlign = 'left';
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.fillText('Throughput: ' + perf.thr.toFixed(0) + ' Mbps', pad.l + 30, thrY + 4);
+                    ctx.fillStyle = '#f97316';
+                    ctx.fillText('Latency: ' + perf.lat.toFixed(0) + ' ms', pad.l + 30, latY + 4);
+                    return;
+                }
+
+                /* ── Draw throughput line ── */
+                const maxPts = Math.max(history.length, MAX_POINTS);
+                ctx.beginPath();
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2.5;
+                history.forEach((p, i) => {
+                    const x = pad.l + (i / (maxPts - 1)) * cW;
+                    const y = thrToY(p.thr);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                /* Live dot at end of throughput */
+                const lastT = history[history.length - 1];
+                const lastTx = pad.l + ((history.length - 1) / (maxPts - 1)) * cW;
+                const lastTy = thrToY(lastT.thr);
+                ctx.fillStyle = '#3b82f6';
+                ctx.beginPath(); ctx.arc(lastTx, lastTy, 4, 0, Math.PI * 2); ctx.fill();
+
+                /* ── Draw latency line ── */
+                ctx.beginPath();
+                ctx.strokeStyle = '#f97316';
+                ctx.lineWidth = 2.5;
+                history.forEach((p, i) => {
+                    const x = pad.l + (i / (maxPts - 1)) * cW;
+                    const y = latToY(p.lat);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+
+                /* Live dot at end of latency */
+                const lastLy = latToY(lastT.lat);
+                ctx.fillStyle = '#f97316';
+                ctx.beginPath(); ctx.arc(lastTx, lastLy, 4, 0, Math.PI * 2); ctx.fill();
+
+                /* ── ZF → MRT switch marker (bold, red, unmissable) ── */
+                if (switchIdx >= 0 && switchIdx < history.length) {
+                    const x = pad.l + (switchIdx / (maxPts - 1)) * cW;
+
+                    /* Bold red dashed vertical line */
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([6, 4]);
+                    ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t + cH); ctx.stroke();
+                    ctx.setLineDash([]);
+
+                    /* Pill-shaped label with background */
+                    const label = 'ZF → MRT';
+                    ctx.font = 'bold 12px Inter,sans-serif';
+                    const tw = ctx.measureText(label).width;
+                    const px = 8, py = 4;
+                    const lx = x - tw / 2 - px;
+                    const ly = pad.t - 20;
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath();
+                    const r = 4;
+                    ctx.moveTo(lx + r, ly); ctx.lineTo(lx + tw + 2 * px - r, ly);
+                    ctx.quadraticCurveTo(lx + tw + 2 * px, ly, lx + tw + 2 * px, ly + r);
+                    ctx.lineTo(lx + tw + 2 * px, ly + 14 + 2 * py - r);
+                    ctx.quadraticCurveTo(lx + tw + 2 * px, ly + 14 + 2 * py, lx + tw + 2 * px - r, ly + 14 + 2 * py);
+                    ctx.lineTo(lx + r, ly + 14 + 2 * py);
+                    ctx.quadraticCurveTo(lx, ly + 14 + 2 * py, lx, ly + 14 + 2 * py - r);
+                    ctx.lineTo(lx, ly + r);
+                    ctx.quadraticCurveTo(lx, ly, lx + r, ly);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(label, x, ly + 14 + py - 1);
+                }
+
+                /* ── Legend ── */
+                ctx.font = '10px Inter';
+                ctx.textAlign = 'left';
+                const lx = pad.l, ly = H - pad.b + 20;
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(lx, ly - 4, 10, 2);
+                ctx.fillText('Throughput (Mbps)', lx + 14, ly);
+                ctx.fillStyle = '#f97316';
+                ctx.fillRect(lx + 130, ly - 4, 10, 2);
+                ctx.fillText('Latency (ms)', lx + 144, ly);
+                ctx.fillStyle = '#ef4444';
+                ctx.setLineDash([4, 3]);
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(lx + 240, ly - 3); ctx.lineTo(lx + 250, ly - 3); ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillText('ZF → MRT Switch', lx + 254, ly);
+            }
+
+            function refresh() {
+                syncSliders();
+                const s = computeState();
+                const mode = decideMode(s);
+                updateReadouts(s, mode);
+                if (!running) {
+                    history = [];
+                    switchIdx = -1;
+                    drawChart();
+                }
+            }
+
+            function stepDegrade() {
+                stressStep++;
+                /* Slow, gradual degradation so judges can follow the transition */
+                const ramp = 1 + stressStep * 0.015;
+                tauF.value = Math.min(50, parseFloat(tauF.value) + 0.35 * ramp);
+                beta.value = Math.min(1, parseFloat(beta.value) + 0.006 + stressStep * 0.0003);
+                vel.value = Math.min(30, parseFloat(vel.value) + 0.15 + stressStep * 0.015);
+                syncSliders();
+                const s = computeState();
+                const mode = decideMode(s);
+                const perf = computePerformance(s, mode.mode);
+                updateReadouts(s, mode);
+                history.push(perf);
+                if (history.length > MAX_POINTS) history.shift();
+                if (mode.mode === 'MRT' && switchIdx < 0) switchIdx = history.length - 1;
+                drawChart();
+                if (parseFloat(tauF.value) >= 50 && parseFloat(vel.value) >= 30) {
+                    clearInterval(interval);
+                    running = false;
+                    runBtn.textContent = 'Stress Link';
+                }
+            }
+
+            runBtn.addEventListener('click', () => {
+                if (running) { clearInterval(interval); running = false; runBtn.textContent = 'Stress Link'; return; }
+                running = true;
+                stressStep = 0;
+                runBtn.textContent = 'Pause';
+                /* Seed history with stable-state baseline so the chart starts with visible room */
+                history = []; switchIdx = -1;
+                const s0 = computeState();
+                const mode0 = decideMode(s0);
+                for (let i = 0; i < 10; i++) {
+                    history.push(computePerformance(s0, mode0.mode));
+                }
+                drawChart();
+                interval = setInterval(stepDegrade, 500);
+            });
+
+            resetBtn.addEventListener('click', () => {
+                if (running) { clearInterval(interval); running = false; runBtn.textContent = 'Stress Link'; }
+                tauF.value = 5; tc.value = 20; beta.value = 0; vel.value = 1; K.value = 4; alpha.value = 1;
+                history = []; switchIdx = -1;
+                stressStep = 0;
+                refresh();
+            });
+
+            [tauF, tc, beta, vel, K, alpha].forEach(s => s.addEventListener('input', refresh));
+            refresh();
+        })();
+
+
+        /* ═══════════════════════════════════════════
+           DEMO 2 — CCI Risk Engine
+           ═══════════════════════════════════════════ */
+        (function () {
+            const $ = id => document.getElementById(id);
+            const getTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
+
+            const kappaRange = $('kappaRange'), tauRange = $('tauRange'), fdRange = $('fdRange');
+            const kappaVal = $('kappaVal'), tauVal = $('tauVal'), fdVal = $('fdVal');
+            const readout = $('cciReadout');
+            const canvas = $('cciVisual'), ctx = canvas.getContext('2d');
+
+            function compute() {
+                const k = parseFloat(kappaRange.value), t = parseFloat(tauRange.value), fd = parseFloat(fdRange.value);
+                const Tc = 1 / (fd + 1) * 1000;
+                const CIN = k * (t / Tc);
+                const Risk = 1 - Math.exp(-CIN * CIN);
+                const pCollapse = Risk;
+                return { k, t, fd, CIN, Risk, pCollapse, Tc };
+            }
+
+            function drawDemo2() {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = canvas.clientWidth * dpr;
+                canvas.height = canvas.clientHeight * dpr;
+                ctx.scale(dpr, dpr);
+                const W = canvas.clientWidth, H = canvas.clientHeight;
+                const isDark = getTheme() === 'dark';
+
+                ctx.clearRect(0, 0, W, H);
+                const pad = { l: 50, r: 20, t: 30, b: 50 };
+                const cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
+
+                /* Draw stability map */
+                const steps = 80;
+                for (let ix = 0; ix < steps; ix++) {
+                    for (let iy = 0; iy < steps; iy++) {
+                        const tau_v = 1 + 49 * ix / steps;
+                        const fd_v = 1 + 199 * iy / steps;
+                        const Tc_v = 1 / (fd_v + 1) * 1000;
+                        const k = parseFloat(kappaRange.value);
+                        const cin = k * (tau_v / Tc_v);
+                        let r, g, b;
+                        if (cin < 0.5) { r = 34; g = 197; b = 94; }
+                        else if (cin < 1) { const t2 = (cin - 0.5) / 0.5; r = Math.round(34 + 200 * t2); g = Math.round(197 - 140 * t2); b = Math.round(94 - 86 * t2); }
+                        else { r = 239; g = 68; b = 68; }
+                        const a = isDark ? 0.35 : 0.2;
+                        ctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+                        const bw = cW / steps, bh = cH / steps;
+                        ctx.fillRect(pad.l + ix * bw, pad.t + iy * bh, bw + 1, bh + 1);
+                    }
+                }
+
+                /* Axes */
+                const txtColor = isDark ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.4)';
+                ctx.fillStyle = txtColor;
+                ctx.font = '11px Inter,sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('CSI Age τ (ms)', pad.l + cW / 2, H - 6);
+                ctx.save();
+                ctx.translate(12, pad.t + cH / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.fillText('Doppler f_D (Hz)', 0, 0);
+                ctx.restore();
+
+                /* Tick labels */
+                const tauTicks = [1, 10, 20, 30, 40, 50];
+                tauTicks.forEach(v => {
+                    const x = pad.l + ((v - 1) / 49) * cW;
+                    ctx.fillText(v, x, H - 24);
+                });
+                const fdTicks = [1, 50, 100, 150, 200];
+                ctx.textAlign = 'right';
+                fdTicks.forEach(v => {
+                    const y = pad.t + ((v - 1) / 199) * cH;
+                    ctx.fillText(v, pad.l - 8, y + 4);
+                });
+
+                /* CCI=1 contour */
+                const k = parseFloat(kappaRange.value);
+                ctx.beginPath();
+                ctx.strokeStyle = isDark ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.3)';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([4, 4]);
+                for (let ix = 0; ix < steps; ix++) {
+                    const tau_v = 1 + 49 * ix / steps;
+                    const fd_crit = k * tau_v / 1000 - 1;
+                    if (fd_crit < 1 || fd_crit > 200) continue;
+                    const x = pad.l + (ix / steps) * cW;
+                    const y = pad.t + ((fd_crit - 1) / 199) * cH;
+                    ix === 0 || fd_crit <= 1 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                /* Current state marker */
+                const st = compute();
+                const mx = pad.l + ((st.t - 1) / 49) * cW;
+                const my = pad.t + ((st.fd - 1) / 199) * cH;
+                ctx.beginPath();
+                ctx.arc(mx, my, 7, 0, Math.PI * 2);
+                ctx.fillStyle = st.CIN < 0.5 ? '#22c55e' : (st.CIN < 1 ? '#eab308' : '#ef4444');
+                ctx.fill();
+                ctx.strokeStyle = isDark ? 'white' : '#111';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                /* Label */
+                ctx.fillStyle = isDark ? 'rgba(255,255,255,.7)' : 'rgba(0,0,0,.6)';
+                ctx.font = 'bold 11px Inter';
+                ctx.textAlign = 'left';
+                ctx.fillText('CCI=1 boundary', pad.l + 4, pad.t + 16);
+            }
+
+            function syncFromSliders() {
+                kappaVal.textContent = kappaRange.value;
+                tauVal.textContent = tauRange.value;
+                fdVal.textContent = fdRange.value;
+                const st = compute();
+                readout.innerHTML =
+                    '<span class="mono-val">CCI = ' + fmt(st.CIN) + '</span>' +
+                    '<span class="mono-val">Risk = ' + fmt(st.Risk) + '</span>' +
+                    '<span class="mono-val">P<sub>collapse</sub> = ' + fmt(st.pCollapse) + '</span>';
+                drawDemo2();
+            }
+
+            [kappaRange, tauRange, fdRange].forEach(s => s.addEventListener('input', syncFromSliders));
+            syncFromSliders();
+        })();
+
+
+        /* ═══════════════════════════════════════════
+           DEMO 3 — Predictive Stability Engine
+           ═══════════════════════════════════════════ */
+        (function () {
+            const $ = id => document.getElementById(id);
+            const getTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
+
+            const tauCtrl = $('tau_control'), kappaCtrl = $('kappa_control');
+            const tauVal = $('tau_val'), kappaValD = $('kappa_val');
+            const readout = $('d3readout'), statusBox = $('d3status');
+            const canvas = $('d3canvas'), ctx = canvas.getContext('2d');
+
+            function drawDemo3() {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = canvas.clientWidth * dpr;
+                canvas.height = canvas.clientHeight * dpr;
+                ctx.scale(dpr, dpr);
+                const W = canvas.clientWidth, H = canvas.clientHeight;
+                const isDark = getTheme() === 'dark';
+
+                const tau_tc = parseFloat(tauCtrl.value);
+                const kappa = parseFloat(kappaCtrl.value);
+                const CCI = kappa * tau_tc;
+                const risk = 1 - Math.exp(-CCI * CCI);
+
+                tauVal.textContent = tau_tc.toFixed(2);
+                kappaValD.textContent = kappa.toFixed(1);
+
+                ctx.clearRect(0, 0, W, H);
+                const pad = { l: 50, r: 30, t: 30, b: 50 };
+                const cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
+
+                /* Grid */
+                const gridColor = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+                ctx.strokeStyle = gridColor; ctx.lineWidth = 1;
+                for (let i = 0; i <= 5; i++) {
+                    const y = pad.t + cH * i / 5;
+                    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(W - pad.r, y); ctx.stroke();
+                }
+
+                /* Axes labels */
+                const txtColor = isDark ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.4)';
+                ctx.fillStyle = txtColor;
+                ctx.font = '11px Inter,sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('CCI →', pad.l + cW / 2, H - 6);
+                ctx.textAlign = 'right';
+                ['1.0', '0.8', '0.6', '0.4', '0.2', '0.0'].forEach((l, i) => {
+                    ctx.fillText(l, pad.l - 8, pad.t + cH * i / 5 + 4);
+                });
+
+                const steps = 200;
+                const maxCCI = 3;
+
+                /* ZF curve */
+                ctx.beginPath();
+                ctx.strokeStyle = isDark ? 'rgba(255,255,255,.25)' : 'rgba(0,0,0,.2)';
+                ctx.lineWidth = 2;
+                for (let i = 0; i <= steps; i++) {
+                    const cci = maxCCI * i / steps;
+                    const perf = cci < 1 ? 1 - 0.12 * cci : Math.max(0.05, Math.exp(-2 * (cci - 1)));
+                    const x = pad.l + (i / steps) * cW;
+                    const y = pad.t + cH * (1 - perf);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+
+                /* WaveLynk curve */
+                ctx.beginPath();
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2.5;
+                for (let i = 0; i <= steps; i++) {
+                    const cci = maxCCI * i / steps;
+                    let perf;
+                    if (cci < 0.85) perf = 1 - 0.12 * cci;
+                    else {
+                        const mrtBase = 0.85 * 0.88;
+                        const fade = Math.max(0.3, mrtBase - 0.05 * (cci - 0.85));
+                        perf = fade;
+                    }
+                    const x = pad.l + (i / steps) * cW;
+                    const y = pad.t + cH * (1 - perf);
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+
+                /* CCI=1 line */
+                const cliff_x = pad.l + (1 / maxCCI) * cW;
+                ctx.strokeStyle = isDark ? 'rgba(255,255,255,.2)' : 'rgba(0,0,0,.15)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath(); ctx.moveTo(cliff_x, pad.t); ctx.lineTo(cliff_x, pad.t + cH); ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = txtColor;
+                ctx.font = '11px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('Coherence Cliff (CCI = 1)', cliff_x, pad.t - 8);
+
+                /* Labels */
+                ctx.font = 'bold 11px Inter';
+                ctx.fillStyle = '#3b82f6'; ctx.textAlign = 'left';
+                ctx.fillText('WaveLynk', pad.l + 8, pad.t + 16);
+                ctx.fillStyle = isDark ? 'rgba(255,255,255,.3)' : 'rgba(0,0,0,.25)';
+                ctx.fillText('ZF Only', pad.l + 8, pad.t + 32);
+
+                /* Current point */
+                const cx = pad.l + (CCI / maxCCI) * cW;
+                const perfZF = CCI < 1 ? 1 - 0.12 * CCI : Math.max(0.05, Math.exp(-2 * (CCI - 1)));
+                let perfWL;
+                if (CCI < 0.85) perfWL = 1 - 0.12 * CCI;
+                else { const mb = 0.85 * 0.88; perfWL = Math.max(0.3, mb - 0.05 * (CCI - 0.85)); }
+                const cy = pad.t + cH * (1 - perfWL);
+
+                ctx.beginPath();
+                ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+                ctx.fillStyle = '#f59e0b';
+                ctx.fill();
+                ctx.strokeStyle = isDark ? 'white' : '#111';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                /* Readout */
+                readout.innerHTML =
+                    '<span class="mono-val">CCI = ' + fmt(CCI) + '</span>' +
+                    '<span class="mono-val">ZF = ' + fmt(perfZF, 3) + '</span>' +
+                    '<span class="mono-val">WaveLynk = ' + fmt(perfWL, 3) + '</span>';
+
+                if (CCI < 0.85) {
+                    statusBox.className = 'status-msg success';
+                    statusBox.textContent = 'Stable Region — ZF operating normally.';
+                } else if (CCI < 1.2) {
+                    statusBox.className = 'status-msg warning';
+                    statusBox.textContent = 'Transition Zone — WaveLynk switching to MRT for stability.';
+                } else {
+                    statusBox.className = 'status-msg danger';
+                    statusBox.textContent = 'Unstable Region — ZF has collapsed. WaveLynk maintains performance via MRT.';
+                }
+            }
+
+            [tauCtrl, kappaCtrl].forEach(s => s.addEventListener('input', drawDemo3));
+            drawDemo3();
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>WaveLynk — Team</title>
+    <meta name="description" content="Meet the WaveLynk team, our mission, roadmap, and potential impact." />
+    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <canvas id="wave-canvas"></canvas>
+
+    <header>
+        <div class="wrap">
+            <nav>
+                <a class="brand" href="index.html">
+                    <img src="images/logo.png" alt="WaveLynk" class="logo-mark"
+                        style="width:28px;height:28px;border-radius:6px;" />
+                    WaveLynk
+                </a>
+                <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="science.html">Science</a>
+                    <a href="demos.html">Demos</a>
+                    <a href="evidence.html">Evidence</a>
+                    <a href="team.html">Team</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+                    </button>
+                    <a class="btn btn-primary" href="demos.html">Try Demos</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <div class="wrap">
+                <div class="badge reveal"><span class="dot dot-green"></span> The People Behind WaveLynk</div>
+                <h1 class="reveal" style="margin-top:var(--sp-5)">Team</h1>
+                <p class="reveal">Three students combining physics, engineering, and design to build predictive
+                    reliability for next-generation wireless.</p>
+            </div>
+        </section>
+
+
+        <!-- Team Profiles -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="grid grid-3 stagger">
+                    <div class="card reveal">
+                        <div class="card-body" style="text-align:center;">
+                            <img src="images/neha.png" alt="Neha Abin"
+                                style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto var(--sp-4);display:block;border:3px solid var(--border);" />
+                            <div class="badge" style="margin-bottom:var(--sp-3);">Lead Researcher</div>
+                            <h3>Neha Abin</h3>
+                            <p>Physics derivation, instability model, formal analysis. Developed the coherence-cliff
+                                framework from Maxwell's equations to the CCI risk metric.</p>
+                            <div class="flex" style="margin-top:var(--sp-4);gap:var(--sp-2);justify-content:center;">
+                                <span class="status-chip">E&M Theory</span>
+                                <span class="status-chip">Channel Modeling</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-body" style="text-align:center;">
+                            <img src="images/sahil.png" alt="Sahil Shah"
+                                style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto var(--sp-4);display:block;border:3px solid var(--border);" />
+                            <div class="badge" style="margin-bottom:var(--sp-3);">Systems Engineer</div>
+                            <h3>Sahil Shah</h3>
+                            <p>Controller implementation, Wi-Fi testbed, data collection. Built the closed-loop
+                                measurement pipeline and ran validation experiments.</p>
+                            <div class="flex" style="margin-top:var(--sp-4);gap:var(--sp-2);justify-content:center;">
+                                <span class="status-chip">Testbed</span>
+                                <span class="status-chip">Data Analysis</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card reveal">
+                        <div class="card-body" style="text-align:center;">
+                            <img src="images/yajat.png" alt="Yajat Parmar"
+                                style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto var(--sp-4);display:block;border:3px solid var(--border);" />
+                            <div class="badge" style="margin-bottom:var(--sp-3);">Design & Simulation</div>
+                            <h3>Yajat Parmar</h3>
+                            <p>Interactive demos, website design, data visualization. Created the web-based controller
+                                simulations and presentation materials.</p>
+                            <div class="flex" style="margin-top:var(--sp-4);gap:var(--sp-2);justify-content:center;">
+                                <span class="status-chip">Web Dev</span>
+                                <span class="status-chip">Data Viz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Mission -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="grid grid-2 stagger">
+                    <div class="reveal">
+                        <div class="label-text">Purpose</div>
+                        <h2 style="margin-top:var(--sp-3)">Our mission</h2>
+                        <p>Make high-frequency wireless links reliable enough for real-time applications. As the
+                            industry pushes toward mmWave and THz bands, the coherence-cliff problem will only grow
+                            worse.</p>
+                        <p>We believe reliability should be <em>designed in</em>, not patched after failure. WaveLynk
+                            provides a physics-grounded framework for predictive reliability control.</p>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-body">
+                            <h4>Roadmap</h4>
+                            <ul class="clean-list" style="margin-top:var(--sp-3);">
+                                <li><strong>Phase 1 ✓</strong> — Theoretical framework, instability model, proxy
+                                    experiment</li>
+                                <li><strong>Phase 2</strong> — mmWave testbed validation (28 GHz SDR platform)</li>
+                                <li><strong>Phase 3</strong> — Multi-user MIMO extension (>4 users)</li>
+                                <li><strong>Phase 4</strong> — Real-time embedded controller for commercial APs</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Impact -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Applications</div>
+                    <h2 style="margin-top:var(--sp-3)">Potential impact</h2>
+                </div>
+
+                <div class="grid grid-3 stagger">
+                    <div class="card reveal">
+                        <div class="card-body-sm">
+                            <h4>Telemedicine</h4>
+                            <p style="font-size:13px;">Reliable links for remote surgery and diagnostics, where latency
+                                spikes can be life-critical.</p>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-body-sm">
+                            <h4>Autonomous Vehicles</h4>
+                            <p style="font-size:13px;">V2X communication that predicts link failures before safety
+                                hazards in real-time driving.</p>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-body-sm">
+                            <h4>Industrial IoT</h4>
+                            <p style="font-size:13px;">Factory mmWave links needing sub-millisecond reliability for
+                                robotic control loops.</p>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-body-sm">
+                            <h4>AR / VR</h4>
+                            <p style="font-size:13px;">High-throughput, low-latency links for immersive experiences
+                                where frame drops cause motion sickness.</p>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-body-sm">
+                            <h4>Rural Connectivity</h4>
+                            <p style="font-size:13px;">Point-to-point wireless backhaul in underserved areas where link
+                                stability is essential.</p>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-body-sm">
+                            <h4>6G Infrastructure</h4>
+                            <p style="font-size:13px;">Foundation for networks above 100 GHz where coherence cliffs are
+                                severe and unavoidable.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- FAQ -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">FAQ</div>
+                    <h2 style="margin-top:var(--sp-3)">Common questions</h2>
+                </div>
+
+                <div class="flex-col stagger" style="gap:var(--sp-3);">
+                    <details class="accordion reveal">
+                        <summary>What exactly is the "Coherence Cliff"?</summary>
+                        <div class="accordion-body">
+                            <p>A nonlinear instability transition in ZF beamforming that occurs when CSI age, amplified
+                                by channel conditioning (κ), causes the inversion-based weights to become destructive.
+                                The result is a sudden jump in interference, latency, and packet loss.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>How is this different from standard rate adaptation?</summary>
+                        <div class="accordion-body">
+                            <p>Standard rate adaptation reacts to <em>observed</em> degradation (low SNR, high loss).
+                                WaveLynk uses a physics-based predictive metric (CCI) that detects when the system is
+                                approaching the instability boundary <em>before</em> failure occurs.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>Why is this a proxy experiment?</summary>
+                        <div class="accordion-body">
+                            <p>mmWave/THz hardware was not available. The underlying physics (Doppler shift, coherence
+                                time, channel conditioning) behaves identically — it scales with frequency. Our results
+                                demonstrate the mechanism; mmWave validation would strengthen the case.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>What would you do with more resources?</summary>
+                        <div class="accordion-body">
+                            <p>Validate at 28 GHz with an SDR platform, use full channel matrix estimation for true κ,
+                                test with >4 simultaneous users, run >1000 trials per condition, and integrate with
+                                commercial AP firmware.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>What's the biggest limitation?</summary>
+                        <div class="accordion-body">
+                            <p>The proxy nature of the experiment. We demonstrate the mechanism at 5 GHz, not at
+                                mmWave/THz frequencies where the coherence cliff is most severe. The physics scales, but
+                                direct validation at higher frequencies is needed.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="wrap">
+            © WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

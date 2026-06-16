@@ -1,2964 +1,325 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>WaveLynk — Predictive Switching Before the Coherence Cliff</title>
-<meta name="description" content="WaveLynk: a reliability controller that predicts CSI-collapse (the Coherence Cliff) and proactively switches ZF→MRT to avoid outages. Includes an interactive simulator + evidence gallery + judge-ready walkthrough."/>
-
-<style>
-
-
-/* --- Judge 30s Summary Box --- */
-.summary-box{
-  margin-top:18px;
-  background: var(--panel2);
-  border:1px solid var(--stroke);
-  border-radius: 16px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-}
-.summary-box .pad2{ padding:18px 18px 16px 18px; }
-.summary-box .kicker{
-  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-  margin-bottom:10px;
-}
-.summary-box .kicker .tag{ margin:0; }
-.summary-grid{
-  display:grid; grid-template-columns: repeat(2, minmax(0,1fr));
-  gap:14px;
-}
-@media (max-width: 820px){ .summary-grid{ grid-template-columns:1fr; } }
-.summary-item h4{
-  margin:0 0 6px 0; font-size: 18px; letter-spacing:.02em;
-  color: var(--accent2);
-}
-.summary-item p{ margin:0; color: var(--muted); font-size: 14px; }
-.summary-footer{
-  margin-top:12px;
-  padding-top:12px;
-  border-top:1px solid rgba(255,255,255,.10);
-  color: var(--muted2);
-  font-size: 13px;
-}
-
-:root{
-  --bg:#070A10; --bg2:#0B1020;
-  --panel: rgba(255,255,255,.06);
-  --panel2: rgba(255,255,255,.035);
-  --stroke: rgba(255,255,255,.12);
-  --text: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.68);
-  --muted2: rgba(255,255,255,.50);
-  --accent:#66D3FF; --accent2:#9BFFB1; --accent3:#FFD36B;
-  --ok:#22c55e; --warn:#facc15; --bad:#ef4444;
-  --shadow: 0 26px 80px rgba(0,0,0,.60);
-  --r: 22px;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0; color:var(--text); font-family: var(--sans);
-  background:
-    radial-gradient(900px 560px at 18% 10%, rgba(102,211,255,.14), transparent 60%),
-    radial-gradient(900px 560px at 82% 24%, rgba(155,255,177,.12), transparent 55%),
-    radial-gradient(760px 520px at 50% 110%, rgba(255,211,107,.10), transparent 60%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
-  overflow-x:hidden;
-}
-a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
-.grid{display:grid;gap:16px}
-.card{
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-  border:1px solid var(--stroke);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-}
-.card .pad{padding:18px}
-.pill{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:8px 12px; border-radius:999px;
-  background: rgba(255,255,255,.06); border:1px solid var(--stroke);
-  color:var(--muted); font-size:13px;
-}
-kbd{
-  font-family:var(--mono);
-  font-size:12px; padding:2px 6px;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--stroke);
-  color:var(--muted);
-}
-hr.sep{border:0;border-top:1px solid rgba(255,255,255,.10);margin:16px 0}
-h1,h2,h3{margin:0}
-h1{font-size:44px;letter-spacing:-.02em;line-height:1.02}
-h2{font-size:28px;letter-spacing:-.01em}
-h3{font-size:16px;color:var(--muted);font-weight:650}
-p{margin:10px 0 0;color:var(--muted);line-height:1.55}
-.small{font-size:14.5px;color:var(--muted2);line-height:1.45}
-strong{color:var(--text)}
-header{
-  position:sticky; top:0; z-index:50;
-  backdrop-filter: blur(14px);
-  background: linear-gradient(180deg, rgba(7,10,16,.78), rgba(7,10,16,.40));
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-nav{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0}
-.brand{display:flex; align-items:center; gap:10px; text-decoration:none}
-.logo{
-  width:34px;height:34px;border-radius:12px;
-  background: radial-gradient(circle at 30% 30%, var(--accent), rgba(102,211,255,.10) 55%),
-              radial-gradient(circle at 70% 80%, var(--accent2), rgba(155,255,177,.10) 55%),
-              linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow: 0 10px 30px rgba(0,0,0,.30);
-}
-.brand b{letter-spacing:-.01em}
-.links{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
-.links a{
-  text-decoration:none;
-  padding:8px 10px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-  color:var(--muted);
-  font-size:13px;
-}
-.links a:hover{border-color:rgba(255,255,255,.20);color:var(--text)}
-.cta{
-  display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:10px 14px; border-radius:14px;
-  border:1px solid rgba(102,211,255,.35);
-  background: linear-gradient(180deg, rgba(102,211,255,.18), rgba(102,211,255,.06));
-  color:var(--text);
-  text-decoration:none;
-}
-.cta:hover{border-color:rgba(155,255,177,.45)}
-.hero{padding:34px 0 18px}
-.hero-grid{grid-template-columns: 1.25fr .75fr; align-items:stretch}
-@media (max-width: 980px){.hero-grid{grid-template-columns:1fr}}
-.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.metric{
-  display:flex; align-items:flex-start; gap:12px;
-  padding:14px; border-radius:18px;
-  background: rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.10);
-}
-.dot{width:10px;height:10px;border-radius:50%}
-.dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)}
-.metric b{display:block;font-size:15px}
-.metric span{display:block;margin-top:3px;color:var(--muted);font-size:13px;line-height:1.35}
-.section{padding:18px 0}
-.two{grid-template-columns: 1fr 1fr}
-@media (max-width: 980px){.two{grid-template-columns:1fr}}
-.three{grid-template-columns: 1fr 1fr 1fr}
-@media (max-width: 980px){.three{grid-template-columns:1fr}}
-figure{margin:0}
-.gallery{grid-template-columns:repeat(2, 1fr)}
-@media (max-width: 980px){.gallery{grid-template-columns:1fr}}
-.img{
-  width:100%; border-radius:18px; border:1px solid rgba(255,255,255,.10);
-  background:#0a0f1d; overflow:hidden;
-}
-.img img{display:block;width:100%;height:auto}
-.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-button,.btn{
-  font-family:var(--sans);
-  cursor:pointer;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-  color:var(--text);
-  padding:10px 12px;
-  font-size:13px;
-}
-button:hover,.btn:hover{border-color:rgba(255,255,255,.22)}
-.btn.primary{
-  border-color: rgba(155,255,177,.42);
-  background: linear-gradient(180deg, rgba(155,255,177,.18), rgba(155,255,177,.06));
-}
-.btn.warn{
-  border-color: rgba(255,211,107,.45);
-  background: linear-gradient(180deg, rgba(255,211,107,.18), rgba(255,211,107,.06));
-}
-.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-.label{font-size:12px;color:var(--muted2)}
-input[type="range"]{width: 220px}
-.readout{
-  font-family: var(--mono);
-  font-size:15px;
-  padding:8px 10px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.22);
-}
-canvas{width:100%; height:280px; display:block}
-.footer{padding:26px 0 36px;color:var(--muted2)}
-.tag{font-size:12px;color:var(--muted2);padding:2px 8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.04)}
-details summary{cursor:pointer; color:var(--text); font-weight:650}
-details p{margin-top:8px}
-
-.list{margin:10px 0 0 0; padding-left:18px}
-.list li{margin:8px 0; color:var(--muted)}
-.steps{margin:10px 0 0 0; padding-left:18px}
-.steps li{margin:10px 0; color:var(--muted)}
-
-
-
-.summary-item p{margin:0;font-size:16.5px;line-height:1.45;color:var(--text);}
-.eqbig{font-size:18px;}
-.eqline{font-size:16.5px;}
-.bullets{margin:10px 0 0 0; padding-left:20px; font-size:18px; line-height:1.35;}
-.bullets li{margin:8px 0;}
-details.details{border:1px solid rgba(255,255,255,.10); border-radius:14px; background: rgba(0,0,0,.18);}
-.details-summary{cursor:pointer; padding:12px 14px; list-style:none; font-weight:700; color:var(--accent2);}
-details.details[open] .details-summary{border-bottom:1px solid rgba(255,255,255,.10);}
-
-</style>
-
-<style>
-
-
-/* --- Judge 30s Summary Box --- */
-.summary-box{
-  margin-top:18px;
-  background: var(--panel2);
-  border:1px solid var(--stroke);
-  border-radius: 16px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-}
-.summary-box .pad2{ padding:18px 18px 16px 18px; }
-.summary-box .kicker{
-  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-  margin-bottom:10px;
-}
-.summary-box .kicker .tag{ margin:0; }
-.summary-grid{
-  display:grid; grid-template-columns: repeat(2, minmax(0,1fr));
-  gap:14px;
-}
-@media (max-width: 820px){ .summary-grid{ grid-template-columns:1fr; } }
-.summary-item h4{
-  margin:0 0 6px 0; font-size: 18px; letter-spacing:.02em;
-  color: var(--accent2);
-}
-.summary-item p{ margin:0; color: var(--muted); font-size: 14px; }
-.summary-footer{
-  margin-top:12px;
-  padding-top:12px;
-  border-top:1px solid rgba(255,255,255,.10);
-  color: var(--muted2);
-  font-size: 13px;
-}
-
-:root{
-  --bg:#070A10; --bg2:#0B1020;
-  --panel: rgba(255,255,255,.06);
-  --panel2: rgba(255,255,255,.035);
-  --stroke: rgba(255,255,255,.12);
-  --text: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.68);
-  --muted2: rgba(255,255,255,.50);
-  --accent:#66D3FF; --accent2:#9BFFB1; --accent3:#FFD36B;
-  --ok:#22c55e; --warn:#facc15; --bad:#ef4444;
-  --shadow: 0 26px 80px rgba(0,0,0,.60);
-  --r: 22px;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0; color:var(--text); font-family: var(--sans);
-  background:
-    radial-gradient(900px 560px at 18% 10%, rgba(102,211,255,.14), transparent 60%),
-    radial-gradient(900px 560px at 82% 24%, rgba(155,255,177,.12), transparent 55%),
-    radial-gradient(760px 520px at 50% 110%, rgba(255,211,107,.10), transparent 60%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
-  overflow-x:hidden;
-}
-a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
-.grid{display:grid;gap:16px}
-.card{
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-  border:1px solid var(--stroke);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-}
-.card .pad{padding:18px}
-.pill{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:8px 12px; border-radius:999px;
-  background: rgba(255,255,255,.06); border:1px solid var(--stroke);
-  color:var(--muted); font-size:13px;
-}
-kbd{
-  font-family:var(--mono);
-  font-size:12px; padding:2px 6px;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--stroke);
-  color:var(--muted);
-}
-hr.sep{border:0;border-top:1px solid rgba(255,255,255,.10);margin:16px 0}
-h1,h2,h3{margin:0}
-h1{font-size:44px;letter-spacing:-.02em;line-height:1.02}
-h2{font-size:28px;letter-spacing:-.01em}
-h3{font-size:16px;color:var(--muted);font-weight:650}
-p{margin:10px 0 0;color:var(--muted);line-height:1.55}
-.small{font-size:14.5px;color:var(--muted2);line-height:1.45}
-strong{color:var(--text)}
-header{
-  position:sticky; top:0; z-index:50;
-  backdrop-filter: blur(14px);
-  background: linear-gradient(180deg, rgba(7,10,16,.78), rgba(7,10,16,.40));
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-nav{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0}
-.brand{display:flex; align-items:center; gap:10px; text-decoration:none}
-.logo{
-  width:34px;height:34px;border-radius:12px;
-  background: radial-gradient(circle at 30% 30%, var(--accent), rgba(102,211,255,.10) 55%),
-              radial-gradient(circle at 70% 80%, var(--accent2), rgba(155,255,177,.10) 55%),
-              linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow: 0 10px 30px rgba(0,0,0,.30);
-}
-.brand b{letter-spacing:-.01em}
-.links{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
-.links a{
-  text-decoration:none;
-  padding:8px 10px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-  color:var(--muted);
-  font-size:13px;
-}
-.links a:hover{border-color:rgba(255,255,255,.20);color:var(--text)}
-.cta{
-  display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:10px 14px; border-radius:14px;
-  border:1px solid rgba(102,211,255,.35);
-  background: linear-gradient(180deg, rgba(102,211,255,.18), rgba(102,211,255,.06));
-  color:var(--text);
-  text-decoration:none;
-}
-.cta:hover{border-color:rgba(155,255,177,.45)}
-.hero{padding:34px 0 18px}
-.hero-grid{grid-template-columns: 1.25fr .75fr; align-items:stretch}
-@media (max-width: 980px){.hero-grid{grid-template-columns:1fr}}
-.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.metric{
-  display:flex; align-items:flex-start; gap:12px;
-  padding:14px; border-radius:18px;
-  background: rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.10);
-}
-.dot{width:10px;height:10px;border-radius:50%}
-.dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)}
-.metric b{display:block;font-size:15px}
-.metric span{display:block;margin-top:3px;color:var(--muted);font-size:13px;line-height:1.35}
-.section{padding:18px 0}
-.two{grid-template-columns: 1fr 1fr}
-@media (max-width: 980px){.two{grid-template-columns:1fr}}
-.three{grid-template-columns: 1fr 1fr 1fr}
-@media (max-width: 980px){.three{grid-template-columns:1fr}}
-figure{margin:0}
-.gallery{grid-template-columns:repeat(2, 1fr)}
-@media (max-width: 980px){.gallery{grid-template-columns:1fr}}
-.img{
-  width:100%; border-radius:18px; border:1px solid rgba(255,255,255,.10);
-  background:#0a0f1d; overflow:hidden;
-}
-.img img{display:block;width:100%;height:auto}
-.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-button,.btn{
-  font-family:var(--sans);
-  cursor:pointer;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-  color:var(--text);
-  padding:10px 12px;
-  font-size:13px;
-}
-button:hover,.btn:hover{border-color:rgba(255,255,255,.22)}
-.btn.primary{
-  border-color: rgba(155,255,177,.42);
-  background: linear-gradient(180deg, rgba(155,255,177,.18), rgba(155,255,177,.06));
-}
-.btn.warn{
-  border-color: rgba(255,211,107,.45);
-  background: linear-gradient(180deg, rgba(255,211,107,.18), rgba(255,211,107,.06));
-}
-.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-.label{font-size:12px;color:var(--muted2)}
-input[type="range"]{width: 220px}
-.readout{
-  font-family: var(--mono);
-  font-size:15px;
-  padding:8px 10px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.22);
-}
-canvas{width:100%; height:280px; display:block}
-.footer{padding:26px 0 36px;color:var(--muted2)}
-.tag{font-size:12px;color:var(--muted2);padding:2px 8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.04)}
-details summary{cursor:pointer; color:var(--text); font-weight:650}
-details p{margin-top:8px}
-
-.list{margin:10px 0 0 0; padding-left:18px}
-.list li{margin:8px 0; color:var(--muted)}
-.steps{margin:10px 0 0 0; padding-left:18px}
-.steps li{margin:10px 0; color:var(--muted)}
-
-
-
-.summary-item p{margin:0;font-size:16.5px;line-height:1.45;color:var(--text);}
-.eqbig{font-size:18px;}
-.eqline{font-size:16.5px;}
-.bullets{margin:10px 0 0 0; padding-left:20px; font-size:18px; line-height:1.35;}
-.bullets li{margin:8px 0;}
-details.details{border:1px solid rgba(255,255,255,.10); border-radius:14px; background: rgba(0,0,0,.18);}
-.details-summary{cursor:pointer; padding:12px 14px; list-style:none; font-weight:700; color:var(--accent2);}
-details.details[open] .details-summary{border-bottom:1px solid rgba(255,255,255,.10);}
-
-</style>
-
-
-<style>
-
-
-/* --- Judge 30s Summary Box --- */
-.summary-box{
-  margin-top:18px;
-  background: var(--panel2);
-  border:1px solid var(--stroke);
-  border-radius: 16px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-}
-.summary-box .pad2{ padding:18px 18px 16px 18px; }
-.summary-box .kicker{
-  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-  margin-bottom:10px;
-}
-.summary-box .kicker .tag{ margin:0; }
-.summary-grid{
-  display:grid; grid-template-columns: repeat(2, minmax(0,1fr));
-  gap:14px;
-}
-@media (max-width: 820px){ .summary-grid{ grid-template-columns:1fr; } }
-.summary-item h4{
-  margin:0 0 6px 0; font-size: 18px; letter-spacing:.02em;
-  color: var(--accent2);
-}
-.summary-item p{ margin:0; color: var(--muted); font-size: 14px; }
-.summary-footer{
-  margin-top:12px;
-  padding-top:12px;
-  border-top:1px solid rgba(255,255,255,.10);
-  color: var(--muted2);
-  font-size: 13px;
-}
-
-:root{
-  --bg:#070A10; --bg2:#0B1020;
-  --panel: rgba(255,255,255,.06);
-  --panel2: rgba(255,255,255,.035);
-  --stroke: rgba(255,255,255,.12);
-  --text: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.68);
-  --muted2: rgba(255,255,255,.50);
-  --accent:#66D3FF; --accent2:#9BFFB1; --accent3:#FFD36B;
-  --ok:#22c55e; --warn:#facc15; --bad:#ef4444;
-  --shadow: 0 26px 80px rgba(0,0,0,.60);
-  --r: 22px;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0; color:var(--text); font-family: var(--sans);
-  background:
-    radial-gradient(900px 560px at 18% 10%, rgba(102,211,255,.14), transparent 60%),
-    radial-gradient(900px 560px at 82% 24%, rgba(155,255,177,.12), transparent 55%),
-    radial-gradient(760px 520px at 50% 110%, rgba(255,211,107,.10), transparent 60%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
-  overflow-x:hidden;
-}
-a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
-.grid{display:grid;gap:16px}
-.card{
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-  border:1px solid var(--stroke);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-}
-.card .pad{padding:18px}
-.pill{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:8px 12px; border-radius:999px;
-  background: rgba(255,255,255,.06); border:1px solid var(--stroke);
-  color:var(--muted); font-size:13px;
-}
-kbd{
-  font-family:var(--mono);
-  font-size:12px; padding:2px 6px;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--stroke);
-  color:var(--muted);
-}
-hr.sep{border:0;border-top:1px solid rgba(255,255,255,.10);margin:16px 0}
-h1,h2,h3{margin:0}
-h1{font-size:44px;letter-spacing:-.02em;line-height:1.02}
-h2{font-size:28px;letter-spacing:-.01em}
-h3{font-size:16px;color:var(--muted);font-weight:650}
-p{margin:10px 0 0;color:var(--muted);line-height:1.55}
-.small{font-size:14.5px;color:var(--muted2);line-height:1.45}
-strong{color:var(--text)}
-header{
-  position:sticky; top:0; z-index:50;
-  backdrop-filter: blur(14px);
-  background: linear-gradient(180deg, rgba(7,10,16,.78), rgba(7,10,16,.40));
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-nav{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0}
-.brand{display:flex; align-items:center; gap:10px; text-decoration:none}
-.logo{
-  width:34px;height:34px;border-radius:12px;
-  background: radial-gradient(circle at 30% 30%, var(--accent), rgba(102,211,255,.10) 55%),
-              radial-gradient(circle at 70% 80%, var(--accent2), rgba(155,255,177,.10) 55%),
-              linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow: 0 10px 30px rgba(0,0,0,.30);
-}
-.brand b{letter-spacing:-.01em}
-.links{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
-.links a{
-  text-decoration:none;
-  padding:8px 10px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-  color:var(--muted);
-  font-size:13px;
-}
-.links a:hover{border-color:rgba(255,255,255,.20);color:var(--text)}
-.cta{
-  display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:10px 14px; border-radius:14px;
-  border:1px solid rgba(102,211,255,.35);
-  background: linear-gradient(180deg, rgba(102,211,255,.18), rgba(102,211,255,.06));
-  color:var(--text);
-  text-decoration:none;
-}
-.cta:hover{border-color:rgba(155,255,177,.45)}
-.hero{padding:34px 0 18px}
-.hero-grid{grid-template-columns: 1.25fr .75fr; align-items:stretch}
-@media (max-width: 980px){.hero-grid{grid-template-columns:1fr}}
-.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.metric{
-  display:flex; align-items:flex-start; gap:12px;
-  padding:14px; border-radius:18px;
-  background: rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.10);
-}
-.dot{width:10px;height:10px;border-radius:50%}
-.dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)}
-.metric b{display:block;font-size:15px}
-.metric span{display:block;margin-top:3px;color:var(--muted);font-size:13px;line-height:1.35}
-.section{padding:18px 0}
-.two{grid-template-columns: 1fr 1fr}
-@media (max-width: 980px){.two{grid-template-columns:1fr}}
-.three{grid-template-columns: 1fr 1fr 1fr}
-@media (max-width: 980px){.three{grid-template-columns:1fr}}
-figure{margin:0}
-.gallery{grid-template-columns:repeat(2, 1fr)}
-@media (max-width: 980px){.gallery{grid-template-columns:1fr}}
-.img{
-  width:100%; border-radius:18px; border:1px solid rgba(255,255,255,.10);
-  background:#0a0f1d; overflow:hidden;
-}
-.img img{display:block;width:100%;height:auto}
-.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-button,.btn{
-  font-family:var(--sans);
-  cursor:pointer;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-  color:var(--text);
-  padding:10px 12px;
-  font-size:13px;
-}
-button:hover,.btn:hover{border-color:rgba(255,255,255,.22)}
-.btn.primary{
-  border-color: rgba(155,255,177,.42);
-  background: linear-gradient(180deg, rgba(155,255,177,.18), rgba(155,255,177,.06));
-}
-.btn.warn{
-  border-color: rgba(255,211,107,.45);
-  background: linear-gradient(180deg, rgba(255,211,107,.18), rgba(255,211,107,.06));
-}
-.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-.label{font-size:12px;color:var(--muted2)}
-input[type="range"]{width: 220px}
-.readout{
-  font-family: var(--mono);
-  font-size:15px;
-  padding:8px 10px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.22);
-}
-canvas{width:100%; height:280px; display:block}
-.footer{padding:26px 0 36px;color:var(--muted2)}
-.tag{font-size:12px;color:var(--muted2);padding:2px 8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.04)}
-details summary{cursor:pointer; color:var(--text); font-weight:650}
-details p{margin-top:8px}
-
-.list{margin:10px 0 0 0; padding-left:18px}
-.list li{margin:8px 0; color:var(--muted)}
-.steps{margin:10px 0 0 0; padding-left:18px}
-.steps li{margin:10px 0; color:var(--muted)}
-
-
-
-.summary-item p{margin:0;font-size:16.5px;line-height:1.45;color:var(--text);}
-.eqbig{font-size:18px;}
-.eqline{font-size:16.5px;}
-.bullets{margin:10px 0 0 0; padding-left:20px; font-size:18px; line-height:1.35;}
-.bullets li{margin:8px 0;}
-details.details{border:1px solid rgba(255,255,255,.10); border-radius:14px; background: rgba(0,0,0,.18);}
-.details-summary{cursor:pointer; padding:12px 14px; list-style:none; font-weight:700; color:var(--accent2);}
-details.details[open] .details-summary{border-bottom:1px solid rgba(255,255,255,.10);}
-
-</style>
-
-
-<style>
-
-
-/* --- Judge 30s Summary Box --- */
-.summary-box{
-  margin-top:18px;
-  background: var(--panel2);
-  border:1px solid var(--stroke);
-  border-radius: 16px;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
-}
-.summary-box .pad2{ padding:18px 18px 16px 18px; }
-.summary-box .kicker{
-  display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-  margin-bottom:10px;
-}
-.summary-box .kicker .tag{ margin:0; }
-.summary-grid{
-  display:grid; grid-template-columns: repeat(2, minmax(0,1fr));
-  gap:14px;
-}
-@media (max-width: 820px){ .summary-grid{ grid-template-columns:1fr; } }
-.summary-item h4{
-  margin:0 0 6px 0; font-size: 18px; letter-spacing:.02em;
-  color: var(--accent2);
-}
-.summary-item p{ margin:0; color: var(--muted); font-size: 14px; }
-.summary-footer{
-  margin-top:12px;
-  padding-top:12px;
-  border-top:1px solid rgba(255,255,255,.10);
-  color: var(--muted2);
-  font-size: 13px;
-}
-
-:root{
-  --bg:#070A10; --bg2:#0B1020;
-  --panel: rgba(255,255,255,.06);
-  --panel2: rgba(255,255,255,.035);
-  --stroke: rgba(255,255,255,.12);
-  --text: rgba(255,255,255,.92);
-  --muted: rgba(255,255,255,.68);
-  --muted2: rgba(255,255,255,.50);
-  --accent:#66D3FF; --accent2:#9BFFB1; --accent3:#FFD36B;
-  --ok:#22c55e; --warn:#facc15; --bad:#ef4444;
-  --shadow: 0 26px 80px rgba(0,0,0,.60);
-  --r: 22px;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0; color:var(--text); font-family: var(--sans);
-  background:
-    radial-gradient(900px 560px at 18% 10%, rgba(102,211,255,.14), transparent 60%),
-    radial-gradient(900px 560px at 82% 24%, rgba(155,255,177,.12), transparent 55%),
-    radial-gradient(760px 520px at 50% 110%, rgba(255,211,107,.10), transparent 60%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
-  overflow-x:hidden;
-}
-a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
-.grid{display:grid;gap:16px}
-.card{
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-  border:1px solid var(--stroke);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-}
-.card .pad{padding:18px}
-.pill{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:8px 12px; border-radius:999px;
-  background: rgba(255,255,255,.06); border:1px solid var(--stroke);
-  color:var(--muted); font-size:13px;
-}
-kbd{
-  font-family:var(--mono);
-  font-size:12px; padding:2px 6px;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--stroke);
-  color:var(--muted);
-}
-hr.sep{border:0;border-top:1px solid rgba(255,255,255,.10);margin:16px 0}
-h1,h2,h3{margin:0}
-h1{font-size:44px;letter-spacing:-.02em;line-height:1.02}
-h2{font-size:28px;letter-spacing:-.01em}
-h3{font-size:16px;color:var(--muted);font-weight:650}
-p{margin:10px 0 0;color:var(--muted);line-height:1.55}
-.small{font-size:14.5px;color:var(--muted2);line-height:1.45}
-strong{color:var(--text)}
-header{
-  position:sticky; top:0; z-index:50;
-  backdrop-filter: blur(14px);
-  background: linear-gradient(180deg, rgba(7,10,16,.78), rgba(7,10,16,.40));
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-nav{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0}
-.brand{display:flex; align-items:center; gap:10px; text-decoration:none}
-.logo{
-  width:34px;height:34px;border-radius:12px;
-  background: radial-gradient(circle at 30% 30%, var(--accent), rgba(102,211,255,.10) 55%),
-              radial-gradient(circle at 70% 80%, var(--accent2), rgba(155,255,177,.10) 55%),
-              linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow: 0 10px 30px rgba(0,0,0,.30);
-}
-.brand b{letter-spacing:-.01em}
-.links{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
-.links a{
-  text-decoration:none;
-  padding:8px 10px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-  color:var(--muted);
-  font-size:13px;
-}
-.links a:hover{border-color:rgba(255,255,255,.20);color:var(--text)}
-.cta{
-  display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:10px 14px; border-radius:14px;
-  border:1px solid rgba(102,211,255,.35);
-  background: linear-gradient(180deg, rgba(102,211,255,.18), rgba(102,211,255,.06));
-  color:var(--text);
-  text-decoration:none;
-}
-.cta:hover{border-color:rgba(155,255,177,.45)}
-.hero{padding:34px 0 18px}
-.hero-grid{grid-template-columns: 1.25fr .75fr; align-items:stretch}
-@media (max-width: 980px){.hero-grid{grid-template-columns:1fr}}
-.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.metric{
-  display:flex; align-items:flex-start; gap:12px;
-  padding:14px; border-radius:18px;
-  background: rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.10);
-}
-.dot{width:10px;height:10px;border-radius:50%}
-.dot.ok{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)}
-.metric b{display:block;font-size:15px}
-.metric span{display:block;margin-top:3px;color:var(--muted);font-size:13px;line-height:1.35}
-.section{padding:18px 0}
-.two{grid-template-columns: 1fr 1fr}
-@media (max-width: 980px){.two{grid-template-columns:1fr}}
-.three{grid-template-columns: 1fr 1fr 1fr}
-@media (max-width: 980px){.three{grid-template-columns:1fr}}
-figure{margin:0}
-.gallery{grid-template-columns:repeat(2, 1fr)}
-@media (max-width: 980px){.gallery{grid-template-columns:1fr}}
-.img{
-  width:100%; border-radius:18px; border:1px solid rgba(255,255,255,.10);
-  background:#0a0f1d; overflow:hidden;
-}
-.img img{display:block;width:100%;height:auto}
-.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-button,.btn{
-  font-family:var(--sans);
-  cursor:pointer;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.05);
-  color:var(--text);
-  padding:10px 12px;
-  font-size:13px;
-}
-button:hover,.btn:hover{border-color:rgba(255,255,255,.22)}
-.btn.primary{
-  border-color: rgba(155,255,177,.42);
-  background: linear-gradient(180deg, rgba(155,255,177,.18), rgba(155,255,177,.06));
-}
-.btn.warn{
-  border-color: rgba(255,211,107,.45);
-  background: linear-gradient(180deg, rgba(255,211,107,.18), rgba(255,211,107,.06));
-}
-.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-.label{font-size:12px;color:var(--muted2)}
-input[type="range"]{width: 220px}
-.readout{
-  font-family: var(--mono);
-  font-size:15px;
-  padding:8px 10px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(0,0,0,.22);
-}
-canvas{width:100%; height:280px; display:block}
-.footer{padding:26px 0 36px;color:var(--muted2)}
-.tag{font-size:12px;color:var(--muted2);padding:2px 8px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.04)}
-details summary{cursor:pointer; color:var(--text); font-weight:650}
-details p{margin-top:8px}
-
-.list{margin:10px 0 0 0; padding-left:18px}
-.list li{margin:8px 0; color:var(--muted)}
-.steps{margin:10px 0 0 0; padding-left:18px}
-.steps li{margin:10px 0; color:var(--muted)}
-
-
-
-.summary-item p{margin:0;font-size:16.5px;line-height:1.45;color:var(--text);}
-.eqbig{font-size:18px;}
-.eqline{font-size:16.5px;}
-.bullets{margin:10px 0 0 0; padding-left:20px; font-size:18px; line-height:1.35;}
-.bullets li{margin:8px 0;}
-details.details{border:1px solid rgba(255,255,255,.10); border-radius:14px; background: rgba(0,0,0,.18);}
-.details-summary{cursor:pointer; padding:12px 14px; list-style:none; font-weight:700; color:var(--accent2);}
-details.details[open] .details-summary{border-bottom:1px solid rgba(255,255,255,.10);}
-
-</style>
-
-
-<style>
-.wave-footer-glow {
-    text-align: center;
-    padding: 100px 10%;
-    background: linear-gradient(180deg, #0a0f1a 0%, #05070d 100%);
-}
-
-.wave-footer-glow h1 {
-    font-size: 72px;
-    font-weight: 700;
-    background: linear-gradient(90deg, #00e6ff, #00ff99);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 15px rgba(0,230,255,0.6),
-                 0 0 25px rgba(0,255,153,0.4);
-}
-
-.wave-footer-glow p {
-    font-size: 22px;
-    margin-top: 20px;
-    color: #c8faff;
-    text-shadow: 0 0 8px rgba(0,230,255,0.4);
-}
-</style>
-
-
-<style>
-h2, .section-title {
-    background: linear-gradient(90deg, #00e6ff, #00ff99);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 10px rgba(0,230,255,0.5),
-                 0 0 18px rgba(0,255,153,0.3);
-    font-weight: 600;
-}
-
-h3 {
-    color: #00e6ff;
-    text-shadow: 0 0 6px rgba(0,230,255,0.4);
-}
-</style>
-
-
-<style>
-/* Make key equations readable (without changing demo/layout) */
-.instability-li { margin-top: 10px; }
-.instability-label{
-  font-weight: 700;
-  color: #c8faff;
-  text-shadow: 0 0 8px rgba(0,230,255,0.25);
-}
-.instability-eq{
-  display: inline-block;
-  font-size: 1.55em;
-  font-weight: 800;
-  margin-left: 10px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: rgba(0,230,255,0.06);
-  border: 1px solid rgba(0,255,153,0.18);
-  background: linear-gradient(90deg, rgba(0,230,255,0.10), rgba(0,255,153,0.06));
-  color: #eaffff;
-  text-shadow: 0 0 12px rgba(0,230,255,0.55),
-               0 0 18px rgba(0,255,153,0.35);
-}
-.cci-eq{
-  font-size: 1.25em;
-  font-weight: 700;
-  color: #00ff99;
-  text-shadow: 0 0 10px rgba(0,255,153,0.35);
-}
-@media (max-width: 800px){
-  .instability-eq{ font-size: 1.25em; margin-left: 6px; }
-}
-</style>
-
-
-<style>
-.results-snapshot {
-  margin: 60px auto;
-  padding: 30px;
-  max-width: 1100px;
-  border-radius: 16px;
-  background: linear-gradient(90deg, rgba(0,230,255,0.06), rgba(0,255,153,0.05));
-  border: 1px solid rgba(0,255,153,0.2);
-  text-align: center;
-}
-
-.results-snapshot h2 {
-  font-size: 1.8em;
-  margin-bottom: 15px;
-}
-
-.metric-grid {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
-.metric {
-  font-size: 1.4em;
-  font-weight: 700;
-  text-shadow: 0 0 10px rgba(0,230,255,0.5);
-}
-
-.novelty-box {
-  margin: 50px auto;
-  padding: 25px;
-  max-width: 900px;
-  border-left: 4px solid #00ff99;
-  background: rgba(0,230,255,0.04);
-  font-size: 1.1em;
-}
-
-.novelty-box strong {
-  background: linear-gradient(90deg, #00e6ff, #00ff99);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-</style>
-
-
-<style>
-/* Smooth equation emphasis */
-@keyframes subtleGlow {
-  0% { text-shadow: 0 0 8px rgba(0,230,255,0.4); }
-  50% { text-shadow: 0 0 18px rgba(0,255,153,0.5); }
-  100% { text-shadow: 0 0 8px rgba(0,230,255,0.4); }
-}
-
-.instability-eq {
-  animation: subtleGlow 4s ease-in-out infinite;
-}
-
-/* Boundary alignment visual block */
-.boundary-visual {
-  margin: 60px auto;
-  max-width: 1000px;
-  padding: 30px;
-  border-radius: 16px;
-  background: rgba(0,230,255,0.05);
-  border: 1px solid rgba(0,255,153,0.2);
-  text-align: center;
-}
-
-.boundary-visual h2 {
-  margin-bottom: 15px;
-}
-
-.boundary-graphic {
-  margin-top: 20px;
-  padding: 20px;
-  font-size: 1.1em;
-  background: linear-gradient(90deg, rgba(0,230,255,0.08), rgba(0,255,153,0.05));
-  border-radius: 12px;
-  border: 1px solid rgba(0,255,153,0.15);
-}
-
-/* Tighten novelty box text */
-.novelty-box {
-  font-size: 1.05em;
-  line-height: 1.5em;
-}
-</style>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WaveLynk — Predictive Wireless Reliability</title>
+  <meta name="description"
+    content="WaveLynk predicts when wireless links will fail and switches beamforming strategy before outages happen." />
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-<header>
-  <div class="wrap">
-    <nav>
-      <a class="brand" href="#top">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <b>WaveLynk</b>
-          <div class="small">Predictive switching before the coherence cliff</div>
+
+  <!-- Animated wave background -->
+  <canvas id="wave-canvas"></canvas>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="index.html">
+          <img src="images/logo.png" alt="WaveLynk" class="logo-mark"
+            style="width:28px;height:28px;border-radius:6px;" />
+          WaveLynk
+        </a>
+
+        <button class="nav-toggle" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="science.html">Science</a>
+          <a href="demos.html">Demos</a>
+          <a href="evidence.html">Evidence</a>
+          <a href="team.html">Team</a>
         </div>
-      </a>
-      <div class="links" aria-label="Site navigation">
-        <a href="#one-minute">1‑min pitch</a>
-        <a href="#upgrade-law">The Law</a>
-        <a href="#simulator">Demo 1</a>
-        <a href="#cci-demo">Demo 2</a>
-        <a href="#freq-demo">Demo 3</a>
-        <a href="#evidence">Evidence</a>
-        <a href="#protocol">Protocol</a>
-                <a href="#team">Team &amp; mission</a>
-<a href="#faq">Judge Q&amp;A</a>
-      </div>
-      <a class="cta" href="#simulator">Open Demo <span aria-hidden="true">↗</span></a>
-    </nav>
-  </div>
-</header>
 
-<main id="top">
-  
-<section class="results-snapshot">
-  <h2>Results at a Glance</h2>
-  <div class="metric-grid">
-    <div class="metric">Latency ↓ 32%</div>
-    <div class="metric">Outage ↓ 41%</div>
-    <div class="metric">N = 100 Trials</div>
-  </div>
-  <p style="margin-top:15px;">
-    Predictive instability boundary aligns with observed collapse conditions.
-  </p>
-</section>
-
-<section class="hero">
-    <div class="wrap grid hero-grid">
-      <div class="card">
-        <div class="pad">
-          <div class="pill">Reliability Controller • MIMO Precoding • ZF→MRT • CSI aging</div>
-          <h1 style="margin-top:12px">WaveLynk predicts the <span style="color:var(--accent)">Coherence Cliff</span> and switches <span style="color:var(--accent2)">before</span> outages happen.</h1>
-
-<div class="summary-box">
-  <div class="pad2">
-    <div class="kicker">
-      <span class="tag">New law → predictor → control action → validated improvement</span>
-      <span class="tag">Judge 30‑second read</span>
+        <div class="nav-actions">
+          <button class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+          <a class="btn btn-primary" href="demos.html">Try Demos</a>
+        </div>
+      </nav>
     </div>
+  </header>
 
-    <div class="summary-grid">
-      <div class="summary-item">
-        <h4>Problem</h4>
-        <p><strong>ZF beamforming</strong> breaks when CSI becomes stale. In high‑frequency links, small motion/blockage makes CSI age fast, causing sudden throughput drop and latency spikes (the “coherence cliff”).</p>
-      </div>
-      <div class="summary-item">
-        <h4>Discovery</h4>
-        <p>WaveLynk identifies a nonlinear collapse boundary in high‑frequency beamforming. Instead of reacting to packet loss, it predicts when CSI aging approaches the Coherence Cliff and prepares the system for a stability transition.</p>
-      </div>
-      <div class="summary-item">
-        <h4>Solution</h4>
-        <p>WaveLynk runs a lightweight predictor, computes <strong>Risk = α·CIN</strong>, and triggers a proactive <strong>ZF→MRT</strong> switch when Risk approaches 1 (before latency/packet loss spikes).
-<p style="margin-top:20px;">
-In our Wi‑Fi proxy experiments, latency and packet‑loss spikes consistently occurred 
-as CIN approached 1, validating the predicted nonlinear boundary and demonstrating 
-that the Coherence Cliff is observable in practice — not just theoretical.
-</p>
-</p>
-      </div>
-      <div class="summary-item">
-        <h4>Evidence</h4>
-        <p>We validate with interactive simulations + a closed‑loop WiFi testbed (5&nbsp;GHz proxy) showing more stable throughput and lower latency when predictive switching is enabled.</p>
-      </div>
-    </div>
+  <main>
 
-    <div class="summary-footer">
-      What judges care about: <b>Novelty</b> (defined threshold + predictor), <b>Method</b> (controls + repeatability), <b>Honesty</b> (proxy demo vs THz claims).
-    </div>
-  </div>
-</div>
-
-
-          <p>
-            High‑frequency (mmWave/THz) links can fail <strong>abruptly</strong> when channel state information (CSI) becomes stale.
-            We introduce a <strong>predictive risk metric</strong> and a <strong>closed‑loop controller</strong> that detects when a link is approaching a collapse boundary and proactively switches from performance‑optimal <strong>Zero‑Forcing (ZF)</strong> to reliability‑robust <strong>Maximum Ratio Transmission (MRT)</strong>.
-          </p>
-
-          <div class="badges">
-            <div class="metric">
-              <div class="dot ok"></div>
-              <div>
-                <b>Predictive, not reactive</b>
-                <span>Triggers before packet loss/latency spikes by tracking CSI quality &amp; coherence.</span>
-              </div>
-            </div>
-            <div class="metric">
-              <div class="dot warn"></div>
-              <div>
-                <b>“Coherence Cliff” law + index</b>
-                <span>Defines a collapse threshold using a dimensionless instability index (CIN) and risk score.</span>
-              </div>
-            </div>
-            <div class="metric">
-              <div class="dot ok"></div>
-              <div>
-                <b>Experiment + demo‑safe proxy</b>
-                <span>Live router demo + Wi‑Fi proxy measurements to ground the behavior in real channels.</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="btnrow">
-            <a class="btn primary" href="#one-minute">Judge walkthrough</a>
-            <a class="btn" href="#evidence">See validation figures</a>
-            <a class="btn warn" href="#protocol">Reproducibility</a>
-          </div>
-          <p class="small" style="margin-top:12px">
-            Tip: Press <kbd>J</kbd> on this page to toggle <strong>Judge Mode</strong> (big labels + guided steps).
-          </p>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="badge reveal"><span class="dot dot-green"></span> Predictive Beamforming Control</div>
+        <h1 class="reveal" style="margin-top:var(--sp-5)">
+          Reliable wireless before<br />the signal drops
+        </h1>
+        <p class="large-text reveal">
+          WaveLynk detects when high-frequency wireless links are approaching instability
+          and switches strategy <em>before</em> outages happen — not after.
+        </p>
+        <div class="btn-group reveal">
+          <a class="btn btn-primary" href="demos.html">Explore Demos →</a>
+          <a class="btn" href="science.html">Read the Science</a>
         </div>
       </div>
+    </section>
 
-      <div class="card">
-        <div class="pad">
-          <h2 style="margin-bottom:10px"></h2>
-          <p>
-            ZF cancels multi‑user interference using CSI‑dependent beam weights. When CSI is stale, the “interference‑canceling” weights become wrong:
-            desired signal power drops <em>and</em> residual interference rises, producing a sharp non‑linear failure region.
-          </p>
-          <hr class="sep"/>
-          <p class="small"><strong>WaveLynk principle:</strong> keep ZF when safe (max throughput), but when Risk rises, switch to MRT which prioritizes robust signal power/diversity.</p>
-          <div class="btnrow">
-            <a class="btn primary" href="#simulator">Try the controller live</a>
-            <a class="btn" href="#evidence">Compare to figures</a>
+
+    <!-- Key Results -->
+    <section class="section-sm reveal">
+      <div class="wrap">
+        <div class="grid grid-3 stagger">
+          <div class="card reveal">
+            <div class="stat">
+              <div class="stat-value"><span data-counter="32" data-prefix="↓" data-suffix="%">↓0%</span></div>
+              <div class="stat-label">Latency Reduction</div>
+            </div>
+          </div>
+          <div class="card reveal">
+            <div class="stat">
+              <div class="stat-value"><span data-counter="41" data-prefix="↓" data-suffix="%">↓0%</span></div>
+              <div class="stat-label">Outage Reduction</div>
+            </div>
+          </div>
+          <div class="card reveal">
+            <div class="stat">
+              <div class="stat-value">100</div>
+              <div class="stat-label">Validated Trials</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <hr class="divider" />
 
 
-<section class="section" id="novelty">
-  <div class="wrap">
-    <div class="card">
-      <div class="pad">
-        <div class="pill">Why this is new</div>
-        <h2 style="margin-top:10px">Reactive adaptation vs predictive stability control</h2>
-        <p>Most wireless controllers react <em>after</em> link quality degrades. WaveLynk predicts the <strong>coherence-cliff transition</strong> before collapse and switches transmission strategy proactively.</p>
+    <!-- The Problem -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-header">
+          <div class="label-text">The Problem</div>
+          <h2 style="margin-top:var(--sp-3)">High-frequency links are fragile</h2>
+          <p>As wireless systems push to mmWave and THz frequencies, channel conditions change faster than the system
+            can adapt. The result is sudden, catastrophic signal collapse.</p>
+        </div>
 
-        <div class="grid two" style="margin-top:16px">
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <div class="tag">Common approaches</div>
-              <ul class="bullets" style="margin-top:10px">
-                <li>SINR/throughput threshold switching (reactive)</li>
-                <li>Rate fallback after packet loss</li>
-                <li>No conditioning awareness (ignores κ)</li>
-                <li>No formal phase-error instability boundary</li>
-              </ul>
+        <div class="grid grid-2 stagger">
+          <div class="card reveal">
+            <div class="card-body">
+              <h4>What is Zero-Forcing (ZF)?</h4>
+              <p>ZF beamforming cancels interference between users by inverting the wireless channel matrix. It works
+                perfectly — but only when channel state information (CSI) is fresh.</p>
             </div>
           </div>
-
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <div class="tag">WaveLynk</div>
-              <ul class="bullets" style="margin-top:10px">
-                <li class="instability-li"><strong class="instability-label">Instability condition:</strong> <span class="instability-eq">κ · (2π f<sub>D</sub> τ) ≥ 1</span></li>
-                <li><strong>Predictive index:</strong> <span class="cci-eq">CCI = κ · (τ/T<sub>c</sub>)
-<p style="margin-top:15px; opacity:0.9;">
-Here κ represents channel conditioning sensitivity — mathematically related to the 
-spread between singular values of the channel matrix. When spatial streams are poorly 
-orthogonal or multipath geometry is unfavorable, κ increases, meaning inversion 
-becomes more fragile and the Coherence Cliff occurs earlier.
-</p>
-</span></li>
-                <li>Frequency-aware scaling: f↑ → T<sub>c</sub>↓ → risk↑</li>
-                <li>Proactive mode switch (ZF → MRT) <em>before</em> collapse</li>
-              </ul>
+          <div class="card reveal">
+            <div class="card-body">
+              <h4>When does it break?</h4>
+              <p>When the user moves, or the environment changes, CSI becomes stale. The matrix inversion amplifies
+                errors exponentially, causing a sudden jump in interference, latency, and packet loss.</p>
             </div>
           </div>
         </div>
-
       </div>
-    </div>
-  </div>
-</section>
+    </section>
+
+    <hr class="divider" />
 
 
-
-<section class="section" id="pipeline">
-  <div class="wrap">
-    <div class="card">
-      <div class="pad">
-        <div class="pill">One-minute mental model</div>
-        <h2 style="margin-top:10px">How WaveLynk prevents collapse</h2>
-        <p class="small">CSI Age → Phase Drift → Conditioning Amplification → Risk Index → Proactive Switch → Stability Restored</p>
-
-        <div class="card" style="margin-top:14px;background: rgba(255,255,255,.03)">
-          <div class="pad">
-            <svg viewBox="0 0 1100 170" width="100%" height="170" role="img" aria-label="WaveLynk pipeline">
+    <!-- The Coherence Cliff -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="grid grid-2" style="align-items:center;">
+          <div class="reveal">
+            <div class="label-text">Core Discovery</div>
+            <h2 style="margin-top:var(--sp-3)">The Coherence Cliff</h2>
+            <p>We discovered a sharp, nonlinear boundary where ZF beamforming transitions from stable to
+              catastrophically unstable. We call this the <strong>coherence cliff</strong>.</p>
+            <p>The transition is governed by a single metric — the <strong>Conditioned Coherence Index (CCI)</strong> —
+              which combines CSI age, Doppler shift, and channel conditioning into a unified instability predictor.</p>
+            <div class="equation" style="margin-top:var(--sp-5)">
+              CCI = κ(H) · τ<sub>f</sub> / T<sub>c</sub>
+            </div>
+            <p style="font-size:13px">When CCI approaches 1, the system is near the cliff. WaveLynk acts before it
+              falls.</p>
+          </div>
+          <div class="reveal">
+            <svg viewBox="0 0 400 280" style="width:100%;max-width:400px;margin:0 auto;display:block;"
+              aria-label="Coherence cliff diagram">
               <defs>
-                <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0" stop-color="rgba(102,211,255,.9)"/>
-                  <stop offset="1" stop-color="rgba(155,255,177,.9)"/>
+                <linearGradient id="safe" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#22c55e" stop-opacity=".15" />
+                  <stop offset="100%" stop-color="#22c55e" stop-opacity=".02" />
+                </linearGradient>
+                <linearGradient id="danger" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#ef4444" stop-opacity=".02" />
+                  <stop offset="100%" stop-color="#ef4444" stop-opacity=".15" />
                 </linearGradient>
               </defs>
-
-              <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="16" fill="rgba(255,255,255,.9)">
-                <rect x="20" y="55" width="170" height="60" rx="18" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.15)"/>
-                <text x="105" y="90" text-anchor="middle">CSI age (τ)</text>
-
-                <rect x="220" y="55" width="190" height="60" rx="18" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.15)"/>
-                <text x="315" y="82" text-anchor="middle">Phase drift</text>
-                <text x="315" y="104" text-anchor="middle" fill="rgba(255,255,255,.75)">2π f<tspan baseline-shift="sub">D</tspan> τ</text>
-
-                <rect x="440" y="55" width="210" height="60" rx="18" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.15)"/>
-                <text x="545" y="82" text-anchor="middle">Amplified by κ</text>
-                <text x="545" y="104" text-anchor="middle" fill="rgba(255,255,255,.75)">ill-conditioning</text>
-
-                <rect x="680" y="55" width="190" height="60" rx="18" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.15)"/>
-                <text x="775" y="82" text-anchor="middle">Risk index</text>
-                <text x="775" y="104" text-anchor="middle" fill="rgba(255,255,255,.75)">CCI = κ·(τ/Tc)</text>
-
-                <rect x="900" y="55" width="180" height="60" rx="18" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.15)"/>
-                <text x="990" y="90" text-anchor="middle">Switch ZF → MRT</text>
-
-                <path d="M190 85 L220 85" stroke="url(#g)" stroke-width="4" stroke-linecap="round"/>
-                <path d="M410 85 L440 85" stroke="url(#g)" stroke-width="4" stroke-linecap="round"/>
-                <path d="M650 85 L680 85" stroke="url(#g)" stroke-width="4" stroke-linecap="round"/>
-                <path d="M870 85 L900 85" stroke="url(#g)" stroke-width="4" stroke-linecap="round"/>
-
-                <text x="550" y="30" text-anchor="middle" fill="rgba(255,255,255,.75)">Predict before collapse → prevent outages</text>
-              </g>
+              <rect x="30" y="20" width="170" height="230" fill="url(#safe)" rx="6" />
+              <rect x="200" y="20" width="170" height="230" fill="url(#danger)" rx="6" />
+              <line x1="200" y1="15" x2="200" y2="255" stroke="currentColor" stroke-dasharray="4,4"
+                stroke-opacity=".3" />
+              <text x="115" y="265" text-anchor="middle" fill="currentColor" font-size="11" opacity=".5">STABLE</text>
+              <text x="285" y="265" text-anchor="middle" fill="currentColor" font-size="11" opacity=".5">UNSTABLE</text>
+              <text x="200" y="13" text-anchor="middle" fill="currentColor" font-size="10" opacity=".6">CCI = 1</text>
+              <!-- Performance curve -->
+              <polyline
+                points="40,60 80,62 120,65 160,72 180,80 190,92 195,110 198,130 200,160 204,200 210,230 230,240 280,242 340,244"
+                fill="none" stroke="#71717a" stroke-width="2" opacity=".5" />
+              <!-- WaveLynk curve -->
+              <polyline
+                points="40,60 80,62 120,65 160,72 180,78 190,82 195,85 198,86 200,88 204,90 210,92 230,94 280,95 340,96"
+                fill="none" stroke="#3b82f6" stroke-width="2.5" />
+              <text x="350" y="244" fill="#71717a" font-size="10">ZF</text>
+              <text x="350" y="96" fill="#3b82f6" font-size="10" font-weight="600">WaveLynk</text>
+              <!-- Switch marker -->
+              <circle cx="190" cy="82" r="5" fill="#3b82f6" stroke="white" stroke-width="1.5" />
+              <text x="190" y="75" text-anchor="middle" fill="#3b82f6" font-size="9">switch</text>
+              <text x="215" y="42" fill="currentColor" font-size="10" opacity=".4">CCI →</text>
             </svg>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="section" id="physics-derivation">
-  <div class="wrap">
-    <div class="card">
-      <div class="pad">
-        <div class="pill">Physics foundation</div>
-        <h2 style="margin-top:10px">From E&amp;M to the Coherence Cliff Instability Model</h2>
-        <p>
-          This project is grounded in electromagnetic wave physics: the wireless channel is the superposition of
-          time-varying complex phasors created by propagating fields. CSI aging causes phase errors; ZF can amplify those
-          errors when the channel is ill-conditioned.
-        </p>
-
-        <details class="details" style="margin-top:16px"><summary class="details-summary">Optional: E&amp;M foundation (click to expand)</summary><div class="card" style="margin-top:16px;background: rgba(255,255,255,.03)">
-          <div class="pad">
-            <div class="tag">Maxwell’s Equations (fields → waves)</div>
-            <p class="readout eqline" style="margin-top:10px"><strong>
-              ∇·E = ρ/ε<sub>0</sub>,  &nbsp; ∇·B = 0,  &nbsp; ∇×E = −∂B/∂t,  &nbsp; ∇×B = μ<sub>0</sub>J + μ<sub>0</sub>ε<sub>0</sub>∂E/∂t
-            </strong></p>
-            <p>
-              In free space (ρ≈0, J≈0), these lead to the electromagnetic wave equation:
-              <span class="readout"><strong>∇²E = μ<sub>0</sub>ε<sub>0</sub> ∂²E/∂t²</strong></span> and
-              <span class="readout"><strong>c = 1/√(μ<sub>0</sub>ε<sub>0</sub>)</strong></span>.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid two" style="margin-top:16px">
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <div class="tag">Complex phasor channel model</div>
-              <p>
-                A narrowband MIMO channel entry can be modeled as a sum of paths:
-              </p>
-              <p class="readout"><strong>
-                h(t) = &sum;<sub>p</sub> a<sub>p</sub>(t)\,e^{j\phi<sub>p</sub>(t)}
-              </strong></p>
-              <p>
-                Motion changes path lengths → phases rotate. The dominant phase drift rate is captured by Doppler:
-              </p>
-              <p class="readout"><strong>
-                f<sub>D</sub> &asymp; v/λ,  &nbsp; λ = c/f<sub>c</sub>
-              </strong></p>
-            </div>
-          </div>
-
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <div class="tag">Coherence time (how fast phase stays valid)</div>
-              <p>
-                Coherence time is the time scale over which the channel remains correlated:
-              </p>
-              <p class="readout"><strong>
-                T<sub>c</sub> &asymp; 0.423 / f<sub>D</sub>
-              </strong></p>
-              <p>
-                If CSI is “aged” by τ, then a simple phase-error scale is:
-              </p>
-              <p class="readout"><strong>
-                &Delta;&Phi; &asymp; 2&pi; f<sub>D</sub>&tau;
-              </strong></p>
-            </div>
-          </div>
-        </div></details>
-
-        <div class="card" style="margin-top:16px;background: rgba(255,255,255,.03)">
-          <div class="pad">
-            <div class="tag">Why ZF collapses suddenly (conditioning amplification)</div>
-            <p>
-              ZF depends on matrix inversion. When the channel matrix H is ill-conditioned, inversion amplifies small CSI errors.
-              A standard perturbation bound is:
-            </p>
-            <p class="readout"><strong>
-              &Vert;&delta;H<sup>&minus;1</sup>&Vert; / &Vert;H<sup>&minus;1</sup>&Vert; &le; &kappa;(H) &middot; &Vert;&delta;H&Vert; / &Vert;H&Vert;
-            </strong></p>
-            <p>
-              Interpreting \u03B4H as phase drift from CSI aging gives a physics-driven collapse boundary.
-            </p>
-            <p class="readout"><strong>
-              &kappa; &middot; (2&pi; f<sub>D</sub>&tau;) &ge; 1  &nbsp; &rarr;  &nbsp; Coherence Cliff (instability transition)
-            </strong></p>
-            <p class="small" style="margin-top:10px">
-              Intuition: higher frequency → larger f<sub>D</sub> (for the same motion) → shorter T<sub>c</sub>, and high &kappa; makes ZF more fragile.
-            </p>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px;background: rgba(255,255,255,.03)">
-          <div class="pad">
-            <div class="tag">Predictive index used in WaveLynk</div>
-            <p>
-              We combine coherence physics and conditioning into a single risk score:
-            </p>
-            <p class="readout"><strong>
-              CCI = &kappa; &middot; (&tau;/T<sub>c</sub>)
-            </strong></p>
-            <p>
-              WaveLynk triggers a proactive switch (ZF→MRT) when CCI approaches the instability transition.
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-<div class="card" style="margin-top:18px;background: rgba(255,255,255,.03)">
-  <div class="pad">
-    <div class="pill">Clarifying the framework</div>
-    <h3 style="margin-top:10px">Instability model vs. Coherence Cliff</h3>
-
-    <div class="grid two" style="margin-top:14px">
-      <div>
-        <div class="tag">Instability Model (Mathematical Boundary)</div>
-        <p class="readout" style="margin-top:8px">κ · (2π f<sub>D</sub> τ) ≥ 1</p>
-        <p>
-        This equation defines the <strong>predictive boundary</strong> where CSI phase error,
-        amplified by matrix conditioning (κ), becomes unstable.
-        It explains <em>why</em> collapse happens.
-        </p>
-      </div>
-
-      <div>
-        <div class="tag">Coherence Cliff (Observed Phenomenon)</div>
-        <p style="margin-top:8px">
-        The coherence cliff is the <strong>physical system behavior</strong> that occurs once
-        the instability boundary is crossed — characterized by rapid interference growth,
-        latency spikes, and packet loss.
-        </p>
-        <p>
-        The model predicts the boundary; the cliff describes the outcome.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-<section id="one-minute" class="section">
-  <div class="wrap">
-    <div class="card">
-      <div class="pad">
-        <div class="tag">5–8 minute judging walkthrough</div>
-        <h2 style="margin-top:10px">What to say (and what to point at)</h2>
-        <div class="grid two" style="margin-top:14px">
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <h3 style="margin:0 0 8px 0">1) Problem (30–45s)</h3>
-              <ul class="bullets">
-                <li><strong>ZF beamforming needs fresh CSI.</strong></li>
-                <li>At high frequency, CSI becomes stale fast (motion / blockage).</li>
-                <li>When CSI is too stale, ZF can <strong>collapse suddenly</strong> → latency spikes/outages.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <h3 style="margin:0 0 8px 0">2) Idea (45–60s)</h3>
-              <ul class="bullets">
-                <li>We define a stability boundary called the <strong>Coherence Cliff</strong>.</li>
-                <li>We compute a risk score and <strong>switch before collapse</strong>.</li>
-                <li>Control action: <strong>ZF → MRT</strong> (more robust under CSI error).</li>
-              </ul>
-              <div class="readout eqbig" style="margin-top:10px"><strong>
-                Switch if &nbsp; P<sub>collapse</sub> &gt; τ
-              </strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid two" style="margin-top:14px">
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <h3 style="margin:0 0 8px 0">3) Show the demos (2–3 min)</h3>
-              <ul class="bullets">
-                <li><strong>Demo 1:</strong> interactive simulator (risk → decision).</li>
-                <li><strong>Demo 2:</strong> CCI risk engine (see the cliff boundary).</li>
-                <li><strong>Demo 3:</strong> frequency / mobility sensitivity (why 6G is harder).</li>
-              </ul>
-              <p class="small" style="margin-top:8px">Use the evidence gallery below to point to plots when judges ask “how do you know?”.</p>
-            </div>
-          </div>
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <h3 style="margin:0 0 8px 0">4) Results + impact (60–90s)</h3>
-              <ul class="bullets">
-                <li>Closed‑loop switching stabilizes throughput and latency.</li>
-                <li>Fewer outages when CSI is aging.</li>
-                <li>Applications: XR, autonomous systems, remote control.</li>
-              </ul>
-              <p class="small" style="margin-top:8px"><strong>Key judge takeaway:</strong> WaveLynk turns “react after failure” into “predict + prevent”.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-<section id="upgrade-law" class="section">
-  <div class="wrap">
-    <div class="card">
-      <div class="pad">
-        <div class="pill">ISEF Upgrade • Formalization</div>
-        <h2 style="margin-top:10px">Coherence Cliff: Formal Instability Model</h2>
-        <p>
-        We model collapse as a <strong>conditioning-amplified phase error instability</strong>.
-        ZF beamforming depends on matrix inversion. When the channel matrix becomes ill-conditioned (high κ),
-        even small CSI phase drift can be amplified dramatically.
-        </p>
-        <p class="readout">Instability boundary: κ · (2π f<sub>D</sub> τ) ≥ 1</p>
-        <p>
-        Here, <strong>f<sub>D</sub></strong> represents Doppler shift, <strong>τ</strong> is CSI age, and <strong>κ</strong> is the channel condition number.
-        When their product crosses unity, interference leakage increases rapidly — producing abrupt latency and packet loss collapse.
-        </p>
-      </div>
-    </div>
-
-    <div class="grid two" style="margin-top:16px">
-      <div class="card">
-        <div class="pad">
-          <div class="tag">Option 2</div>
-          <h3 style="margin-top:10px">Conditioned Coherence Index (CCI)</h3>
-          <p class="readout">CCI = κ · (τ / T<sub>c</sub>)</p>
-          <p>
-          We extend classical coherence time analysis by incorporating conditioning.
-          This transforms CSI age into a <strong>real-time predictive risk score</strong>.
-          </p>
-          <p>
-          <strong>CCI &lt; 0.5:</strong> Stable<br/>
-          <strong>0.5 – 1:</strong> Degrading alignment<br/>
-          <strong>&gt; 1:</strong> Collapse regime
-          </p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="pad">
-          <div class="tag">Option 3</div>
-          <h3 style="margin-top:10px">Frequency Scaling Principle</h3>
-          <p>
-          As carrier frequency increases (5 GHz → 140 GHz), wavelength shrinks.
-          For the same motion velocity, Doppler shift increases, reducing coherence time.
-          </p>
-          <p class="readout">Higher f → Higher f<sub>D</sub> → Lower T<sub>c</sub> → Higher CCI</p>
-          <p>
-          This explains why mmWave/6G systems are significantly more vulnerable
-          to CSI aging and beamforming instability.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-  <section id="simulator" class="section">
-    <div class="wrap">
-      <div class="card">
-        <div class="pad">
-          <div class="row" style="justify-content:space-between">
-            <div>
-              <h2>Interactive Reliability Demo</h2>
-              <p class="small">This is a <strong>judge‑friendly</strong> simulator that demonstrates the mechanism and control logic. It is calibrated to reproduce the qualitative trends in the validation plots below.</p>
-            </div>
-            <div class="row">
-              <span class="tag" id="modeTag">Mode: ZF (performance)</span>
-              <span class="tag" id="riskTag">Risk: 0.42</span>
-            </div>
-          </div>
-
-          <hr class="sep"/>
-
-          <div class="grid two">
-            <div class="card" style="box-shadow:none">
-              <div class="pad">
-                <h3>1) Set channel conditions</h3>
-                <div class="row" style="margin-top:10px">
-                  <div>
-                    <div class="label">CSI age τ<sub>f</sub> (ms)</div>
-                    <input id="tauF" type="range" min="0" max="120" value="18" step="1"/>
-                    <div class="readout" id="tauFv">18 ms</div>
-                  </div>
-                  <div>
-                    <div class="label">Coherence time τ<sub>c</sub> (ms)</div>
-                    <input id="tauC" type="range" min="5" max="120" value="55" step="1"/>
-                    <div class="readout" id="tauCv">55 ms</div>
-                  </div>
-                </div>
-
-                <div class="row" style="margin-top:12px">
-                  <div>
-                    <div class="label">Blockage severity (dB)</div>
-                    <input id="blk" type="range" min="0" max="45" value="10" step="1"/>
-                    <div class="readout" id="blkv">10 dB</div>
-                  </div>
-                  <div>
-                    <div class="label">Mobility level</div>
-                    <input id="mob" type="range" min="0" max="100" value="22" step="1"/>
-                    <div class="readout" id="mobv">22</div>
-                  </div>
-                </div>
-
-                <div class="row" style="margin-top:12px">
-                  <div>
-                    <div class="label">Multi‑user load (users)</div>
-                    <input id="mu" type="range" min="1" max="8" value="3" step="1"/>
-                    <div class="readout" id="muv">3</div>
-                  </div>
-                  <div>
-                    <div class="label">Environment sensitivity α</div>
-                    <input id="alpha" type="range" min="0.5" max="2.0" value="1.0" step="0.05"/>
-                    <div class="readout" id="alphav">1.00</div>
-                  </div>
-                </div>
-
-                <hr class="sep"/>
-
-                <h3>2) Run the demo</h3>
-                <p class="small">Click “Stress link” to gradually degrade conditions (like your DRSEF laptop demo). WaveLynk will trigger the switch when Risk crosses the threshold.</p>
-                <div class="btnrow">
-                  <button class="btn primary" id="runBtn">Stress link</button>
-                  <button class="btn" id="resetBtn">Reset</button>
-                  <button class="btn warn" id="judgeBtn">Judge Mode: OFF</button>
-                </div>
-
-                <p class="small" id="statusLine" style="margin-top:10px">
-                  Status: Stable. Increase τ<sub>f</sub> or blockage to approach the coherence cliff.
-                </p>
-              </div>
-            </div>
-
-            <div class="card" style="box-shadow:none">
-              <div class="pad">
-                <h3>Outputs (real‑time)</h3>
-                <div class="row" style="margin-top:10px;flex-wrap:wrap">
-                  <span class="readout" id="cinOut">CIN = 0.33</span>
-                  <span class="readout" id="snrOut">SNR = 27.1 dB</span>
-                  <span class="readout" id="thrOut">Throughput = 42.5 Mbps</span>
-                  <span class="readout" id="latOut">Latency = 34 ms</span>
-                  <span class="readout" id="plOut">Packet loss = 0.7%</span>
-                </div>
-
-                <div style="margin-top:12px">
-                  <canvas id="chart"></canvas>
-                  <p class="small">Blue = throughput, Orange = latency. The vertical marker shows the ZF→MRT switch.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <details style="margin-top:14px">
-            <summary>Model transparency (what this simulator is and isn’t)</summary>
-            <p class="small">
-              This interactive demo is a controller visualization: it uses simple, physics‑inspired mappings from τ<sub>f</sub>/τ<sub>c</sub>, blockage and mobility to
-              SNR / interference and then to throughput, latency, and loss. It is designed to match the qualitative regime‑transition behavior shown in the validation figures.
-              It is <strong>not</strong> a full PHY layer simulator; it is a “demo‑safe” representation so judges can see the mechanism live.
-            </p>
-          </details>
-        </div>
-      </div>
-    </div>
-  
-
-
-<section style="padding:80px 20px;">
-<div style="max-width:1000px;margin:0 auto;
-background:rgba(15,20,35,0.85);
-border:1px solid rgba(0,255,255,0.12);
-border-radius:18px;
-box-shadow:0 0 40px rgba(0,255,255,0.06);
-padding:50px 40px;">
-
-<h2 style="text-align:center;font-size:32px;margin-bottom:25px;">
-Coherence‑Limited Beamforming Instability
-</h2>
-
-<p style="text-align:center;max-width:850px;margin:0 auto 25px auto;line-height:1.7;opacity:0.9;">
-In time‑varying multipath channels, the coherence time τ<sub>c</sub> limits the validity of channel state information (CSI).
-When CSI age approaches the coherence boundary, phase misalignment induces nonlinear beamforming collapse.
-</p>
-
-<p style="text-align:center;font-size:18px;margin-bottom:20px;">
-<b>Coherence Instability Number (CIN)</b> = τ<sub>e</sub> / τ<sub>c</sub><br>
-<b>Risk</b> = α · CIN
-</p>
-
-<p style="text-align:center;max-width:850px;margin:0 auto;line-height:1.7;opacity:0.9;">
-When Risk ≈ 1, Zero‑Forcing becomes unstable.  
-WaveLynk predicts this boundary and proactively switches transmission strategy to preserve reliability.
-</p>
-
-</div>
-</section>
-
-<section id="cci-demo" class="section">
-  <div class="wrap">
-    <div class="card">
-      <div class="pad">
-        <div class="pill">Option 2 • Predictive Index</div>
-        <h2 style="margin-top:10px">Interactive CCI Risk Engine</h2>
-        <p>Conditioned Coherence Index: <strong>CCI = κ · (τ/T<sub>c</sub>)</strong>. Slide to see stability regions update live.</p>
-        <hr class="sep"/>
-
-        <div class="row" style="align-items:flex-end">
-          <div>
-            <div class="label">κ (Condition Number)</div>
-            <input type="range" min="1" max="20" value="5" id="kappaRange"/>
-          </div>
-          <div>
-            <div class="label">τ (CSI age, ms)</div>
-            <input type="range" min="1" max="50" value="10" id="tauRange"/>
-          </div>
-          <div>
-            <div class="label">f<sub>D</sub> (Doppler, Hz)</div>
-            <input type="range" min="1" max="200" value="50" id="fdRange"/>
-          </div>
-          <div class="readout" id="cciReadout">CCI = 0.000 • Stable</div>
-
-    
-    <canvas id="cciVisual" height="220" style="margin-top:20px;width:100%;"></canvas>
-    
-    </div>
-    
-        </div>
-
-        <p class="small" style="margin-top:10px">Thresholds: <b>&lt;0.5</b> stable, <b>0.5–1</b> unstable region, <b>&gt;1</b> coherence‑cliff risk.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-</section>
-
-  
-
-
-
-
-
-<section id="freq-demo" style="padding:100px 20px;">
-<div style="max-width:1100px;margin:0 auto;
-background:rgba(15,20,35,0.85);
-border:1px solid rgba(0,255,255,0.15);
-border-radius:18px;
-box-shadow:0 0 40px rgba(0,255,255,0.08);
-padding:60px 40px;">
-
-<h2 style="text-align:center;font-size:34px;margin-bottom:20px;">
-WaveLynk Predictive Stability Engine
-</h2>
-
-<p style="text-align:center;max-width:850px;margin:0 auto 40px auto;
-opacity:0.85;line-height:1.6;">
-This interactive model demonstrates proactive beamforming control.
-When the predicted instability metric (CCI) approaches the coherence cliff,
-WaveLynk dynamically switches transmission strategy to preserve stability.
-</p>
-
-<div style="display:flex;justify-content:center;gap:60px;flex-wrap:wrap;margin-bottom:40px;">
-<div style="text-align:center;">
-<label style="font-size:14px;opacity:0.8;">τ / Tc</label><br>
-<input type="range" id="tau_control" min="0" max="2" step="0.02" value="0.4">
-</div>
-
-<div style="text-align:center;">
-<label style="font-size:14px;opacity:0.8;">κ(H)</label><br>
-<input type="range" id="kappa_control" min="1" max="6" step="0.1" value="2">
-</div>
-</div>
-
-<div style="text-align:center;font-size:18px;margin-bottom:30px;" id="controlValues"></div>
-
-<canvas id="controlCanvas" width="1000" height="500"
-style="display:block;margin:0 auto;border-radius:12px;
-background:linear-gradient(180deg, rgba(20,25,45,0.6), rgba(10,15,30,0.9));
-border:1px solid rgba(0,255,255,0.15);">
-</canvas>
-
-</div>
-</section>
-
-<script>
-const tauC = document.getElementById("tau_control");
-const kappaC = document.getElementById("kappa_control");
-const ctxC = document.getElementById("controlCanvas").getContext("2d");
-const outputC = document.getElementById("controlValues");
-
-function zfModel(x){
-    if(x < 1) return 1 - 0.15*x;
-    return Math.exp(-7*(x-1));
-}
-
-function mrtModel(x){
-    return Math.exp(-0.8*x);
-}
-
-function drawSurface(){
-    ctxC.clearRect(0,0,1000,500);
-
-    const CCI = tauC.value * kappaC.value;
-    const threshold = 1;
-    const switching = CCI >= threshold;
-
-    const zfPerf = zfModel(CCI);
-    const controlledPerf = switching ? mrtModel(CCI) : zfPerf;
-
-    outputC.innerHTML =
-        "CCI = <b>" + CCI.toFixed(2) + "</b> &nbsp; | &nbsp; ZF = " + zfPerf.toFixed(3) +
-        " &nbsp; | &nbsp; WaveLynk = <b>" + controlledPerf.toFixed(3) + "</b>" +
-        (switching ? " &nbsp; (Switch Activated)" : " &nbsp; (Stable Region)");
-
-    // Axes
-    ctxC.strokeStyle="#4fd1ff";
-    ctxC.lineWidth=1;
-    ctxC.beginPath();
-    ctxC.moveTo(100,420); ctxC.lineTo(900,420);
-    ctxC.moveTo(100,420); ctxC.lineTo(100,60);
-    ctxC.stroke();
-
-    // Shaded instability region
-    ctxC.fillStyle="rgba(255,50,50,0.08)";
-    ctxC.fillRect(100+800*(1/2),60,800*(1/2),360);
-
-    // Collapse boundary
-    ctxC.strokeStyle="#ff4d4d";
-    ctxC.setLineDash([6,6]);
-    ctxC.beginPath();
-    ctxC.moveTo(100+800*(1/2),60);
-    ctxC.lineTo(100+800*(1/2),420);
-    ctxC.stroke();
-    ctxC.setLineDash([]);
-
-    // ZF baseline
-    ctxC.strokeStyle="#888";
-    ctxC.lineWidth=2;
-    ctxC.beginPath();
-    for(let x=0;x<=2;x+=0.01){
-        let y=zfModel(x);
-        ctxC.lineTo(100+800*(x/2),420-350*y);
-    }
-    ctxC.stroke();
-
-    // Controlled curve
-    ctxC.strokeStyle="#00f5ff";
-    ctxC.lineWidth=3;
-    ctxC.beginPath();
-    for(let x=0;x<=2;x+=0.01){
-        let y=(x<1)?zfModel(x):mrtModel(x);
-        ctxC.lineTo(100+800*(x/2),420-350*y);
-    }
-    ctxC.stroke();
-    ctxC.lineWidth=1;
-
-    // Live glow point
-    const xPos = 100+800*(CCI/2);
-    const yPos = 420-350*controlledPerf;
-
-    const gradient = ctxC.createRadialGradient(xPos,yPos,3,xPos,yPos,18);
-    gradient.addColorStop(0,switching?"#00ffcc":"#ffaa33");
-    gradient.addColorStop(1,"rgba(0,0,0,0)");
-    ctxC.fillStyle=gradient;
-    ctxC.beginPath();
-    ctxC.arc(xPos,yPos,18,0,2*Math.PI);
-    ctxC.fill();
-
-    ctxC.fillStyle=switching?"#00ffcc":"#ffaa33";
-    ctxC.beginPath();
-    ctxC.arc(xPos,yPos,7,0,2*Math.PI);
-    ctxC.fill();
-
-    ctxC.fillStyle="#fff";
-    ctxC.font="15px Arial";
-    ctxC.fillText("Coherence Cliff (CCI = 1)", 100+800*(1/2)-80, 50);
-}
-
-tauC.oninput = drawSurface;
-kappaC.oninput = drawSurface;
-drawSurface();
-</script>
-
-</section>
-
-
-
-
-
-
-<section id="evidence" class="section">
-    <div class="wrap">
-      <div class="card">
-        <div class="pad">
-          <h2>Evidence gallery (figures you can reference during judging)</h2>
-          <p class="small">These figures are included here so you can point judges to “the same trend” they see in the simulator. Use them as anchor visuals for your explanation.</p>
-          <hr class="sep"/>
-          <div class="grid gallery">
-            
-            
-            
-            
-            
-            
-          </div>
-
-          <details style="margin-top:14px">
-            <summary>How to cite these in a judge conversation</summary>
-            <p class="small">
-              Point to (1) the collapse threshold curve, (2) the closed‑loop “switch triggered” time‑series, and (3) the latency/loss vs RSSI plots with error bars.
-              Then show the simulator reproduces the same behavior: stable region → approach cliff → WaveLynk switches → metrics stabilize.
-            </p>
-          </details>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-<section class="section" id="validation">
-  <div class="wrap">
-    <div class="card">
-      <div class="pad">
-        <div class="pill">Validation (real data)</div>
-        <h2 style="margin-top:10px">Experimental evidence: closed-loop switching stabilizes the link</h2>
-        <p>
-          We validate WaveLynk using a Wi‑Fi 7 proxy testbed and repeated trials. Error bars indicate repeated measurements (n = 5) for each signal strength point.
-        </p>
-
-        <div class="grid three" style="margin-top:16px">
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <h3 style="margin-top:0">Latency vs signal power</h3>
-              <p class="small">MRT-dominant consistently reduces ping latency compared to ZF-dominant across received power levels.</p>
-            </div>
-          </div>
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <h3 style="margin-top:0">Packet loss vs signal power</h3>
-              <p class="small">Loss increases rapidly under ZF near the cliff; adaptive switching keeps loss low.</p>
-            </div>
-          </div>
-          <div class="card" style="background: rgba(255,255,255,.03)">
-            <div class="pad">
-              <h3 style="margin-top:0">Regime transition</h3>
-              <p class="small">Measured Wi‑Fi 7 throughput shows a clear transition region where ZF becomes fragile; WaveLynk avoids that regime.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px;background: rgba(255,255,255,.03)">
-          <div class="pad">
-            <div class="tag">Controls & repeatability</div>
-            <ul class="bullets" style="margin-top:10px">
-              <li>Same client devices and traffic pattern across trials</li>
-              <li>Fixed distances and controlled blockage where applicable</li>
-              <li>Repeated measurements (n = 5) to quantify variability</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-
-  <section id="protocol" class="section">
-    <div class="wrap grid two">
-      <div class="card">
-        <div class="pad">
-          <h2>Reproducibility protocol</h2>
-          <p><strong>Goal:</strong> demonstrate a controlled regime transition and validate that WaveLynk’s switch reduces outage behavior under matched conditions.</p>
-          <hr class="sep"/>
-          <ol class="small" style="margin:0;padding-left:18px;line-height:1.6">
-            <li><strong>Setup:</strong> router + 2–3 client devices. Fix channel/band, distance, antenna placement.</li>
-            <li><strong>Controls:</strong> same traffic pattern, same environment, repeated trials (n≥5).</li>
-            <li><strong>Measurements:</strong> RSSI (or received power proxy), ping latency, packet loss, throughput.</li>
-            <li><strong>Stressors:</strong> add controlled blockage, add motion, add multi‑user traffic (MU load).</li>
-            <li><strong>Compare:</strong> Fixed ZF vs WaveLynk (ZF→MRT). Record the switch trigger point.</li>
-          </ol>
-          <p class="small" style="margin-top:12px">This page intentionally includes “controls” language because ISEF judges want to see experimental discipline.</p>
-        </div>
-      </div>
-      <div class="card">
-        <div class="pad">
-          <h2>Limitations (judge‑safe)</h2>
-          <p class="small">Saying limitations confidently increases credibility. These lines are designed to be judge‑safe and strong:</p>
-          <ul class="small" style="margin:10px 0 0;padding-left:18px;line-height:1.6">
-            <li>Wi‑Fi is a <strong>proxy channel generator</strong>; THz has additional absorption/scattering, but the <strong>CSI‑aging instability mechanism</strong> generalizes.</li>
-            <li>The simulator is a <strong>controller visualization</strong>, not a full PHY model; it exists to show the “law → risk → switch” logic live.</li>
-            <li>Future work: calibrate α using richer logs (CSI capture if available) and test on mmWave/THz hardware when accessible.</li>
-          </ul>
-          <hr class="sep"/>
-          <p class="small">If a judge presses: “We’re validating the <em>control principle</em> and the <em>failure boundary</em> under real time‑varying channels, then mapping to THz regimes.”</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <section id="team" class="section">
-    <div class="wrap">
-      <div class="card">
-        <div class="pad">
-          <div class="kicker">Creators & roles</div>
-          <h2>Built to be judged: clear ownership, clear evidence, clear next steps</h2>
-          <p class="muted">
-            WaveLynk is a student-built reliability controller for high-frequency links. Our goal is to make
-            “catastrophic drops” predictable and preventable by switching precoding modes before collapse.
-          </p>
-
-          <div class="grid three" style="margin-top:14px">
-            <div class="card" style="background:var(--panel2)">
-              <div class="pad">
-                <div class="pill">Project Lead • Systems & Theory</div>
-                <h3 style="margin-top:10px">Neha Abin</h3>
-                <ul class="list">
-                  <li>Defined the <b>Coherence Cliff</b> framing and the <b>CIN / risk</b> scoring logic.</li>
-                  <li>Designed the ZF↔MRT switching policy and judge narrative (problem → prediction → mitigation).</li>
-                  <li>Integrated results into a reproducible, judge-friendly demo and protocol.</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="card" style="background:var(--panel2)">
-              <div class="pad">
-                <div class="pill">Experimental Lead • Wi‑Fi 5 Proxy Testing</div>
-                <h3 style="margin-top:10px">Sahil Shah</h3>
-                <ul class="list">
-                  <li>Ran the live <b>Wi‑Fi 5</b> proxy experiments (motion / blockage / range stress).</li>
-                  <li>Captured throughput/latency behavior and verified “stable → cliff → recovery” patterns.</li>
-                  <li>Documented measurement protocol so a judge can reproduce the effect.</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="card" style="background:var(--panel2)">
-              <div class="pad">
-                <div class="pill">Engineering Lead • Code & Data Analysis</div>
-                <h3 style="margin-top:10px">Yajat Parmar</h3>
-                <ul class="list">
-                  <li>Implemented the interactive simulator and evidence gallery (offline, no libraries).</li>
-                  <li>Built the judge-mode controls and the stress-test sequence for consistent demos.</li>
-                  <li>Performed data cleaning/plots and helped align metrics with the risk model.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <hr style="margin:18px 0; border:none; border-top:1px solid var(--stroke)"/>
-
-          <div class="grid two">
-            <div class="card" style="background:var(--panel2)">
-              <div class="pad">
-                <div class="kicker">Mission</div>
-                <h3>Make reliability measurable — not a surprise outage</h3>
-                <p class="muted">
-                  At extreme frequencies, tiny changes can trigger sudden link failure. WaveLynk’s mission is to
-                  <b>predict collapse early</b> using CSI-quality + blockage signals, then <b>act</b> by switching to a
-                  safer beamforming mode before the user experiences a drop.
-                </p>
-                <div class="callout">
-                  Judges care about: <b>novel framing</b>, <b>evidence</b>, and <b>impact</b>. Our work connects all three:
-                  a collapse boundary (“Coherence Cliff”), a measurable risk score (CIN), and a mitigation action (ZF→MRT).
-                </div>
-              </div>
-            </div>
-
-            <div class="card" style="background:var(--panel2)">
-              <div class="pad">
-                <div class="kicker">Where we take WaveLynk next</div>
-                <h3>Expansion plan (what a 100k-level roadmap looks like)</h3>
-                <ol class="steps">
-                  <li><b>Stronger proof:</b> more trials + confidence intervals; quantify “outage reduction” across conditions.</li>
-                  <li><b>Generalization:</b> test on Wi‑Fi 6/7 and compare multi‑user vs single‑user behavior under stress.</li>
-                  <li><b>Real‑world sensing:</b> add lightweight CSI aging / motion sensing features for earlier warnings.</li>
-                  <li><b>Model validation:</b> map proxy parameters to THz‑style regimes using scaling arguments + literature.</li>
-                  <li><b>Deployable controller:</b> a small, real-time module that outputs a risk score + recommended precoder.</li>
-                </ol>
-                <p class="muted small" style="margin-top:10px">
-                  In other words: not just a demo — a path to a publishable, reproducible reliability layer for future 6G links.
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <section id="faq" class="section">
-    <div class="wrap">
-      <div class="card">
-        <div class="pad">
-          <h2>Judge Q&amp;A (fast answers)</h2>
-          <div class="grid two" style="margin-top:12px">
-            <div class="card" style="box-shadow:none">
-              <div class="pad">
-                <h3>Is this just switching schemes?</h3>
-                <p class="small"><strong>No.</strong> The novelty is the <strong>predictive threshold</strong> (CIN and Risk) that anticipates collapse — the switching is the control action driven by that predictor.</p>
-                <hr class="sep"/>
-                <h3>How do you know it’s not random noise?</h3>
-                <p class="small">We use <strong>controls + repeated trials</strong>, and show a consistent regime transition tied to measurable channel degradation (received power proxy, mobility, multi‑user interference).</p>
-              </div>
-            </div>
-            <div class="card" style="box-shadow:none">
-              <div class="pad">
-                <h3>Why would this matter for 6G/THz?</h3>
-                <p class="small">At higher frequency the channel changes faster and becomes more sensitive to micro‑motion/blockage, so CSI staleness and abrupt breakdown are more likely. A proactive controller becomes essential.</p>
-                <hr class="sep"/>
-                <h3>What is α?</h3>
-                <p class="small">α captures environment sensitivity: how quickly phase errors grow for a given CIN. In practice it can be learned from calibration trials; in the demo it’s adjustable so judges can see the effect.</p>
-              </div>
-            </div>
-          </div>
-          <details style="margin-top:14px">
-            <summary>One sentence that wins trust</summary>
-            <p class="small">“We separate the <strong>physics‑based failure boundary</strong> from the <strong>controller</strong>, validate the regime transition experimentally, and use a proxy demo so the mechanism is visible and repeatable at the fair.”</p>
-          </details>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="footer">
-    <div class="wrap">
-      <div class="small">
-        Built for science‑fair judging: fast narrative, transparent limitations, and a live controller demo.
-        <br/>© WaveLynk — Neha Abin, Sahil Shah, Yajat Parmar</div>
-    </div>
-  </section>
-</main>
-
-<script>
-/* -------------------------
-   WaveLynk Interactive Demo
-   ------------------------- */
-
-const $ = (id)=>document.getElementById(id);
-
-const els = {
-  tauF: $("tauF"), tauC: $("tauC"), blk: $("blk"), mob: $("mob"), mu: $("mu"), alpha: $("alpha"),
-  tauFv:$("tauFv"), tauCv:$("tauCv"), blkv:$("blkv"), mobv:$("mobv"), muv:$("muv"), alphav:$("alphav"),
-  cinOut:$("cinOut"), snrOut:$("snrOut"), thrOut:$("thrOut"), latOut:$("latOut"), plOut:$("plOut"),
-  modeTag:$("modeTag"), riskTag:$("riskTag"), statusLine:$("statusLine"),
-  chart:$("chart"),
-  runBtn:$("runBtn"), resetBtn:$("resetBtn"),
-  judgeBtn:$("judgeBtn"),
-};
-
-let judgeMode=false;
-
-function clamp(x,a,b){ return Math.max(a, Math.min(b,x)); }
-function lerp(a,b,t){ return a+(b-a)*t; }
-function fmt(x, d=1){ return Number(x).toFixed(d); }
-
-// Physics-inspired mapping (demo-safe)
-function computeState(){
-  const tauF = +els.tauF.value;  // ms
-  const tauC = +els.tauC.value;  // ms
-  const blk  = +els.blk.value;   // dB
-  const mob  = +els.mob.value;   // 0..100
-  const mu   = +els.mu.value;    // users
-  const alpha= +els.alpha.value; // sensitivity
-
-  const cin = (tauC<=0) ? 9 : (tauF / tauC);
-  // Base SNR drops with blockage and mobility (proxy)
-  const snrBase = 35 - 0.55*blk - 0.05*mob;
-  // Residual interference rises sharply with CIN (stale CSI hurts ZF), and with MU load
-  const interf = (mu-1) * (0.8 + 2.8*Math.pow(clamp(cin,0,2.5), 2.1));
-  // Effective SNR in ZF: good when cin small, collapses when cin->1
-  const snrZF  = snrBase - 0.25*interf - 6.0*Math.pow(clamp(cin-0.75,0,2), 2.5);
-  // Effective SNR in MRT: more robust to stale CSI, less interference cancellation needed
-  const snrMRT = (snrBase - 0.10*interf) + 2.0 - 1.5*Math.pow(clamp(cin-1.2,0,2), 1.8);
-
-  const risk = alpha * cin * (1 + 0.012*mob) * (1 + 0.010*blk);
-  return {tauF,tauC,blk,mob,mu,alpha,cin,snrZF,snrMRT,risk};
-}
-
-function perfFromSNR(snr, mode){
-  // Throughput: logistic-ish, capped
-  const t = 90 / (1 + Math.exp(-(snr-18)/4.2));
-  // Packet loss: rises when snr low, harsher for ZF near cliff
-  const baseLoss = 100 * (1/(1+Math.exp((snr-14)/2.4))); // %
-  const extra = (mode==="ZF") ? 8*Math.max(0, 1 - snr/18) : 2*Math.max(0, 1 - snr/18);
-  const loss = clamp(baseLoss + extra, 0.1, 45);
-  // Latency: increases with loss and lower SNR
-  const lat = clamp(18 + 2.0*(22 - snr) + 1.8*Math.sqrt(loss), 12, 260);
-  return {throughput: clamp(t, 0.2, 120), loss, latency: lat};
-}
-
-function decideMode(state){
-  // Threshold uses risk; add hysteresis
-  const TH_ON  = 1.05;
-  const TH_OFF = 0.85;
-  if(!decideMode.mode) decideMode.mode="ZF";
-  if(decideMode.mode==="ZF" && state.risk>=TH_ON) decideMode.mode="MRT";
-  else if(decideMode.mode==="MRT" && state.risk<=TH_OFF) decideMode.mode="ZF";
-  return decideMode.mode;
-}
-
-function updateReadouts(state, mode){
-  els.tauFv.textContent = `${state.tauF} ms`;
-  els.tauCv.textContent = `${state.tauC} ms`;
-  els.blkv.textContent  = `${state.blk} dB`;
-  els.mobv.textContent  = `${state.mob}`;
-  els.muv.textContent   = `${state.mu}`;
-  els.alphav.textContent= `${fmt(state.alpha,2)}`;
-
-  const snr = (mode==="ZF") ? state.snrZF : state.snrMRT;
-  const perf = perfFromSNR(snr, mode);
-
-  els.cinOut.innerHTML = `CIN = ${fmt(state.cin,2)}`;
-  els.snrOut.textContent = `SNR = ${fmt(snr,1)} dB`;
-  els.thrOut.textContent = `Throughput = ${fmt(perf.throughput,1)} Mbps`;
-  els.latOut.textContent = `Latency = ${fmt(perf.latency,0)} ms`;
-  els.plOut.textContent  = `Packet loss = ${fmt(perf.loss,1)}%`;
-
-  const riskShown = clamp(state.risk, 0, 2.5);
-  els.riskTag.textContent = `Risk: ${fmt(riskShown,2)}`;
-  els.modeTag.textContent = (mode==="ZF") ? "Mode: ZF (performance)" : "Mode: MRT (robust)";
-  els.modeTag.style.borderColor = (mode==="ZF") ? "rgba(102,211,255,.35)" : "rgba(155,255,177,.42)";
-
-  // Status line
-  const warn = (state.risk>0.75 && state.risk<1.05);
-  const bad  = (state.risk>=1.05);
-  if(bad){
-    els.statusLine.innerHTML = `Status: <strong style="color:var(--warn)">Approaching coherence cliff</strong> — WaveLynk switches to <strong>MRT</strong> to stabilize the link.`;
-  }else if(warn){
-    els.statusLine.innerHTML = `Status: <strong style="color:var(--accent3)">Warning</strong> — Risk rising. ZF is becoming fragile as CSI stales.`;
-  }else{
-    els.statusLine.innerHTML = `Status: <strong style="color:var(--ok)">Stable</strong> — ZF is safe (high performance).`;
-  }
-
-  return {snr, perf};
-}
-
-// Canvas chart: throughput + latency over time, with switch marker
-let series = []; // {t, thr, lat, mode}
-let switchT = null;
-
-function resizeCanvas(){
-  const c=els.chart;
-  const rect=c.getBoundingClientRect();
-  const dpr=window.devicePixelRatio||1;
-  c.width=Math.floor(rect.width*dpr);
-  c.height=Math.floor(280*dpr);
-  const ctx=c.getContext("2d");
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-}
-window.addEventListener("resize", ()=>{ resizeCanvas(); drawChart(); });
-
-function drawChart(){
-  const c=els.chart;
-  const ctx=c.getContext("2d");
-  const w=c.getBoundingClientRect().width;
-  const h=280;
-
-  ctx.clearRect(0,0,w,h);
-
-  // bg grid
-  ctx.globalAlpha=1;
-  ctx.strokeStyle="rgba(255,255,255,.08)";
-  ctx.lineWidth=1;
-  for(let i=0;i<=6;i++){
-    const y = 20 + (h-40)*i/6;
-    ctx.beginPath(); ctx.moveTo(44,y); ctx.lineTo(w-14,y); ctx.stroke();
-  }
-  for(let i=0;i<=8;i++){
-    const x = 44 + (w-58)*i/8;
-    ctx.beginPath(); ctx.moveTo(x,20); ctx.lineTo(x,h-20); ctx.stroke();
-  }
-
-  // axes labels
-  ctx.fillStyle="rgba(255,255,255,.62)";
-  ctx.font="12px "+getComputedStyle(document.body).fontFamily;
-  ctx.fillText("Throughput (Mbps)", 48, 14);
-  ctx.fillText("Latency (ms)", 48, h-6);
-
-  if(series.length<2) return;
-
-  const tMin=series[0].t, tMax=series[series.length-1].t;
-  const thrMax=120, thrMin=0;
-  const latMax=260, latMin=0;
-
-  const xOf=(t)=> 44 + (w-58)*( (t-tMin)/(tMax-tMin || 1) );
-  const yThr=(thr)=> 20 + (h-40)*(1 - (thr-thrMin)/(thrMax-thrMin));
-  const yLat=(lat)=> 20 + (h-40)*( (lat-latMin)/(latMax-latMin) );
-
-  // throughput line
-  ctx.strokeStyle="rgba(102,211,255,.95)";
-  ctx.lineWidth=2;
-  ctx.beginPath();
-  series.forEach((p,i)=>{
-    const x=xOf(p.t), y=yThr(p.thr);
-    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-  });
-  ctx.stroke();
-
-  // latency line
-  ctx.strokeStyle="rgba(255,211,107,.92)";
-  ctx.lineWidth=2;
-  ctx.beginPath();
-  series.forEach((p,i)=>{
-    const x=xOf(p.t), y=yLat(p.lat);
-    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-  });
-  ctx.stroke();
-
-  // switch marker
-  if(switchT!==null){
-    const x=xOf(switchT);
-    ctx.strokeStyle="rgba(155,255,177,.9)";
-    ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(x,20); ctx.lineTo(x,h-20); ctx.stroke();
-    ctx.fillStyle="rgba(155,255,177,.9)";
-    ctx.fillText("Switch", x+6, 34);
-  }
-
-  // legend
-  ctx.fillStyle="rgba(102,211,255,.95)"; ctx.fillText("Throughput", w-132, 14);
-  ctx.fillStyle="rgba(255,211,107,.92)"; ctx.fillText("Latency", w-62, 14);
-}
-
-function resetSeries(){
-  series=[];
-  switchT=null;
-  decideMode.mode="ZF";
-  for(let i=0;i<35;i++){
-    const st = computeState();
-    const mode = decideMode(st);
-    const snr = (mode==="ZF") ? st.snrZF : st.snrMRT;
-    const perf= perfFromSNR(snr, mode);
-    series.push({t:i, thr: perf.throughput, lat: perf.latency, mode});
-  }
-  drawChart();
-}
-
-function refresh(){
-  const st=computeState();
-  const mode=decideMode(st);
-  const out=updateReadouts(st, mode);
-  // update chart last point only
-  const t = series.length ? series[series.length-1].t : 0;
-  if(!series.length) series=[{t:0, thr:out.perf.throughput, lat:out.perf.latency, mode}];
-  else series[series.length-1] = {t, thr:out.perf.throughput, lat:out.perf.latency, mode};
-  drawChart();
-}
-
-function setJudgeMode(on){
-  judgeMode=on;
-  document.body.classList.toggle("judge", on);
-  els.judgeBtn.textContent = "Judge Mode: " + (on ? "ON" : "OFF");
-  // Larger sliders/readouts via inline style tweaks
-  const v = on ? "13px" : "12px";
-  document.querySelectorAll(".label").forEach(el=>el.style.fontSize=v);
-}
-
-function stepDegrade(){
-  // degrade by increasing tauF, blk, mob a bit
-  els.tauF.value = clamp(+els.tauF.value + 5, 0, 120);
-  els.blk.value  = clamp(+els.blk.value + 2, 0, 45);
-  els.mob.value  = clamp(+els.mob.value + 4, 0, 100);
-}
-
-let running=false;
-els.runBtn.addEventListener("click", async ()=>{
-  if(running) return;
-  running=true;
-  els.runBtn.textContent="Running...";
-  for(let i=0;i<12;i++){
-    stepDegrade();
-    const st=computeState();
-    const prevMode = decideMode.mode || "ZF";
-    const mode = decideMode(st);
-
-    const snr = (mode==="ZF") ? st.snrZF : st.snrMRT;
-    const perf= perfFromSNR(snr, mode);
-
-    const t = (series.length? series[series.length-1].t : 0) + 1;
-    series.push({t, thr: perf.throughput, lat: perf.latency, mode});
-    if(prevMode==="ZF" && mode==="MRT" && switchT===null) switchT=t;
-
-    updateReadouts(st, mode);
-    drawChart();
-    await new Promise(r=>setTimeout(r, 260));
-  }
-  els.runBtn.textContent="Stress link";
-  running=false;
-});
-
-els.resetBtn.addEventListener("click", ()=>{
-  els.tauF.value=18; els.tauC.value=55; els.blk.value=10; els.mob.value=22; els.mu.value=3; els.alpha.value=1.0;
-  resetSeries();
-  refresh();
-});
-
-els.judgeBtn.addEventListener("click", ()=> setJudgeMode(!judgeMode));
-
-["tauF","tauC","blk","mob","mu","alpha"].forEach(id=>{
-  $(id).addEventListener("input", ()=>{
-    // reset hysteresis gently by re-evaluating
-    refresh();
-  });
-});
-
-// Keyboard shortcut
-window.addEventListener("keydown",(e)=>{
-  if(e.key.toLowerCase()==="j") setJudgeMode(!judgeMode);
-});
-
-// init
-resizeCanvas();
-resetSeries();
-refresh();
-</script>
-
-
-<section id="wavelynk-impact">
-  <h2>WaveLynk Impact</h2>
-
-  <p>
-    WaveLynk addresses a fundamental reliability challenge in future wireless systems:
-    abrupt performance collapse caused by electromagnetic coherence instability.
-    By identifying physics-based precursors to this collapse, the system enables
-    proactive adaptation before link failure occurs.
-  </p>
-
-  <h3>Real-World Relevance</h3>
-  <ul>
-    <li><strong>Autonomous Systems:</strong> Safety-critical V2X communication under mobility and blockage.</li>
-    <li><strong>Medical & Robotic Networks:</strong> Ultra-reliable, low-latency links where brief outages are unacceptable.</li>
-    <li><strong>AR/VR & Immersive Communication:</strong> Phase-stable wireless links to prevent perceptual degradation.</li>
-    <li><strong>Dense 6G Networks:</strong> Coordinated multi-user beamforming under rapidly time-varying channels.</li>
-  </ul>
-
-  <p>
-    Rather than proposing a new protocol, this work focuses on the underlying
-    electromagnetic behavior that governs when conventional beamforming assumptions
-    break down. This physics-first perspective complements higher-layer solutions
-    and is validated through controlled Wi-Fi proxy experiments.
-  </p>
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script>
-(function(){
-  // HiDPI canvas helper (stable across devices)
-  function hiDPI(canvas, targetH){
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const w = Math.max(1, rect.width);
-    canvas.width  = Math.floor(w * dpr);
-    canvas.height = Math.floor(targetH * dpr);
-    const ctx = canvas.getContext("2d");
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    return {ctx, w, h: targetH};
-  }
-
-  // Shared state (keeps Demo 2 + Demo 3 consistent)
-  const state = {
-    kappa: 5,
-    tau_ms: 10,
-    fd: 50,
-    freqGHz: 5,
-    v_ms: 1.0,
-    CIN: 0,
-    alpha: 1.0,
-    Risk: 0,
-    pCollapse: 0
-  };
-
-  // ======== Your law (from board) ========
-  // 1) CIN = τ_f / τ_c   (τ_f = effective CSI age; τ_c = coherence time)
-  // 2) Risk = α * CIN    (α = environment sensitivity; we map α from κ for the live demo)
-  // 3) Var(Δφ) ∝ (τ_f/τ_c)^2  => Var grows ~ CIN^2 near the cliff
-
-  function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
-  function lerp(a,b,t){ return a + (b-a)*t; }
-
-  function compute(){
-    const Tc = 0.423 / Math.max(state.fd, 1e-6);           // seconds
-    state.CIN = (state.tau_ms/1000) / Tc;                  // dimensionless
-    // Map α from κ(H) so "harder channels" trigger earlier. (Demo-only abstraction.)
-    // α ~ 0.25..2.5 as κ goes 1..20
-    state.alpha = lerp(0.25, 2.5, (clamp(state.kappa,1,20)-1)/19);
-    state.Risk = state.alpha * state.CIN;
-
-    // Collapse probability: sharp transition around Risk≈1 (judge-friendly)
-    const sharp = 7.5; // larger => sharper cliff
-    state.pCollapse = 1 / (1 + Math.exp(-sharp*(state.Risk - 1)));
-  }
-
-  // ---------- Demo 2: Stability Phase Map + Phase-Error Growth ----------
-  const elK = document.getElementById("kappaRange");
-  const elT = document.getElementById("tauRange");
-  const elF = document.getElementById("fdRange");
-  const cciRead = document.getElementById("cciReadout");
-  const cciCanvas = document.getElementById("cciVisual");
-
-  function statusText(){
-    if(state.Risk < 0.7) return {txt:"Stable region", col:"rgba(34,197,94,.9)"};
-    if(state.Risk < 1.0) return {txt:"Approaching cliff", col:"rgba(250,204,21,.9)"};
-    return {txt:"Collapse likely (Risk ≥ 1)", col:"rgba(239,68,68,.95)"};
-  }
-
-  function drawDemo2(){
-    if(!cciCanvas) return;
-    const {ctx,w,h} = hiDPI(cciCanvas, 220);
-    ctx.clearRect(0,0,w,h);
-
-    // Layout: left = phase map, right = two small plots (Var growth + collapse probability)
-    const pad=14, gap=12;
-    const mapW = Math.floor(w*0.68);
-    const sideW = w - mapW - pad*2 - gap;
-    const mapX = pad, mapY=pad, mapH=h-pad*2;
-    const sideX = mapX + mapW + gap;
-    const boxH = Math.floor((mapH-gap)/2);
-
-    // Background panel
-    ctx.fillStyle="rgba(255,255,255,.03)";
-    ctx.fillRect(0,0,w,h);
-
-    // --- Phase map axes: x = CIN (0..2.2), y = α (0..2.7) ---
-    const CIN_MAX = 2.2, A_MAX = 2.7;
-
-    // Heatmap: color by Risk = α*CIN
-    const nx=90, ny=48;
-    for(let iy=0; iy<ny; iy++){
-      const a = (iy/(ny-1))*A_MAX;
-      for(let ix=0; ix<nx; ix++){
-        const cin = (ix/(nx-1))*CIN_MAX;
-        const risk = a * cin;
-        const t = clamp((risk-0.4)/0.9, 0, 1); // start blending around 0.4, red by ~1.3
-        // green->yellow->red blend
-        const r = Math.floor(lerp(34, 239, t));
-        const g = Math.floor(lerp(197, 68, t));
-        const b = Math.floor(lerp(94, 68, t));
-        ctx.fillStyle = `rgba(${r},${g},${b},0.22)`;
-        const x0 = mapX + (ix/nx)*mapW;
-        const y0 = mapY + mapH - (iy/ny)*mapH;
-        ctx.fillRect(x0, y0, mapW/nx+1, mapH/ny+1);
-      }
-    }
-
-    // Frame
-    ctx.strokeStyle="rgba(255,255,255,.16)";
-    ctx.lineWidth=1;
-    ctx.strokeRect(mapX, mapY, mapW, mapH);
-
-    // Risk=1 boundary curve: cin = 1/α
-    ctx.strokeStyle="rgba(255,255,255,.75)";
-    ctx.setLineDash([6,6]);
-    ctx.beginPath();
-    for(let iy=0; iy<=120; iy++){
-      const a = (iy/120)*A_MAX;
-      const cin = (a>1e-6) ? (1/a) : CIN_MAX;
-      const x = mapX + (cin/CIN_MAX)*mapW;
-      const y = mapY + mapH - (a/A_MAX)*mapH;
-      if(iy===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Labels
-    ctx.fillStyle="rgba(255,255,255,.80)";
-    ctx.font="12.5px "+getComputedStyle(document.body).fontFamily;
-    ctx.fillText("Stability phase map (colors = Risk = α·CIN)", mapX+10, mapY+16);
-    ctx.fillStyle="rgba(255,255,255,.55)";
-    ctx.font="12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-    ctx.fillText("x: CIN = τf/τc", mapX+10, mapY+34);
-    ctx.fillText("y: α (env. sensitivity)", mapX+10, mapY+50);
-    ctx.fillStyle="rgba(255,255,255,.75)";
-    ctx.fillText("dashed: Risk=1 coherence cliff", mapX+10, mapY+66);
-
-    // Current point (α, CIN)
-    const px = mapX + (clamp(state.CIN,0,CIN_MAX)/CIN_MAX)*mapW;
-    const py = mapY + mapH - (clamp(state.alpha,0,A_MAX)/A_MAX)*mapH;
-    ctx.fillStyle = (state.Risk>=1) ? "rgba(239,68,68,.95)" : (state.Risk>=0.7 ? "rgba(250,204,21,.95)" : "rgba(34,197,94,.95)");
-    ctx.beginPath(); ctx.arc(px,py,6.5,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle="rgba(0,0,0,.35)"; ctx.lineWidth=2; ctx.stroke();
-
-    // --- Side top: Phase-error variance growth (normalized) ---
-    const box1 = {x: sideX, y: mapY, w: sideW, h: boxH};
-    ctx.fillStyle="rgba(255,255,255,.02)"; ctx.fillRect(box1.x,box1.y,box1.w,box1.h);
-    ctx.strokeStyle="rgba(255,255,255,.14)"; ctx.strokeRect(box1.x,box1.y,box1.w,box1.h);
-    ctx.fillStyle="rgba(255,255,255,.78)";
-    ctx.font="12.5px "+getComputedStyle(document.body).fontFamily;
-    ctx.fillText("Phase-error growth near cliff", box1.x+10, box1.y+18);
-    ctx.fillStyle="rgba(255,255,255,.55)";
-    ctx.font="12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-    ctx.fillText("Var(Δφ) ∝ CIN²", box1.x+10, box1.y+36);
-
-    // plot Var = CIN^2 (0..CIN_MAX^2) and mark current
-    const gx0=box1.x+12, gy0=box1.y+box1.h-18, gw=box1.w-24, gh=box1.h-58;
-    ctx.strokeStyle="rgba(255,255,255,.18)"; ctx.beginPath(); ctx.moveTo(gx0,gy0); ctx.lineTo(gx0+gw,gy0); ctx.stroke();
-    ctx.strokeStyle="rgba(155,255,177,.85)"; ctx.lineWidth=2;
-    ctx.beginPath();
-    for(let i=0;i<=120;i++){
-      const cin=(i/120)*CIN_MAX;
-      const v= (cin*cin)/(CIN_MAX*CIN_MAX);
-      const x=gx0+(cin/CIN_MAX)*gw;
-      const y=gy0 - v*gh;
-      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-    const vcur = clamp((state.CIN*state.CIN)/(CIN_MAX*CIN_MAX),0,1);
-    ctx.fillStyle="rgba(102,211,255,.95)";
-    ctx.beginPath(); ctx.arc(gx0+(clamp(state.CIN,0,CIN_MAX)/CIN_MAX)*gw, gy0 - vcur*gh, 5.5, 0, Math.PI*2); ctx.fill();
-
-    // --- Side bottom: Collapse probability (logistic) ---
-    const box2 = {x: sideX, y: mapY+boxH+gap, w: sideW, h: boxH};
-    ctx.fillStyle="rgba(255,255,255,.02)"; ctx.fillRect(box2.x,box2.y,box2.w,box2.h);
-    ctx.strokeStyle="rgba(255,255,255,.14)"; ctx.strokeRect(box2.x,box2.y,box2.w,box2.h);
-    ctx.fillStyle="rgba(255,255,255,.78)";
-    ctx.font="12.5px "+getComputedStyle(document.body).fontFamily;
-    ctx.fillText("Predicted collapse probability", box2.x+10, box2.y+18);
-    ctx.fillStyle="rgba(255,255,255,.55)";
-    ctx.font="12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-    ctx.fillText("p = σ(7.5·(Risk−1))", box2.x+10, box2.y+36);
-
-    const gx1=box2.x+12, gy1=box2.y+box2.h-18, gw1=box2.w-24, gh1=box2.h-58;
-    ctx.strokeStyle="rgba(255,255,255,.18)"; ctx.beginPath(); ctx.moveTo(gx1,gy1); ctx.lineTo(gx1+gw1,gy1); ctx.stroke();
-    ctx.strokeStyle="rgba(255,211,107,.85)"; ctx.lineWidth=2;
-    ctx.beginPath();
-    for(let i=0;i<=140;i++){
-      const r = (i/140)*2.0; // Risk 0..2
-      const p = 1/(1+Math.exp(-7.5*(r-1)));
-      const x = gx1 + (r/2.0)*gw1;
-      const y = gy1 - p*gh1;
-      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-
-    // mark current risk
-    const rx = gx1 + (clamp(state.Risk,0,2)/2)*gw1;
-    const ry = gy1 - state.pCollapse*gh1;
-    ctx.fillStyle = (state.Risk>=1) ? "rgba(239,68,68,.95)" : "rgba(34,197,94,.95)";
-    ctx.beginPath(); ctx.arc(rx,ry,5.5,0,Math.PI*2); ctx.fill();
-
-    // Readout
-    const st=statusText();
-    if(cciRead){
-      cciRead.innerHTML = `CIN = ${state.CIN.toFixed(3)} • α = ${state.alpha.toFixed(2)} • Risk = ${state.Risk.toFixed(3)} • <span style="color:${st.col}">${st.txt}</span>`;
-    }
-  }
-
-  function syncFromSliders(){
-    state.kappa = parseFloat(elK?.value || "5");
-    state.tau_ms = parseFloat(elT?.value || "10");
-    state.fd = parseFloat(elF?.value || "50");
-    compute();
-    drawDemo2();
-    drawDemo3();
-  }
-
-  if(elK) elK.addEventListener("input", syncFromSliders);
-  if(elT) elT.addEventListener("input", syncFromSliders);
-  if(elF) elF.addEventListener("input", syncFromSliders);
-
-  // ---------- Demo 3: Frequency → Tc → CIN → Predicted transition overlay ----------
-  const freqRead = document.getElementById("freqReadout");
-  const freqCanvas = document.getElementById("freqVisual");
-
-  // preload an experimental figure (from your board assets)
-  const expImg = new Image();
-  expImg.src = "assets/page_14.png";
-  let expReady=false;
-  expImg.onload = ()=>{ expReady=true; drawDemo3(); };
-
-  window.setFreq = function(f){
-    state.freqGHz = f;
-    // For apples-to-apples: Doppler from v and wavelength
-    const c=3e8;
-    const lam = c/(state.freqGHz*1e9);
-    const fd = state.v_ms/lam;
-    state.fd = clamp(fd, 1, 200); // keep slider-compatible range
-    if(elF) elF.value = String(Math.round(state.fd));
-    syncFromSliders();
-  };
-
-  function drawDemo3(){
-    if(!freqCanvas) return;
-    const {ctx,w,h} = hiDPI(freqCanvas, 260);
-    ctx.clearRect(0,0,w,h);
-
-    ctx.fillStyle="rgba(255,255,255,.03)";
-    ctx.fillRect(0,0,w,h);
-
-    // Readout: show frequency scaling and resulting CIN/Risk
-    const c=3e8;
-    const lam = c/(state.freqGHz*1e9);
-    const fd = state.v_ms/lam;
-    const Tc_ms = (0.423/fd)*1000;
-    if(freqRead){
-      freqRead.innerHTML =
-        `Carrier: <b>${state.freqGHz} GHz</b> • λ≈${(lam*1000).toFixed(2)} mm • Doppler≈${fd.toFixed(1)} Hz • Tc≈${Tc_ms.toFixed(2)} ms<br/>`+
-        `Using τ=${state.tau_ms.toFixed(1)} ms ⇒ CIN=${state.CIN.toFixed(2)} • Risk=${state.Risk.toFixed(2)} • p(collapse)=${(100*state.pCollapse).toFixed(0)}%`;
-    }
-
-    // Layout: left = scaling bars, right = experimental overlay
-    const pad=14, gap=14;
-    const leftW = Math.floor(w*0.46);
-    const rightW = w - leftW - pad*2 - gap;
-    const leftX=pad, leftY=pad, leftH=h-pad*2;
-    const rightX=leftX+leftW+gap, rightY=pad, rightH=leftH;
-
-    // Left panel frame
-    ctx.fillStyle="rgba(255,255,255,.02)"; ctx.fillRect(leftX,leftY,leftW,leftH);
-    ctx.strokeStyle="rgba(255,255,255,.14)"; ctx.strokeRect(leftX,leftY,leftW,leftH);
-
-    ctx.fillStyle="rgba(255,255,255,.78)";
-    ctx.font="12.5px "+getComputedStyle(document.body).fontFamily;
-    ctx.fillText("Frequency scaling (same τ, different Tc)", leftX+10, leftY+18);
-
-    const freqs=[5,28,60,140];
-    const baseY = leftY+leftH-18;
-    const barAreaH = leftH-46;
-    const barW = Math.floor((leftW-30)/freqs.length);
-
-    // Compute Tc for each and normalize
-    const tcs = freqs.map(f=>{
-      const lam = c/(f*1e9);
-      const fd = state.v_ms/lam;
-      return (0.423/fd)*1000; // ms
-    });
-    const maxTc = Math.max(...tcs);
-
-    freqs.forEach((f,i)=>{
-      const tc = tcs[i];
-      const x = leftX+15 + i*barW;
-      const norm = tc/maxTc;
-      const bh = norm*barAreaH;
-      // Tc bar
-      ctx.fillStyle = "rgba(102,211,255,.55)";
-      ctx.fillRect(x, baseY-bh, barW-10, bh);
-
-      // Risk indicator for that band (using same tau and alpha from current kappa)
-      const cin = (state.tau_ms)/(tc); // ms/ms
-      const risk = state.alpha * cin;
-      const t = clamp((risk-0.4)/0.9,0,1);
-      ctx.fillStyle = `rgba(${Math.floor(lerp(34,239,t))},${Math.floor(lerp(197,68,t))},${Math.floor(lerp(94,68,t))},.75)`;
-      ctx.fillRect(x, baseY+4, barW-10, 8);
-
-      // labels
-      ctx.fillStyle="rgba(255,255,255,.70)";
-      ctx.font="11.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-      ctx.fillText(f+"G", x+2, baseY+28);
-    });
-
-    ctx.fillStyle="rgba(255,255,255,.50)";
-    ctx.font="11.5px "+getComputedStyle(document.body).fontFamily;
-    ctx.fillText("bars: Tc (ms)   strip: Risk(α·CIN)", leftX+10, leftY+38);
-
-    // Right panel: experimental overlay (proxy figure)
-    ctx.fillStyle="rgba(255,255,255,.02)"; ctx.fillRect(rightX,rightY,rightW,rightH);
-    ctx.strokeStyle="rgba(255,255,255,.14)"; ctx.strokeRect(rightX,rightY,rightW,rightH);
-
-    ctx.fillStyle="rgba(255,255,255,.78)";
-    ctx.font="12.5px "+getComputedStyle(document.body).fontFamily;
-    ctx.fillText("Experimental evidence (Wi‑Fi proxy) + predicted transition", rightX+10, rightY+18);
-
-    // Draw experimental image (fit)
-    const imgPad=10;
-    const imgX=rightX+imgPad, imgY=rightY+28;
-    const imgW=rightW-2*imgPad, imgH=rightH-38;
-    if(expReady){
-      // contain
-      const ar = expImg.width/expImg.height;
-      let dw=imgW, dh=imgH;
-      if(dw/dh > ar){ dw = dh*ar; } else { dh = dw/ar; }
-      const ox = imgX + (imgW-dw)/2;
-      const oy = imgY + (imgH-dh)/2;
-      ctx.drawImage(expImg, ox, oy, dw, dh);
-
-      // Predict a "transition band" position (proxy mapping):
-      // Risk low => transition farther right (higher RSS needed to trigger), Risk high => shifts left.
-      // Map Risk 0..2 to RSS center -54..-62 dBm (based on your figure's blue shaded region).
-      const center = lerp(-54, -62, clamp(state.Risk/2, 0, 1));
-      const halfWidth = lerp(2.0, 4.5, clamp(state.pCollapse,0,1)); // wider when uncertain/high risk
-      const rssMin=-85, rssMax=-50;
-
-      function rssToX(rss){
-        const t = (rss - rssMin) / (rssMax - rssMin);
-        return ox + clamp(t,0,1)*dw;
-      }
-
-      const bandL = rssToX(center-halfWidth);
-      const bandR = rssToX(center+halfWidth);
-
-      ctx.fillStyle="rgba(102,211,255,.18)";
-      ctx.fillRect(bandL, oy, bandR-bandL, dh);
-      ctx.strokeStyle="rgba(102,211,255,.65)";
-      ctx.setLineDash([6,6]);
-      ctx.strokeRect(bandL, oy, bandR-bandL, dh);
-      ctx.setLineDash([]);
-
-      ctx.fillStyle="rgba(255,255,255,.85)";
-      ctx.font="12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
-      ctx.fillText(`Predicted transition band (Risk=${state.Risk.toFixed(2)})`, bandL+6, oy+18);
-      ctx.fillStyle="rgba(255,255,255,.55)";
-      ctx.font="11px "+getComputedStyle(document.body).fontFamily;
-      ctx.fillText("Proxy mapping: higher Risk ⇒ earlier (left-shifted) transition", ox+10, oy+dh-10);
-    } else {
-      ctx.fillStyle="rgba(255,255,255,.55)";
-      ctx.font="12.5px "+getComputedStyle(document.body).fontFamily;
-      ctx.fillText("Loading experimental overlay…", rightX+12, rightY+48);
-    }
-  }
-
-  // Initial
-  compute();
-  drawDemo2();
-  // default readout for Demo3
-  window.setFreq(5);
-})();
-</script>
-
-
-<div class="wave-footer-glow">
-    <h1>WaveLynk</h1>
-    <p>Stability Prediction. Adaptive Control. 6G Reliability Infrastructure.</p>
-</div>
-
-
-
-<section class="boundary-visual">
-  <h2>Instability Boundary Validation</h2>
-  <p>
-    The theoretical condition 
-    <strong>&kappa; &middot; (2&pi; f<sub>D</sub> &tau;) &ge; 1</strong>
-    aligns with experimentally observed latency spikes and conditioning breakdown.
-  </p>
-  <div class="boundary-graphic">
-    Derived Boundary → Measured Collapse Region → Proactive Switch → Stability Preserved
-  </div>
-  <p style="margin-top:15px;">
-    Observed across randomized channel realizations (N = 100).
-  </p>
-</section>
-
-<section class="novelty-box">
-  <strong>What is new?</strong><br>
-  Traditional systems react after instability.
-  WaveLynk derives and validates a predictive instability boundary
-  based on CSI aging and conditioning amplification —
-  enabling proactive switching before catastrophic collapse.
-</section>
-
-
-    
-    
-    <!-- ================= CORE DISCOVERY SECTION ================= -->
-    <section id="core-discovery" style="padding:100px 0; background:#0b0f1a; color:white;">
-        <div style="max-width:900px; margin:auto; padding:0 30px; font-size:18px; line-height:1.9;">
-
-            <h2 style="font-size:42px; margin-bottom:40px; text-align:center; letter-spacing:1px;">
-                Core Discovery: The Coherence Cliff
-            </h2>
-
-            <p style="margin-bottom:28px;">
-                WaveLynk’s central discovery is that ZF beamforming does not fail gradually under CSI aging.
-                Instead, it enters a nonlinear instability regime once channel information becomes too stale.
-                To make this predictable rather than reactive, we introduced a normalized instability metric.
-            </p>
-
-            <div style="margin:30px 0 10px; padding:18px 18px; border:1px solid rgba(255,255,255,0.10); border-radius:14px; background:rgba(255,255,255,0.03);">
-              <div style="font-size:14px; letter-spacing:1px; text-transform:uppercase; opacity:0.85; margin-bottom:10px;">Key equations at a glance</div>
-              <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
-                <div><strong>Instability onset:</strong> <span style="font-weight:700; color:#00ff99;">κ · (2π f<sub>D</sub> τ) ≥ 1</span></div>
-                <div><strong>Predictive index:</strong> <span style="font-weight:700; color:#00ff99;">CCI = κ · (τ/T<sub>c</sub>)</span></div>
-                <div><strong>Frequency scaling:</strong> f↑ → T<sub>c</sub>↓ → risk↑</div>
-                <div><strong>Control action:</strong> proactive switch <strong>ZF → MRT</strong> before collapse</div>
-              </div>
-            </div>
-
-
-            <h3 style="font-size:26px; margin-top:40px; margin-bottom:20px;">
-                1. Coherence Instability Number (CIN)
-            </h3>
-
-            <p style="margin-bottom:15px;">
-                We define the Coherence Instability Number as:
-            </p>
-
-            <div style="text-align:center; font-size:24px; margin:25px 0; font-weight:600;">
-                CIN = τ<sub>f</sub> / τ<sub>c</sub>
-            </div>
-
-            <p style="margin-bottom:28px;">
-                τ<sub>f</sub> represents effective feedback delay, and τ<sub>c</sub> is coherence time.
-                When CIN approaches 1, the channel has changed enough that inversion-based precoding becomes unreliable.
-            </p>
-
-            <h3 style="font-size:26px; margin-top:40px; margin-bottom:20px;">
-                2. Why the Collapse Happens
-            </h3>
-
-            <p style="margin-bottom:15px;">
-                Under ZF, matrix inversion amplifies CSI errors. Phase-error variance grows approximately as:
-            </p>
-
-            <div style="text-align:center; font-size:24px; margin:25px 0; font-weight:600;">
-                Var(Δφ) ∝ CIN²
-            </div>
-
-            <p style="margin-bottom:28px;">
-                Because this growth is quadratic, instability accelerates. This nonlinear transition region
-                is what we define as the <strong>Coherence Cliff</strong>.
-            </p>
-
-            <h3 style="font-size:26px; margin-top:40px; margin-bottom:20px;">
-                3. Controller Logic
-            </h3>
-
-            <div style="text-align:center; font-size:24px; margin:25px 0; font-weight:600;">
-                Risk = α · CIN
-            </div>
-
-            <p style="margin-bottom:28px;">
-                When Risk approaches 1, WaveLynk proactively switches from ZF to MRT,
-                avoiding entry into the collapse region and preventing sudden latency spikes.
-            </p>
-
-            <hr style="margin:60px 0; opacity:0.2;">
-
-            <h3 style="font-size:28px; margin-bottom:25px; text-align:center;">
-                Advanced Theoretical Extension
-            </h3>
-
-            <p style="margin-bottom:20px;">
-                For deeper analysis, we can express instability in terms of explicit CSI error magnitude ε:
-            </p>
-
-            <div style="text-align:center; font-size:24px; margin:25px 0; font-weight:600;">
-                <br><br>ε = || H − Ĥ ||<sub>F</sub><br>
-            </div>
-
-            <p style="margin-bottom:20px;">
-                Under inversion sensitivity:
-            </p>
-
-            <div style="text-align:center; font-size:24px; margin:25px 0; font-weight:600;">
-                <br>P<sub>CCI</sub>(ε) ∝ ε²<br>
-            </div>
-
-            <div style="text-align:center; font-size:24px; margin:25px 0; font-weight:600;">
-                SINR(ε) ≈ P<sub>s</sub> / (aε² + N<sub>0</sub>)
-            </div>
-
-            <div style="text-align:center; font-size:24px; margin:25px 0; font-weight:600;">
-                ε<sub>c</sub> ≈ √(N<sub>0</sub> / a)
-            </div>
-
-            <p>
-                This research-level formulation mathematically explains the same nonlinear behavior
-                operationally captured by CIN ≈ 1.
-            </p>
-
-        </div>
     </section>
-    <!-- ============================================================ -->
+
+    <hr class="divider" />
 
 
-    
+    <!-- How it Works -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-header">
+          <div class="label-text">How It Works</div>
+          <h2 style="margin-top:var(--sp-3)">Predictive, not reactive</h2>
+          <p>WaveLynk monitors the CCI in real time and switches from ZF to MRT beamforming before performance
+            collapses.</p>
+        </div>
+
+        <div class="grid grid-3 stagger">
+          <div class="feature reveal">
+            <div class="feature-icon">📡</div>
+            <div class="feature-content">
+              <h4>Monitor</h4>
+              <p>Continuously estimate CSI age, Doppler shift, and channel condition number (κ).</p>
+            </div>
+          </div>
+          <div class="feature reveal">
+            <div class="feature-icon">📊</div>
+            <div class="feature-content">
+              <h4>Predict</h4>
+              <p>Compute CCI in real time. When it approaches 1, the system is nearing the coherence cliff.</p>
+            </div>
+          </div>
+          <div class="feature reveal">
+            <div class="feature-icon">🔄</div>
+            <div class="feature-content">
+              <h4>Switch</h4>
+              <p>Proactively transition from ZF to MRT before failure — preserving throughput and avoiding latency
+                spikes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- Pipeline -->
+    <section class="section reveal">
+      <div class="wrap">
+        <div class="section-header">
+          <div class="label-text">Architecture</div>
+          <h2 style="margin-top:var(--sp-3)">The WaveLynk Pipeline</h2>
+        </div>
+
+        <div class="card reveal">
+          <div class="card-body" style="text-align:center;">
+            <svg viewBox="0 0 800 100" style="width:100%;max-width:800px;margin:0 auto;display:block;"
+              aria-label="Pipeline diagram">
+              <!-- Boxes -->
+              <rect x="10" y="25" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"
+                stroke-width="1.5" />
+              <text x="75" y="55" text-anchor="middle" fill="currentColor" font-size="12" font-weight="500">CSI
+                Estimation</text>
+
+              <rect x="180" y="25" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"
+                stroke-width="1.5" />
+              <text x="245" y="48" text-anchor="middle" fill="currentColor" font-size="12" font-weight="500">κ, τ<tspan
+                  baseline-shift="sub" font-size="9">f</tspan>, T<tspan baseline-shift="sub" font-size="9">c</tspan>
+              </text>
+              <text x="245" y="63" text-anchor="middle" fill="currentColor" font-size="10" opacity=".5">Extract</text>
+
+              <rect x="350" y="25" width="130" height="50" rx="8" fill="none" stroke="#3b82f6" stroke-opacity=".6"
+                stroke-width="1.5" />
+              <text x="415" y="48" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">CCI
+                Compute</text>
+              <text x="415" y="63" text-anchor="middle" fill="currentColor" font-size="10" opacity=".5">κ · τ/T<tspan
+                  baseline-shift="sub" font-size="8">c</tspan></text>
+
+              <rect x="520" y="25" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"
+                stroke-width="1.5" />
+              <text x="585" y="48" text-anchor="middle" fill="currentColor" font-size="12" font-weight="500">Risk
+                Check</text>
+              <text x="585" y="63" text-anchor="middle" fill="currentColor" font-size="10" opacity=".5">CCI ≥
+                threshold?</text>
+
+              <rect x="690" y="25" width="100" height="50" rx="8" fill="none" stroke="#22c55e" stroke-opacity=".6"
+                stroke-width="1.5" />
+              <text x="740" y="55" text-anchor="middle" fill="#22c55e" font-size="12" font-weight="600">ZF ↔ MRT</text>
+
+              <!-- Arrows -->
+              <line x1="140" y1="50" x2="178" y2="50" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"
+                marker-end="url(#arrowhead)" />
+              <line x1="310" y1="50" x2="348" y2="50" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"
+                marker-end="url(#arrowhead)" />
+              <line x1="480" y1="50" x2="518" y2="50" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"
+                marker-end="url(#arrowhead)" />
+              <line x1="650" y1="50" x2="688" y2="50" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"
+                marker-end="url(#arrowhead)" />
+
+              <defs>
+                <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                  <polygon points="0 0, 8 3, 0 6" fill="currentColor" opacity=".3" />
+                </marker>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- CTA -->
+    <section class="section-lg reveal">
+      <div class="wrap" style="text-align:center;">
+        <h2>See it in action</h2>
+        <p style="max-width:500px;margin:var(--sp-3) auto 0;">
+          Three interactive simulations that demonstrate predictive switching, CCI risk mapping, and stability analysis.
+        </p>
+        <div class="btn-group" style="justify-content:center;margin-top:var(--sp-8);">
+          <a class="btn btn-primary" href="demos.html">Open Interactive Demos →</a>
+          <a class="btn" href="evidence.html">View Evidence</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>WaveLynk — The Science</title>
+    <meta name="description"
+        content="The physics and mathematics behind WaveLynk's predictive coherence cliff detection." />
+    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <canvas id="wave-canvas"></canvas>
+
+    <header>
+        <div class="wrap">
+            <nav>
+                <a class="brand" href="index.html">
+                    <img src="images/logo.png" alt="WaveLynk" class="logo-mark"
+                        style="width:28px;height:28px;border-radius:6px;" />
+                    WaveLynk
+                </a>
+                <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="science.html">Science</a>
+                    <a href="demos.html">Demos</a>
+                    <a href="evidence.html">Evidence</a>
+                    <a href="team.html">Team</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+                    </button>
+                    <a class="btn btn-primary" href="demos.html">Try Demos</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <div class="wrap">
+                <div class="badge reveal"><span class="dot dot-green"></span> Peer-Reviewed Physics</div>
+                <h1 class="reveal" style="margin-top:var(--sp-5)">The Science</h1>
+                <p class="reveal">From Maxwell's equations to a predictive instability boundary — how physics tells us
+                    when a wireless link is about to fail.</p>
+            </div>
+        </section>
+
+
+        <!-- Starting Point -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Foundation</div>
+                    <h2 style="margin-top:var(--sp-3)">Where it starts: electromagnetic wave propagation</h2>
+                </div>
+
+                <div class="grid grid-2 stagger">
+                    <div class="card reveal">
+                        <div class="card-body">
+                            <h4>Maxwell's Equations</h4>
+                            <p>All wireless communication is governed by Maxwell's equations. A time-varying electric
+                                field creates a magnetic field, and vice versa — producing electromagnetic waves that
+                                carry data through space.</p>
+                            <div class="equation" style="margin-top:var(--sp-4)">
+                                ∇ × E = −∂B/∂t
+                            </div>
+                            <p style="font-size:13px;">Faraday's law: a changing magnetic field induces an electric
+                                field.</p>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-body">
+                            <h4>What happens in practice</h4>
+                            <p>In real environments, signals reflect off walls, scatter off objects, and diffract around
+                                edges. The receiver sees a superposition of many copies of the original signal, each
+                                delayed and phase-shifted.</p>
+                            <p>This creates a <strong>multipath channel</strong> — complex, time-varying, and
+                                frequency-dependent.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Channel Model -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="grid grid-2" style="align-items:center;">
+                    <div class="reveal">
+                        <div class="label-text">Channel Model</div>
+                        <h2 style="margin-top:var(--sp-3)">The wireless channel as a matrix</h2>
+                        <p>In a MIMO system with multiple antennas, the channel between transmitter and receiver is
+                            described by a matrix <strong>H</strong>. Each element H<sub>ij</sub> captures the complex
+                            gain from transmit antenna j to receive antenna i.</p>
+                        <div class="equation" style="margin-top:var(--sp-4)">
+                            y = Hx + n
+                        </div>
+                        <p style="font-size:13px;">y = received signal, x = transmitted signal, n = noise.</p>
+                        <p>The base station periodically estimates H — this estimate is called <strong>Channel State
+                                Information (CSI)</strong>. But by the time the CSI is used for beamforming, it may
+                            already be outdated.</p>
+                    </div>
+                    <div class="reveal">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Key parameters</h4>
+                                <ul class="clean-list" style="margin-top:var(--sp-3);">
+                                    <li><strong>τ<sub>f</sub></strong> — CSI feedback delay (how old the estimate is)
+                                    </li>
+                                    <li><strong>T<sub>c</sub></strong> — Channel coherence time (how long the channel
+                                        stays the same)</li>
+                                    <li><strong>f<sub>D</sub></strong> — Doppler frequency shift (proportional to user
+                                        speed and carrier frequency)</li>
+                                    <li><strong>κ(H)</strong> — Condition number of H (how sensitive it is to
+                                        perturbation)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- CSI Aging -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">The Decay</div>
+                    <h2 style="margin-top:var(--sp-3)">How CSI becomes stale</h2>
+                </div>
+
+                <div class="card reveal">
+                    <div class="card-body">
+                        <p>The correlation between the true channel and the estimated channel decays with time. Using
+                            the Jakes autocorrelation model:</p>
+                        <div class="equation" style="margin-top:var(--sp-4)">
+                            ρ(τ<sub>f</sub>) = J₀(2π · f<sub>D</sub> · τ<sub>f</sub>)
+                        </div>
+                        <p>where J₀ is the zeroth-order Bessel function and f<sub>D</sub> = v·f<sub>c</sub>/c is the
+                            maximum Doppler frequency.</p>
+
+                        <div class="grid grid-3 stagger" style="margin-top:var(--sp-6)">
+                            <div class="reveal" style="text-align:center;">
+                                <div class="stat-value" style="font-size:24px;">τ<sub>f</sub> ≪ T<sub>c</sub></div>
+                                <div class="stat-label" style="margin-top:var(--sp-2);">CSI is fresh → ZF works</div>
+                            </div>
+                            <div class="reveal" style="text-align:center;">
+                                <div class="stat-value" style="font-size:24px;">τ<sub>f</sub> ≈ T<sub>c</sub></div>
+                                <div class="stat-label" style="margin-top:var(--sp-2);">CSI is aging → instability zone
+                                </div>
+                            </div>
+                            <div class="reveal" style="text-align:center;">
+                                <div class="stat-value" style="font-size:24px;">τ<sub>f</sub> > T<sub>c</sub></div>
+                                <div class="stat-label" style="margin-top:var(--sp-2);">CSI is stale → ZF collapse</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Condition Number Amplification -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="grid grid-2" style="align-items:center;">
+                    <div class="reveal">
+                        <div class="card">
+                            <div class="card-body" style="text-align:center;">
+                                <svg viewBox="0 0 300 200" style="width:100%;max-width:280px;margin:0 auto;"
+                                    aria-label="Conditioning amplification">
+                                    <text x="150" y="20" text-anchor="middle" fill="currentColor" font-size="11"
+                                        opacity=".5">Error amplification vs condition number</text>
+                                    <!-- Axes -->
+                                    <line x1="40" y1="180" x2="280" y2="180" stroke="currentColor" stroke-opacity=".2"
+                                        stroke-width="1" />
+                                    <line x1="40" y1="180" x2="40" y2="30" stroke="currentColor" stroke-opacity=".2"
+                                        stroke-width="1" />
+                                    <text x="160" y="198" text-anchor="middle" fill="currentColor" font-size="9"
+                                        opacity=".4">κ(H)</text>
+                                    <text x="20" y="105" text-anchor="middle" fill="currentColor" font-size="9"
+                                        opacity=".4" transform="rotate(-90 20 105)">Error</text>
+                                    <!-- Linear refs -->
+                                    <polyline points="50,170 100,155 150,140 200,125 250,110" fill="none"
+                                        stroke="currentColor" stroke-opacity=".15" stroke-width="1"
+                                        stroke-dasharray="4,3" />
+                                    <text x="260" y="108" fill="currentColor" font-size="8" opacity=".3">linear</text>
+                                    <!-- Exponential curve -->
+                                    <polyline points="50,168 80,162 110,152 140,138 170,115 190,90 210,62 230,42 250,35"
+                                        fill="none" stroke="#ef4444" stroke-width="2" />
+                                    <text x="260" y="35" fill="#ef4444" font-size="8" font-weight="600">actual</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reveal">
+                        <div class="label-text">The Amplifier</div>
+                        <h2 style="margin-top:var(--sp-3)">Condition number makes it worse</h2>
+                        <p>The condition number κ(H) measures how sensitive the channel matrix is to small errors. When
+                            κ is large, even tiny CSI errors blow up when inverted.</p>
+                        <div class="equation" style="margin-top:var(--sp-4)">
+                            ‖ΔW‖/‖W‖ ≤ κ(H) · ‖ΔH‖/‖H‖
+                        </div>
+                        <p style="font-size:13px;">The relative error in beamforming weights W is bounded by κ times the
+                            relative channel error.</p>
+                        <p>This is why the instability is <em>nonlinear</em>: it's not just that CSI ages — the
+                            conditioning of the channel <em>amplifies</em> that aging.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- CCI Definition -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Core Metric</div>
+                    <h2 style="margin-top:var(--sp-3)">The Conditioned Coherence Index</h2>
+                    <p>We combine CSI age and condition number into a single predictive metric.</p>
+                </div>
+
+                <div class="card reveal">
+                    <div class="card-body" style="text-align:center;padding:var(--sp-8)var(--sp-6);">
+                        <div class="equation" style="font-size:20px;">
+                            CCI = κ(H) · (τ<sub>f</sub> / T<sub>c</sub>)
+                        </div>
+                        <div class="grid grid-3 stagger" style="margin-top:var(--sp-6)">
+                            <div class="reveal">
+                                <div style="font-size:13px;color:var(--text-muted);line-height:1.6;">
+                                    <strong style="color:var(--text);">CCI &lt; 0.5</strong><br />Stable region. ZF
+                                    works as intended.
+                                </div>
+                            </div>
+                            <div class="reveal">
+                                <div style="font-size:13px;color:var(--text-muted);line-height:1.6;">
+                                    <strong style="color:var(--text);">0.5 ≤ CCI &lt; 1</strong><br />Transition zone.
+                                    Performance is degrading.
+                                </div>
+                            </div>
+                            <div class="reveal">
+                                <div style="font-size:13px;color:var(--text-muted);line-height:1.6;">
+                                    <strong style="color:var(--text);">CCI ≥ 1</strong><br />Coherence cliff. Switch to
+                                    MRT immediately.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="callout reveal" style="margin-top:var(--sp-6);">
+                    This is the key insight: the coherence cliff isn't a gradual decline — it's a sharp phase
+                    transition. CCI captures both the rate of CSI aging <em>and</em> how badly the channel amplifies
+                    that aging.
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- ZF vs MRT -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Beamforming Modes</div>
+                    <h2 style="margin-top:var(--sp-3)">ZF vs. MRT</h2>
+                </div>
+
+                <div class="grid grid-2 stagger">
+                    <div class="card reveal">
+                        <div class="card-body">
+                            <h4>Zero-Forcing (ZF)</h4>
+                            <p>Cancels multi-user interference by inverting the channel matrix. Requires accurate,
+                                up-to-date CSI.</p>
+                            <table class="data-table" style="margin-top:var(--sp-4);">
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td>Multiplexing</td>
+                                    <td>Full spatial multiplexing</td>
+                                </tr>
+                                <tr>
+                                    <td>Interference</td>
+                                    <td>Cancelled (when CSI is fresh)</td>
+                                </tr>
+                                <tr>
+                                    <td>Sensitivity to CSI age</td>
+                                    <td>Very high</td>
+                                </tr>
+                                <tr>
+                                    <td>Failure mode</td>
+                                    <td>Sudden collapse (coherence cliff)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="card-body">
+                            <h4>Maximum Ratio Transmission (MRT)</h4>
+                            <p>Maximizes signal strength at each user without trying to cancel interference. More robust
+                                to stale CSI.</p>
+                            <table class="data-table" style="margin-top:var(--sp-4);">
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Value</th>
+                                </tr>
+                                <tr>
+                                    <td>Multiplexing</td>
+                                    <td>Reduced (no interference control)</td>
+                                </tr>
+                                <tr>
+                                    <td>Interference</td>
+                                    <td>Present but bounded</td>
+                                </tr>
+                                <tr>
+                                    <td>Sensitivity to CSI age</td>
+                                    <td>Low</td>
+                                </tr>
+                                <tr>
+                                    <td>Failure mode</td>
+                                    <td>Gradual degradation</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Instability Model -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Mathematical Model</div>
+                    <h2 style="margin-top:var(--sp-3)">The instability derivation</h2>
+                    <p>How we go from physics to a computable risk metric.</p>
+                </div>
+
+                <div class="flex-col stagger" style="gap:var(--sp-3);">
+                    <details class="accordion reveal">
+                        <summary>Step 1: Channel autocorrelation decay</summary>
+                        <div class="accordion-body">
+                            <p>Using the Jakes model, channel correlation decays as:</p>
+                            <div class="equation">ρ(τ) = J₀(2π·f<sub>D</sub>·τ)</div>
+                            <p>For small arguments, this approximates as ρ ≈ 1 − (π·f<sub>D</sub>·τ)². The key
+                                observation is that τ<sub>f</sub>/T<sub>c</sub> is a dimensionless ratio that controls
+                                when this decay becomes significant.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>Step 2: ZF weight error bound</summary>
+                        <div class="accordion-body">
+                            <p>ZF weights are computed as W = H<sup>†</sup> (pseudo-inverse). The standard perturbation
+                                bound gives:</p>
+                            <div class="equation">‖ΔW‖/‖W‖ ≤ κ(H) · ‖ΔH‖/‖H‖ / (1 − κ(H)·‖ΔH‖/‖H‖)</div>
+                            <p>This means the beamforming error grows super-linearly with κ. When κ·‖ΔH‖/‖H‖ approaches
+                                1, the bound diverges — this is the coherence cliff.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>Step 3: Combining into CCI</summary>
+                        <div class="accordion-body">
+                            <p>The CSI error ‖ΔH‖/‖H‖ is proportional to 1−ρ(τ<sub>f</sub>), which scales as
+                                (τ<sub>f</sub>/T<sub>c</sub>)². Multiplying by κ(H) gives the CCI:</p>
+                            <div class="equation">CCI = κ(H) · τ<sub>f</sub> / T<sub>c</sub></div>
+                            <p>CCI ≈ 1 marks the transition boundary. Below it, ZF is optimal. Above it, ZF is
+                                destructive and MRT provides better performance.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>Step 4: Risk metric and switching rule</summary>
+                        <div class="accordion-body">
+                            <p>We define a risk metric:</p>
+                            <div class="equation">Risk = 1 − e<sup>−CCI²</sup></div>
+                            <p>This maps CCI onto [0, 1] with a sharp transition near CCI = 1. The switching rule is
+                                simple: when Risk exceeds a threshold (default 0.3), switch from ZF to MRT. When Risk
+                                drops back below the threshold, switch back.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>Step 5: Probability of collapse</summary>
+                        <div class="accordion-body">
+                            <p>Using the exponential model for error growth, the probability that ZF will produce
+                                catastrophic interference is:</p>
+                            <div class="equation">P<sub>collapse</sub> = 1 − e<sup>−(CCI/CCI<sub>crit</sub>)²</sup>
+                            </div>
+                            <p>where CCI<sub>crit</sub> ≈ 1 is the critical value. This gives a smooth but steep
+                                transition — small changes in CCI near the cliff cause large changes in collapse
+                                probability.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Novelty -->
+        <section class="section reveal">
+            <div class="wrap-narrow" style="text-align:center;">
+                <div class="label-text">What makes this new</div>
+                <h2 style="margin-top:var(--sp-3)">Predictive vs. reactive</h2>
+                <p class="large-text">
+                    Existing systems react to degraded performance — dropping throughput, rising packet loss.
+                    WaveLynk computes a physics-based instability metric and acts <em>before</em> performance collapses.
+                </p>
+                <div class="btn-group" style="justify-content:center;margin-top:var(--sp-8);">
+                    <a class="btn btn-primary" href="demos.html">See the Models Live →</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="wrap">
+            © WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

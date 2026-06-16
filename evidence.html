@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>WaveLynk — Evidence & Validation</title>
+    <meta name="description" content="Experimental data, validation methodology, and limitations of WaveLynk." />
+    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <canvas id="wave-canvas"></canvas>
+
+    <header>
+        <div class="wrap">
+            <nav>
+                <a class="brand" href="index.html">
+                    <img src="images/logo.png" alt="WaveLynk" class="logo-mark"
+                        style="width:28px;height:28px;border-radius:6px;" />
+                    WaveLynk
+                </a>
+                <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="science.html">Science</a>
+                    <a href="demos.html">Demos</a>
+                    <a href="evidence.html">Evidence</a>
+                    <a href="team.html">Team</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="theme-toggle" aria-label="Toggle theme">
+                        <span class="icon-sun">☀️</span><span class="icon-moon">🌙</span>
+                    </button>
+                    <a class="btn btn-primary" href="demos.html">Try Demos</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <div class="wrap">
+                <div class="badge reveal"><span class="dot dot-green"></span> Validation & Reproducibility</div>
+                <h1 class="reveal" style="margin-top:var(--sp-5)">Evidence</h1>
+                <p class="reveal">Experimental data, methodology, reproducibility protocol, and an honest accounting of
+                    what this work does and does not prove.</p>
+            </div>
+        </section>
+
+
+        <!-- Results Summary -->
+        <section class="section-sm reveal">
+            <div class="wrap">
+                <div class="grid grid-3 stagger">
+                    <div class="card reveal">
+                        <div class="stat">
+                            <div class="stat-value"><span data-counter="32" data-prefix="↓" data-suffix="%">↓0%</span>
+                            </div>
+                            <div class="stat-label">Latency Reduction</div>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="stat">
+                            <div class="stat-value"><span data-counter="41" data-prefix="↓" data-suffix="%">↓0%</span>
+                            </div>
+                            <div class="stat-label">Outage Reduction</div>
+                        </div>
+                    </div>
+                    <div class="card reveal">
+                        <div class="stat">
+                            <div class="stat-value">N=100</div>
+                            <div class="stat-label">Validated Trials</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Experimental Setup -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Methodology</div>
+                    <h2 style="margin-top:var(--sp-3)">Experimental setup</h2>
+                    <p>A controlled proxy experiment using 5 GHz Wi-Fi to demonstrate coherence-time effects that scale
+                        with frequency.</p>
+                </div>
+
+                <div class="card reveal">
+                    <div class="card-body">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Access point</td>
+                                    <td>5 GHz Wi-Fi (802.11ac), 4×4 MIMO</td>
+                                </tr>
+                                <tr>
+                                    <td>Environment</td>
+                                    <td>Indoor multipath (home/office)</td>
+                                </tr>
+                                <tr>
+                                    <td>Client motion</td>
+                                    <td>Controlled walking at 1–2 m/s</td>
+                                </tr>
+                                <tr>
+                                    <td>Interference</td>
+                                    <td>Co-channel devices present (2nd AP with load)</td>
+                                </tr>
+                                <tr>
+                                    <td>Logging interval</td>
+                                    <td>100 ms (RSSI, latency, throughput)</td>
+                                </tr>
+                                <tr>
+                                    <td>Trials per condition</td>
+                                    <td>100</td>
+                                </tr>
+                                <tr>
+                                    <td>Switching logic</td>
+                                    <td>CCI-based predictive vs. fixed-threshold reactive</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Validation Figures -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Data</div>
+                    <h2 style="margin-top:var(--sp-3)">Validation figures</h2>
+                </div>
+
+                <div class="grid grid-2 stagger">
+                    <figure class="img-frame reveal">
+                        <img src="images/latency_comparison.png" alt="Latency comparison" loading="lazy" />
+                        <figcaption
+                            style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:var(--sp-2);">
+                            Figure 1 — Latency comparison: Predictive vs. Reactive</figcaption>
+                    </figure>
+                    <figure class="img-frame reveal">
+                        <img src="images/outage_map.png" alt="Outage map" loading="lazy" />
+                        <figcaption
+                            style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:var(--sp-2);">
+                            Figure 2 — Outage probability heatmap</figcaption>
+                    </figure>
+                    <figure class="img-frame reveal">
+                        <img src="images/cin_distribution.png" alt="CIN distribution" loading="lazy" />
+                        <figcaption
+                            style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:var(--sp-2);">
+                            Figure 3 — CIN distribution across trials</figcaption>
+                    </figure>
+                    <figure class="img-frame reveal">
+                        <img src="images/risk_threshold_sweep.png" alt="Risk threshold sweep" loading="lazy" />
+                        <figcaption
+                            style="text-align:center;font-size:13px;color:var(--text-muted);margin-top:var(--sp-2);">
+                            Figure 4 — Risk threshold optimization sweep</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- What the Data Shows -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="grid grid-2 stagger">
+                    <div class="reveal">
+                        <div class="label-text">Findings</div>
+                        <h2 style="margin-top:var(--sp-3)">What the data shows</h2>
+                        <ul class="clean-list" style="margin-top:var(--sp-4);">
+                            <li>Latency spikes appear consistently when CIN ≳ 0.8–1.0</li>
+                            <li>Packet loss increases nonlinearly in the same region</li>
+                            <li>Predictive switching reduces both metrics by transitioning before the cliff</li>
+                            <li>MRT mode shows graceful degradation vs. ZF's sudden collapse</li>
+                            <li>The instability boundary aligns with the theoretical prediction: CCI ≈ 1</li>
+                        </ul>
+                    </div>
+                    <div class="reveal">
+                        <div class="callout">
+                            The data confirms the core qualitative prediction: there is a sharp, nonlinear performance
+                            transition near CCI = 1, and acting before that boundary yields measurable reliability
+                            improvements.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Reproducibility -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Protocol</div>
+                    <h2 style="margin-top:var(--sp-3)">Reproducibility</h2>
+                </div>
+
+                <div class="card reveal">
+                    <div class="card-body">
+                        <ol class="clean-list" style="counter-reset:step;">
+                            <li>Set up 5 GHz access point and client device with logging software</li>
+                            <li>Baseline: static client, no interference — measure 60s throughput/latency</li>
+                            <li>Motion: walking at 1 m/s — measure degradation vs. baseline</li>
+                            <li>Interference: add 2nd AP with load — re-measure</li>
+                            <li>Compute CCI from logged data at each sample point</li>
+                            <li>Compare reactive (fixed threshold on packet loss) vs. predictive (CCI-based) switching
+                            </li>
+                            <li>Run ≥50 trials per condition, report mean ± std</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Limitations -->
+        <section class="section reveal">
+            <div class="wrap">
+                <div class="section-header">
+                    <div class="label-text">Transparency</div>
+                    <h2 style="margin-top:var(--sp-3)">Limitations</h2>
+                    <p>An honest accounting of what this work does not yet prove.</p>
+                </div>
+
+                <div class="flex-col stagger" style="gap:var(--sp-3);">
+                    <details class="accordion reveal">
+                        <summary>Proxy experiment — not mmWave/THz hardware</summary>
+                        <div class="accordion-body">
+                            <p>All experiments use 5 GHz Wi-Fi. The underlying physics (Doppler, coherence time,
+                                conditioning) scales with frequency, but direct validation at 28+ GHz has not been
+                                performed.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>Simplified conditioning estimate</summary>
+                        <div class="accordion-body">
+                            <p>κ is estimated from RSSI variance, not computed from full MIMO channel matrices. A full
+                                implementation would require access to raw CSI matrices at the PHY layer.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>No full PHY-layer simulation</summary>
+                        <div class="accordion-body">
+                            <p>The demos use physics-inspired mappings from CCI to performance metrics. They are not
+                                bit-accurate link-level simulators.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>Single-environment testing</summary>
+                        <div class="accordion-body">
+                            <p>All experiments were conducted in one indoor environment. Outdoor and multi-floor
+                                propagation have not been tested.</p>
+                        </div>
+                    </details>
+
+                    <details class="accordion reveal">
+                        <summary>Sample size</summary>
+                        <div class="accordion-body">
+                            <p>100 trials per condition. Larger studies with >1000 trials would strengthen statistical
+                                confidence in the reported improvements.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+
+        <!-- Novelty -->
+        <section class="section reveal">
+            <div class="wrap-narrow" style="text-align:center;">
+                <div class="label-text">Contribution</div>
+                <h2 style="margin-top:var(--sp-3)">What makes this novel</h2>
+                <p class="large-text">
+                    Most wireless systems react to degraded performance. WaveLynk defines a predictive instability
+                    boundary using conditioning-amplified phase drift, and acts <em>before</em> collapse. This
+                    predictive-vs-reactive distinction is the core contribution.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="wrap">
+            © WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
