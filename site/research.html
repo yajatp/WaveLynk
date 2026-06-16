@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WaveLynk — Research</title>
+  <meta name="description" content="The WaveLynk research paper, Python source code, Jupyter notebooks, and full academic references for the CCI beamforming framework." />
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="index.html">
+          <img src="images/logo.png" alt="WaveLynk" class="logo-mark" width="28" height="28" />
+          WaveLynk
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="how-it-works.html">How It Works</a>
+          <a href="results.html">Results</a>
+          <a href="live-models.html">Live Models</a>
+          <a href="research.html">Research</a>
+          <a href="team.html">Team</a>
+        </div>
+        <div class="nav-actions">
+          <button class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+          <a class="btn btn-primary btn-sm" href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="badge reveal"><span class="dot dot-blue"></span> Open Research</div>
+        <h1 class="reveal">Research</h1>
+        <p class="reveal">
+          The paper, source code, Jupyter notebooks, and references behind the WaveLynk
+          Conditioned Coherence Index framework.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Paper ── -->
+    <section class="section">
+      <div class="wrap">
+        <div style="display:grid;grid-template-columns:1fr 380px;gap:var(--sp-10);align-items:start;">
+          <div class="reveal">
+            <div class="label-text">Publication</div>
+            <h2 style="margin-top:var(--sp-3);font-size:clamp(20px,2.5vw,28px);">
+              Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework
+            </h2>
+
+            <div style="display:flex;gap:var(--sp-4);flex-wrap:wrap;margin-top:var(--sp-4);">
+              <span class="badge">IEEE Format · 2025</span>
+              <span class="badge">Allen High School · Allen, TX</span>
+            </div>
+
+            <p style="margin-top:var(--sp-6);">
+              <strong style="color:var(--text);">Authors:</strong>
+              Neha Abin, Sahil Shah, Yajat Parmar
+            </p>
+
+            <div style="margin-top:var(--sp-5);padding:var(--sp-5) var(--sp-6);background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--r-md);">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--sp-3);">Abstract</div>
+              <p style="font-size:14px;line-height:1.8;">
+                This work introduces the Coherence Cliff as a fundamental phenomenon governing beamforming
+                instability in high-frequency MIMO systems. As wireless networks evolve toward
+                Wi-Fi 7 and 6G, Zero-Forcing (ZF) precoding becomes increasingly susceptible to
+                Channel State Information (CSI) aging caused by rapid channel variation.
+              </p>
+              <p style="font-size:14px;line-height:1.8;margin-top:var(--sp-3);">
+                We propose the Conditioned Coherence Index (CCI), a unified analytical metric that
+                integrates Doppler-induced decorrelation, channel matrix conditioning, and CSI aging
+                to predict the onset of precoding instability. A deterministic switching rule at
+                γ = 0.6 enables proactive transition from ZF to Maximum Ratio Transmission (MRT),
+                preventing catastrophic performance collapse while maintaining high throughput under
+                stable conditions.
+              </p>
+              <p style="font-size:14px;line-height:1.8;margin-top:var(--sp-3);">
+                Simulation results confirm that CCI increases monotonically with mobility and delay,
+                and that the threshold γ = 0.6 accurately identifies the boundary of the instability
+                region. Hardware measurements on a Wi-Fi 7 testbed validate 30–41% improvements in
+                outage rate and latency relative to fixed ZF strategies.
+              </p>
+            </div>
+
+            <div class="btn-group" style="margin-top:var(--sp-5);">
+              <a class="btn btn-primary" href="../paper/WaveLynk_Paper.pdf" target="_blank">
+                Download Paper (PDF)
+              </a>
+              <a class="btn" href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener">
+                GitHub Repository
+              </a>
+            </div>
+            <p style="font-size:12px;color:var(--text-muted);margin-top:var(--sp-2);">
+              PDF link active when paper is uploaded to <code>paper/WaveLynk_Paper.pdf</code>.
+            </p>
+          </div>
+
+          <div class="reveal">
+            <div class="card card-elevated" style="padding:var(--sp-6);">
+              <h4>At a glance</h4>
+              <ul class="clean-list" style="margin-top:var(--sp-4);">
+                <li><strong>Topic:</strong> Adaptive beamforming in MU-MIMO</li>
+                <li><strong>Key contribution:</strong> CCI metric and γ = 0.6 threshold</li>
+                <li><strong>Framework:</strong> Zero-Forcing ↔ MRT switching</li>
+                <li><strong>Validated on:</strong> Wi-Fi 7 hardware + Monte Carlo</li>
+                <li><strong>Trials:</strong> 100 independent measurements</li>
+                <li><strong>Format:</strong> IEEE conference paper format</li>
+                <li><strong>Code:</strong> Python (NumPy, SciPy, matplotlib)</li>
+              </ul>
+            </div>
+
+            <div class="card" style="margin-top:var(--sp-4);padding:var(--sp-5);">
+              <div class="equation" style="font-size:13px;border-left-color:var(--accent);">
+                CCI = κ(H) · |J₀(2πf<sub>D</sub>τ)| · SINR/(SINR+α) · e<sup>−βτ/T<sub>c</sub></sup>
+              </div>
+              <p style="font-size:13px;margin-top:var(--sp-3);">
+                When CCI ≥ γ = 0.6 → switch ZF → MRT
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Source Code ── -->
+    <section class="section" style="background:var(--bg-secondary);">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">Open Source Code</div>
+          <h2>Python implementation</h2>
+          <p>
+            Full implementation of the CCI framework, Jake's fading channel simulator,
+            ZF/MRT precoders, and the adaptive controller. All local — no external APIs.
+          </p>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="module-card reveal">
+            <div class="module-tag">src/cci.py</div>
+            <h4>Conditioned Coherence Index</h4>
+            <p>
+              Full CCI computation: <code>doppler_frequency</code>, <code>coherence_time</code>,
+              <code>channel_autocorrelation</code> (J₀ Bessel), <code>condition_number</code>,
+              <code>compute_cci</code>, <code>should_switch_to_mrt</code>.
+            </p>
+          </div>
+          <div class="module-card reveal">
+            <div class="module-tag">src/channel_model.py</div>
+            <h4>Rayleigh / Jake's Channel Model</h4>
+            <p>
+              Jake's isotropic fading simulator: <code>generate_channel_matrix</code>,
+              <code>simulate_channel_sequence</code>, <code>add_csi_error</code>.
+              Preserves temporal correlation properties of the Jake's model.
+            </p>
+          </div>
+          <div class="module-card reveal">
+            <div class="module-tag">src/beamforming.py</div>
+            <h4>ZF and MRT Precoders</h4>
+            <p>
+              Numerical implementations: <code>zf_precoder</code> (pseudoinverse),
+              <code>mrt_precoder</code> (conjugate transpose), <code>precoding_error</code>,
+              <code>compute_sinr</code>, <code>normalize_precoder</code>.
+            </p>
+          </div>
+          <div class="module-card reveal">
+            <div class="module-tag">src/switching.py</div>
+            <h4>WaveLynk Adaptive Controller</h4>
+            <p>
+              <code>WaveLynkController</code> with hysteresis-based switching, event logging,
+              history tracking, and summary statistics. Uses CCI to drive ZF↔MRT transitions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Clone instructions -->
+        <div style="margin-top:var(--sp-8);" class="reveal">
+          <h3 style="margin-bottom:var(--sp-4);">Quick start</h3>
+          <pre class="code-block"><code><span class="cm"># Clone and install</span>
+git clone https://github.com/yajatp/WaveLynk.git
+cd WaveLynk
+pip install -r requirements.txt
+
+<span class="cm"># Run notebooks</span>
+cd notebooks
+jupyter notebook
+
+<span class="cm"># Or import directly</span>
+<span class="kw">from</span> src.cci <span class="kw">import</span> compute_cci, DEFAULT_GAMMA
+<span class="kw">from</span> src.switching <span class="kw">import</span> WaveLynkController
+
+controller = WaveLynkController()
+W, mode, cci = controller.select_precoder(H, velocity=1.5, tau=0.005, sinr_db=20.0)</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Notebooks ── -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">Jupyter Notebooks</div>
+          <h2>Reproducible simulation pipeline</h2>
+          <p>Four notebooks covering theory, paper figures, statistics, and hardware validation.</p>
+        </div>
+
+        <div class="grid grid-2 stagger">
+          <a class="module-card reveal" href="https://github.com/yajatp/WaveLynk/blob/main/notebooks/01_cci_derivation.ipynb" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">
+            <div class="module-tag">notebooks/01</div>
+            <h4>CCI Derivation</h4>
+            <p>
+              4 publication-quality plots: Doppler frequency vs. velocity, J₀ autocorrelation
+              with the γ = 0.6 derivation, CCI component breakdown, and matrix conditioning analysis.
+            </p>
+            <div style="margin-top:var(--sp-3);font-size:12px;color:var(--accent);">View on GitHub →</div>
+          </a>
+
+          <a class="module-card reveal" href="https://github.com/yajatp/WaveLynk/blob/main/notebooks/02_simulation_figures.ipynb" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">
+            <div class="module-tag">notebooks/02</div>
+            <h4>Simulation Figures</h4>
+            <p>
+              Reproduces all 3 paper figures: CCI 3D surface vs. velocity and delay,
+              3D scatter with threshold plane at γ = 0.6, and two-panel stability analysis.
+            </p>
+            <div style="margin-top:var(--sp-3);font-size:12px;color:var(--accent);">View on GitHub →</div>
+          </a>
+
+          <a class="module-card reveal" href="https://github.com/yajatp/WaveLynk/blob/main/notebooks/03_monte_carlo.ipynb" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">
+            <div class="module-tag">notebooks/03</div>
+            <h4>Monte Carlo Sweep</h4>
+            <p>
+              100-trial robustness sweep across randomized velocity, SNR, and delay. Generates
+              SINR box plots, outage rate comparison, and tail risk curves. Exports results CSV.
+            </p>
+            <div style="margin-top:var(--sp-3);font-size:12px;color:var(--accent);">View on GitHub →</div>
+          </a>
+
+          <a class="module-card reveal" href="https://github.com/yajatp/WaveLynk/blob/main/notebooks/04_hardware_validation.ipynb" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">
+            <div class="module-tag">notebooks/04</div>
+            <h4>Hardware Validation</h4>
+            <p>
+              Loads real testbed CSVs (or synthetic placeholders). Generates packet loss vs.
+              signal, latency CDF, throughput by signal category, and theory-vs-measurement comparison.
+            </p>
+            <div style="margin-top:var(--sp-3);font-size:12px;color:var(--accent);">View on GitHub →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── References ── -->
+    <section class="section" style="background:var(--bg-secondary);">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">References</div>
+          <h2>Academic citations</h2>
+        </div>
+
+        <ul class="ref-list reveal">
+          <li>J. Choi, D. J. Love, and P. Bidigare, "Downlink Training Techniques for FDD Massive MIMO Systems," <em>IEEE Wireless Communications</em>, vol. 21, no. 4, pp. 22–28, Aug. 2014.</li>
+          <li>J. Choi, D. J. Love, and P. Bidigare, "Channel Aging in Massive MIMO Systems," <em>IEEE Wireless Communications Letters</em>, vol. 6, no. 1, pp. 28–31, Feb. 2017.</li>
+          <li>D. Tse and P. Viswanath, <em>Fundamentals of Wireless Communication</em>. Cambridge, U.K.: Cambridge University Press, 2005.</li>
+          <li>T. L. Marzetta, "Noncooperative Cellular Wireless with Unlimited Numbers of Base Station Antennas," <em>IEEE Trans. Wireless Commun.</em>, vol. 9, no. 11, pp. 3590–3600, Nov. 2010.</li>
+          <li>H. Q. Ngo, E. G. Larsson, and T. L. Marzetta, "Energy and Spectral Efficiency of Very Large Multiuser MIMO Systems," <em>IEEE Trans. Communications</em>, vol. 61, no. 4, pp. 1436–1449, Apr. 2013.</li>
+          <li>S. Rangan, T. S. Rappaport, and E. Erkip, "Millimeter-Wave Cellular Wireless Networks: Potentials and Challenges," <em>Proc. IEEE</em>, vol. 102, no. 3, pp. 366–385, Mar. 2014.</li>
+          <li>I. F. Akyildiz, J. M. Jornet, and C. Han, "Terahertz Band: Next Frontier for Wireless Communications," <em>Physical Communication</em>, vol. 12, pp. 16–32, Sept. 2014.</li>
+          <li>W. C. Jakes, <em>Microwave Mobile Communications</em>. New York, NY: Wiley, 1974.</li>
+          <li>M. Giordani et al., "A Tutorial on Millimeter Wave Communications for 5G Cellular Networks," <em>IEEE Communications Surveys &amp; Tutorials</em>, vol. 21, no. 1, pp. 173–196, 2019.</li>
+          <li>IEEE Std 802.11be™-2024, "Wireless LAN Medium Access Control and Physical Layer Specifications: Extremely High Throughput (EHT)," 2024.</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="section-lg">
+      <div class="wrap-narrow" style="text-align:center;">
+        <h2 class="reveal">Try it yourself</h2>
+        <p class="large-text reveal" style="margin-top:var(--sp-4);">
+          The interactive models let you explore the CCI in real time.
+        </p>
+        <div class="btn-group reveal" style="justify-content:center;margin-top:var(--sp-7);">
+          <a class="btn btn-primary" href="live-models.html">Open Live Models →</a>
+          <a class="btn" href="results.html">View Results</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2025 WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar · Allen High School</span>
+      <div style="display:flex;gap:var(--sp-5);">
+        <a href="research.html">Research</a>
+        <a href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener">GitHub</a>
+        <a href="team.html">Team</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

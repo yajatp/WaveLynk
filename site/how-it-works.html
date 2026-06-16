@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WaveLynk — How It Works</title>
+  <meta name="description" content="The physics and mathematics behind the Conditioned Coherence Index — from Maxwell's equations to a predictive wireless instability metric." />
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="index.html">
+          <img src="images/logo.png" alt="WaveLynk" class="logo-mark" width="28" height="28" />
+          WaveLynk
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="how-it-works.html">How It Works</a>
+          <a href="results.html">Results</a>
+          <a href="live-models.html">Live Models</a>
+          <a href="research.html">Research</a>
+          <a href="team.html">Team</a>
+        </div>
+        <div class="nav-actions">
+          <button class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+          <a class="btn btn-primary btn-sm" href="live-models.html">Try Live Models →</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Page hero -->
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="badge reveal"><span class="dot dot-blue"></span> Physics &amp; Mathematics</div>
+        <h1 class="reveal">How It Works</h1>
+        <p class="reveal">
+          From electromagnetic wave propagation to a computable instability boundary —
+          the physics that explain why wireless links fail and how WaveLynk predicts it.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 1. The Problem ── -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">The Problem</div>
+          <h2>Why high-frequency links fail without warning</h2>
+          <p>
+            As wireless systems push to 6 GHz (Wi-Fi 7) and beyond, a fundamental fragility emerges
+            in the most commonly used beamforming strategy.
+          </p>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card reveal">
+            <div class="card-body">
+              <h4>Zero-Forcing (ZF) beamforming</h4>
+              <p>
+                ZF cancels interference between users by inverting the wireless channel matrix H.
+                With accurate, up-to-date Channel State Information (CSI), this produces near-perfect
+                spatial multiplexing — each user's signal is cleanly separated.
+              </p>
+              <div class="equation" style="margin-top:var(--sp-4);">
+                W<sub>ZF</sub> = H<sup>†</sup>(HH<sup>†</sup>)<sup>−1</sup>
+              </div>
+              <p style="font-size:13px;margin-top:var(--sp-3);">
+                W<sub>ZF</sub> = precoder matrix, H = channel matrix, H<sup>†</sup> = conjugate transpose.
+              </p>
+            </div>
+          </div>
+          <div class="card reveal">
+            <div class="card-body">
+              <h4>The hidden vulnerability</h4>
+              <p>
+                The CSI used for beamforming is always slightly out of date. The channel is measured,
+                fed back, and then used — all within milliseconds. But at high carrier frequencies
+                (6 GHz+), even a few milliseconds of user movement causes the channel to change
+                significantly.
+              </p>
+              <p style="margin-top:var(--sp-3);">
+                When the CSI estimate becomes stale, ZF doesn't degrade gracefully — matrix inversion
+                amplifies the estimation error, causing a sudden, catastrophic jump in interference.
+                This is the <strong style="color:var(--text);">Coherence Cliff</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── 2. Channel Model ── -->
+    <section class="section" style="background:var(--bg-secondary);">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">Channel Model</div>
+          <h2>The wireless channel as a matrix</h2>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-8);align-items:start;">
+          <div class="reveal">
+            <p>
+              In a MIMO system, the channel between transmitter and receiver is described by a complex
+              matrix <strong style="color:var(--text);">H</strong>. Each element H<sub>ij</sub>
+              captures the complex gain — amplitude and phase — from transmit antenna j to receive
+              antenna i.
+            </p>
+            <div class="equation" style="margin-top:var(--sp-5);">y = Hx + n</div>
+            <p style="font-size:13px;margin-top:var(--sp-2);">y = received signal, x = transmitted signal, n = additive noise.</p>
+            <p style="margin-top:var(--sp-5);">
+              The base station periodically estimates H — this is Channel State Information (CSI).
+              But by the time this estimate is used for beamforming, some time τ has elapsed.
+              Whether τ is "too long" depends on how fast the channel is changing — its
+              <strong style="color:var(--text);">coherence time</strong> T<sub>c</sub>.
+            </p>
+          </div>
+          <div class="reveal">
+            <div class="card">
+              <div class="card-body">
+                <h4>Key parameters</h4>
+                <ul class="clean-list" style="margin-top:var(--sp-4);">
+                  <li><strong>τ</strong> — CSI feedback delay (how old the estimate is)</li>
+                  <li><strong>T<sub>c</sub></strong> — Channel coherence time (how long the channel stays constant)</li>
+                  <li><strong>f<sub>D</sub> = v·f<sub>c</sub>/c</strong> — Doppler frequency (proportional to user speed and carrier frequency)</li>
+                  <li><strong>κ(H)</strong> — Condition number of H (sensitivity to perturbation)</li>
+                  <li><strong>SINR</strong> — Signal-to-interference-plus-noise ratio</li>
+                </ul>
+              </div>
+            </div>
+            <div class="callout" style="margin-top:var(--sp-4);">
+              At 6 GHz (Wi-Fi 7), a user walking at 1.5 m/s produces a Doppler frequency of
+              <strong>f<sub>D</sub> = 30 Hz</strong>, giving a coherence time of only
+              <strong>T<sub>c</sub> ≈ 14 ms</strong>. Typical CSI feedback takes 5–8 ms —
+              already 36–57% of the coherence time.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── 3. Temporal Decorrelation ── -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">The Decay</div>
+          <h2>How CSI becomes stale: Jake's autocorrelation model</h2>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="reveal">
+            <p>
+              The statistical correlation between the true channel H(t) and an estimate made τ
+              seconds earlier follows the <strong style="color:var(--text);">Jake's model</strong>:
+            </p>
+            <div class="equation" style="margin-top:var(--sp-5);">
+              ρ(τ) = J₀(2π · f<sub>D</sub> · τ)
+            </div>
+            <p style="font-size:13px;margin-top:var(--sp-2);">
+              J₀ = Bessel function of the first kind, order zero. f<sub>D</sub> = Doppler frequency.
+            </p>
+            <p style="margin-top:var(--sp-5);">
+              When τ is small relative to T<sub>c</sub>, ρ ≈ 1 — the estimate is still accurate.
+              As τ increases, ρ decays. The critical insight is that this decay is <em>nonlinear</em>:
+              it has a sharp knee at τ ≈ 0.3·T<sub>c</sub>, after which correlation drops rapidly.
+            </p>
+            <p style="margin-top:var(--sp-3);">
+              Below this knee, ZF works. Past it, errors begin amplifying exponentially through
+              matrix inversion.
+            </p>
+          </div>
+          <div class="reveal">
+            <div class="card" style="padding:var(--sp-4);">
+              <table class="data-table">
+                <tr><th>Condition</th><th>Correlation ρ</th><th>ZF Status</th></tr>
+                <tr>
+                  <td>τ ≪ T<sub>c</sub></td>
+                  <td style="font-family:var(--mono);color:var(--green);">ρ ≈ 1.0</td>
+                  <td><span class="status-chip" style="color:var(--green);background:var(--green-light);">Stable</span></td>
+                </tr>
+                <tr>
+                  <td>τ ≈ 0.3·T<sub>c</sub></td>
+                  <td style="font-family:var(--mono);color:var(--amber);">ρ ≈ 0.8</td>
+                  <td><span class="status-chip" style="color:var(--amber);background:var(--amber-light);">Transition</span></td>
+                </tr>
+                <tr>
+                  <td>τ ≈ 0.5·T<sub>c</sub></td>
+                  <td style="font-family:var(--mono);color:var(--red);">ρ ≈ 0.6</td>
+                  <td><span class="status-chip" style="color:var(--red);background:var(--red-light);">Switch to MRT</span></td>
+                </tr>
+                <tr>
+                  <td>τ ≥ T<sub>c</sub></td>
+                  <td style="font-family:var(--mono);color:var(--red);">ρ ≈ 0</td>
+                  <td><span class="status-chip" style="color:var(--red);background:var(--red-light);">Cliff — ZF fails</span></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── 4. Condition Number ── -->
+    <section class="section" style="background:var(--bg-secondary);">
+      <div class="wrap">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-8);align-items:center;">
+          <div class="reveal">
+            <div class="label-text">The Amplifier</div>
+            <h2 style="margin-top:var(--sp-3);">Condition number makes it worse</h2>
+            <p style="margin-top:var(--sp-4);">
+              The condition number κ(H) = σ<sub>max</sub>/σ<sub>min</sub> measures how sensitive
+              the channel matrix is to small perturbations. For ZF, which requires matrix inversion,
+              this matters critically:
+            </p>
+            <div class="equation" style="margin-top:var(--sp-5);">
+              ‖ΔW‖/‖W‖ ≤ κ(H) · ‖ΔH‖/‖H‖
+            </div>
+            <p style="font-size:13px;margin-top:var(--sp-2);">
+              The relative error in beamforming weights W is bounded by κ times the relative channel estimation error.
+            </p>
+            <p style="margin-top:var(--sp-5);">
+              This is why the instability is nonlinear: it's not just that CSI ages — the
+              conditioning of the channel <em>amplifies</em> that aging. A channel with κ = 10
+              turns a 5% CSI error into a 50% beamforming weight error.
+            </p>
+          </div>
+          <div class="reveal">
+            <div class="card card-elevated" style="padding:var(--sp-6);">
+              <h4>Error amplification by condition number</h4>
+              <div style="margin-top:var(--sp-5);">
+                <table class="data-table">
+                  <tr><th>κ(H)</th><th>CSI Error 5%</th><th>BF Weight Error</th></tr>
+                  <tr><td>1 (ideal)</td><td>5%</td><td style="color:var(--green);font-weight:600;">5%</td></tr>
+                  <tr><td>3</td><td>5%</td><td style="color:var(--amber);font-weight:600;">15%</td></tr>
+                  <tr><td>10</td><td>5%</td><td style="color:var(--red);font-weight:600;">50%</td></tr>
+                  <tr><td>20</td><td>5%</td><td style="color:var(--red);font-weight:600;">100% → collapse</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── 5. CCI Derivation ── -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">The Derivation</div>
+          <h2>Building the Conditioned Coherence Index</h2>
+          <p>
+            Combining Doppler decorrelation, matrix conditioning, signal quality, and CSI aging
+            into a single predictive metric.
+          </p>
+        </div>
+
+        <div class="flex-col stagger" style="gap:var(--sp-4);">
+          <details class="accordion reveal" open>
+            <summary>Step 1: Channel autocorrelation decay</summary>
+            <div class="accordion-body">
+              <p>Using the Jake's model for isotropic Rayleigh fading, the temporal autocorrelation of the channel is:</p>
+              <div class="equation">ρ(τ) = J₀(2π · f<sub>D</sub> · τ)</div>
+              <p style="margin-top:var(--sp-3);">
+                For small arguments, J₀(x) ≈ 1 − x²/4, so ρ ≈ 1 − (π·f<sub>D</sub>·τ)².
+                The ratio τ/T<sub>c</sub> is the key dimensionless parameter controlling when
+                this decay becomes significant. When it exceeds ~0.3, correlation drops below 0.8 — the onset of instability.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion reveal">
+            <summary>Step 2: ZF weight perturbation bound</summary>
+            <div class="accordion-body">
+              <p>ZF weights are computed as W = H<sup>†</sup>(HH<sup>†</sup>)<sup>−1</sup> (pseudoinverse). Standard matrix perturbation theory gives:</p>
+              <div class="equation">‖ΔW‖/‖W‖ ≤ κ(H) · ‖ΔH‖/‖H‖ · 1/(1 − κ(H)·‖ΔH‖/‖H‖)</div>
+              <p style="margin-top:var(--sp-3);">
+                This bound grows super-linearly with κ. When the denominator approaches zero —
+                i.e., when κ(H)·‖ΔH‖/‖H‖ → 1 — the error is unbounded. This is the coherence cliff.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion reveal">
+            <summary>Step 3: Assembling the CCI</summary>
+            <div class="accordion-body">
+              <p>The CSI error ‖ΔH‖/‖H‖ is proportional to 1 − ρ(τ), which itself scales with the Bessel function.
+              Combining all four physical drivers:</p>
+              <div class="equation">
+                CCI(t) = κ(H) · |J₀(2π·f<sub>D</sub>·τ)| · SINR/(SINR + α) · e<sup>−β·τ/T<sub>c</sub></sup>
+              </div>
+              <p style="margin-top:var(--sp-3);">
+                Each term is independently measurable from standard Wi-Fi CSI feedback.
+                Their product gives a single number capturing all four drivers of beamforming instability.
+              </p>
+            </div>
+          </details>
+
+          <details class="accordion reveal">
+            <summary>Step 4: Deriving the threshold γ = 0.6</summary>
+            <div class="accordion-body">
+              <p>
+                At a typical feedback delay τ ≈ 0.3·T<sub>c</sub>, the Bessel argument becomes
+                2π·f<sub>D</sub>·0.3·T<sub>c</sub> = 2π·0.3·0.423 ≈ 0.80.
+              </p>
+              <div class="equation">J₀(0.80) ≈ 0.846</div>
+              <p style="margin-top:var(--sp-3);">
+                Multiplying by typical SINR weight (≈ 0.95 at 20 dB) and aging factor (e<sup>−0.3</sup> ≈ 0.74)
+                gives a combined baseline product of ≈ 0.60. This is the operating point at which
+                any ill-conditioning (κ > 1) pushes the system into the instability zone.
+              </p>
+              <p style="margin-top:var(--sp-3);">
+                Therefore <strong>γ = 0.6</strong> is the natural stability boundary — below this, ZF is safe;
+                at or above this, ZF errors grow and MRT provides better performance.
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── 6. ZF vs MRT ── -->
+    <section class="section" style="background:var(--bg-secondary);">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">Beamforming Modes</div>
+          <h2>ZF vs. MRT — and why neither alone is optimal</h2>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card reveal" style="border-top:3px solid var(--red);">
+            <div class="card-body">
+              <h4>Zero-Forcing (ZF)</h4>
+              <p>Cancels multi-user interference by inverting the channel matrix. Peak performance when CSI is fresh.</p>
+              <table class="data-table" style="margin-top:var(--sp-4);">
+                <tr><th>Property</th><th>Characteristic</th></tr>
+                <tr><td>Peak throughput</td><td>High — full spatial multiplexing</td></tr>
+                <tr><td>Interference</td><td>Cancelled (when CSI is accurate)</td></tr>
+                <tr><td>CSI sensitivity</td><td style="color:var(--red);">Very high — fails with stale CSI</td></tr>
+                <tr><td>Failure mode</td><td style="color:var(--red);">Sudden collapse at the cliff</td></tr>
+              </table>
+            </div>
+          </div>
+          <div class="card reveal" style="border-top:3px solid var(--green);">
+            <div class="card-body">
+              <h4>Maximum Ratio Transmission (MRT)</h4>
+              <p>Maximizes received signal strength per user. Robust to stale CSI, lower peak throughput.</p>
+              <table class="data-table" style="margin-top:var(--sp-4);">
+                <tr><th>Property</th><th>Characteristic</th></tr>
+                <tr><td>Peak throughput</td><td>Moderate — no interference cancellation</td></tr>
+                <tr><td>Interference</td><td>Present but bounded</td></tr>
+                <tr><td>CSI sensitivity</td><td style="color:var(--green);">Low — graceful degradation</td></tr>
+                <tr><td>Failure mode</td><td style="color:var(--green);">Gradual degradation only</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-green reveal" style="margin-top:var(--sp-6);">
+          <strong>WaveLynk's strategy:</strong> use ZF when the channel is stable (low CCI) for
+          peak throughput, and switch to MRT before the coherence cliff (high CCI) to prevent
+          collapse. The result is better than either strategy alone.
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- CTA -->
+    <section class="section-lg">
+      <div class="wrap-narrow" style="text-align:center;">
+        <h2 class="reveal">See it validated</h2>
+        <p class="large-text reveal" style="margin-top:var(--sp-4);">
+          The theory is backed by 100 hardware trials and a full Monte Carlo simulation sweep.
+        </p>
+        <div class="btn-group reveal" style="justify-content:center;margin-top:var(--sp-7);">
+          <a class="btn btn-primary" href="results.html">View Results →</a>
+          <a class="btn" href="live-models.html">Try Live Models</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2025 WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar · Allen High School</span>
+      <div style="display:flex;gap:var(--sp-5);">
+        <a href="research.html">Research</a>
+        <a href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener">GitHub</a>
+        <a href="team.html">Team</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

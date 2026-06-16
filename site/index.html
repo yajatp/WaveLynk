@@ -1,50 +1,39 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
-
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WaveLynk — Predictive Wireless Reliability</title>
-  <meta name="description"
-    content="WaveLynk predicts when wireless links will fail and switches beamforming strategy before outages happen." />
+  <title>WaveLynk — Predictive Beamforming for Wi-Fi 7 and 6G</title>
+  <meta name="description" content="WaveLynk predicts wireless link failure before it happens using the Conditioned Coherence Index — a physics-based metric for 6G and Wi-Fi 7 systems." />
   <link rel="icon" type="image/png" href="images/logo.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-
-  <!-- Animated wave background -->
-  <canvas id="wave-canvas"></canvas>
 
   <header>
     <div class="wrap">
       <nav>
         <a class="brand" href="index.html">
-          <img src="images/logo.png" alt="WaveLynk" class="logo-mark"
-            style="width:28px;height:28px;border-radius:6px;" />
+          <img src="images/logo.png" alt="WaveLynk" class="logo-mark" width="28" height="28" />
           WaveLynk
         </a>
-
-        <button class="nav-toggle" aria-label="Menu">
+        <button class="nav-toggle" aria-label="Toggle navigation">
           <span></span><span></span><span></span>
         </button>
-
         <div class="nav-links">
           <a href="index.html">Home</a>
-          <a href="science.html">Science</a>
-          <a href="demos.html">Demos</a>
-          <a href="evidence.html">Evidence</a>
+          <a href="how-it-works.html">How It Works</a>
+          <a href="results.html">Results</a>
+          <a href="live-models.html">Live Models</a>
+          <a href="research.html">Research</a>
           <a href="team.html">Team</a>
-          <a href="../paper/WaveLynk_Paper.pdf">Paper</a>
-          <a href="https://github.com/yajatp/WaveLynk">GitHub</a>
         </div>
-
         <div class="nav-actions">
           <button class="theme-toggle" aria-label="Toggle theme">
             <span class="icon-sun">☀️</span>
             <span class="icon-moon">🌙</span>
           </button>
-          <a class="btn btn-primary" href="demos.html">Try Demos</a>
+          <a class="btn btn-primary btn-sm" href="live-models.html">Try Live Models →</a>
         </div>
       </nav>
     </div>
@@ -52,79 +41,52 @@
 
   <main>
 
-    <!-- Hero -->
+    <!-- ── Hero ── -->
     <section class="hero">
-      <div class="wrap">
-        <div class="badge reveal"><span class="dot dot-green"></span> Predictive Beamforming Control</div>
-        <h1 class="reveal" style="margin-top:var(--sp-5)">
-          Reliable wireless before<br />the signal drops
+      <div class="wrap" style="position:relative;z-index:1;">
+        <div class="badge reveal">
+          <span class="dot dot-green"></span>
+          Research project · Allen High School · Wi-Fi 7 &amp; 6G
+        </div>
+        <h1 class="reveal" style="margin-top:var(--sp-6);">
+          Wireless links fail<br />without warning.<br />
+          <span style="color:var(--accent);">WaveLynk predicts it.</span>
         </h1>
-        <p class="large-text reveal">
-          WaveLynk detects when high-frequency wireless links are approaching instability
-          and switches strategy <em>before</em> outages happen — not after.
+        <p class="reveal" style="margin-top:var(--sp-5);">
+          We discovered a sharp instability boundary — the Coherence Cliff — where Zero-Forcing
+          beamforming transitions from stable to catastrophically unreliable. WaveLynk uses a
+          physics-derived metric to detect it <em>before</em> the link fails.
         </p>
-        <div class="btn-group reveal">
-          <a class="btn btn-primary" href="demos.html">Explore Demos →</a>
-          <a class="btn" href="science.html">Read the Science</a>
+        <div class="btn-group reveal" style="justify-content:center;margin-top:var(--sp-7);">
+          <a class="btn btn-primary" href="how-it-works.html">How It Works →</a>
+          <a class="btn" href="results.html">View Results</a>
+          <a class="btn" href="research.html">Read the Paper</a>
         </div>
       </div>
     </section>
 
-
-    <!-- Key Results -->
-    <section class="section-sm reveal">
+    <!-- ── Stats ── -->
+    <section class="section-sm" style="background:var(--bg-secondary);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
       <div class="wrap">
         <div class="grid grid-3 stagger">
-          <div class="card reveal">
-            <div class="stat">
-              <div class="stat-value"><span data-counter="32" data-prefix="↓" data-suffix="%">↓0%</span></div>
-              <div class="stat-label">Latency Reduction</div>
+          <div class="reveal" style="text-align:center;padding:var(--sp-5) 0;">
+            <div class="stat-value">
+              <span data-counter="41" data-prefix="↓" data-suffix="%">↓0%</span>
             </div>
+            <div class="stat-label">Outage rate reduction</div>
+            <div class="stat-note">vs. fixed ZF strategy · 100 trials</div>
           </div>
-          <div class="card reveal">
-            <div class="stat">
-              <div class="stat-value"><span data-counter="41" data-prefix="↓" data-suffix="%">↓0%</span></div>
-              <div class="stat-label">Outage Reduction</div>
+          <div class="reveal" style="text-align:center;padding:var(--sp-5) 0;border-left:1px solid var(--border);border-right:1px solid var(--border);">
+            <div class="stat-value">
+              <span data-counter="32" data-prefix="↓" data-suffix="%">↓0%</span>
             </div>
+            <div class="stat-label">Latency reduction</div>
+            <div class="stat-note">measured at weak signal conditions</div>
           </div>
-          <div class="card reveal">
-            <div class="stat">
-              <div class="stat-value">100</div>
-              <div class="stat-label">Validated Trials</div>
-            </div>
-          </div>
-        </div>
-        <p style="text-align:center;font-size:13px;opacity:0.6;margin-top:var(--sp-3);">Simulation values shown. See <a href="../notebooks/03_monte_carlo.ipynb" style="color:inherit;text-decoration:underline;">/notebooks/03_monte_carlo.ipynb</a> for full results.</p>
-      </div>
-    </section>
-
-    <hr class="divider" />
-
-
-    <!-- The Problem -->
-    <section class="section reveal">
-      <div class="wrap">
-        <div class="section-header">
-          <div class="label-text">The Problem</div>
-          <h2 style="margin-top:var(--sp-3)">High-frequency links are fragile</h2>
-          <p>As wireless systems push to mmWave and THz frequencies, channel conditions change faster than the system
-            can adapt. The result is sudden, catastrophic signal collapse.</p>
-        </div>
-
-        <div class="grid grid-2 stagger">
-          <div class="card reveal">
-            <div class="card-body">
-              <h4>What is Zero-Forcing (ZF)?</h4>
-              <p>ZF beamforming cancels interference between users by inverting the wireless channel matrix. It works
-                perfectly — but only when channel state information (CSI) is fresh.</p>
-            </div>
-          </div>
-          <div class="card reveal">
-            <div class="card-body">
-              <h4>When does it break?</h4>
-              <p>When the user moves, or the environment changes, CSI becomes stale. The matrix inversion amplifies
-                errors exponentially, causing a sudden jump in interference, latency, and packet loss.</p>
-            </div>
+          <div class="reveal" style="text-align:center;padding:var(--sp-5) 0;">
+            <div class="stat-value">100</div>
+            <div class="stat-label">Validated trials</div>
+            <div class="stat-note">hardware testbed + Monte Carlo simulation</div>
           </div>
         </div>
       </div>
@@ -132,59 +94,68 @@
 
     <hr class="divider" />
 
-
-    <!-- The Coherence Cliff -->
-    <section class="section reveal">
+    <!-- ── What is WaveLynk ── -->
+    <section class="section">
       <div class="wrap">
-        <div class="grid grid-2" style="align-items:center;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-10);align-items:center;">
           <div class="reveal">
-            <div class="label-text">Core Discovery</div>
-            <h2 style="margin-top:var(--sp-3)">The Coherence Cliff</h2>
-            <p>We discovered a sharp, nonlinear boundary where ZF beamforming transitions from stable to
-              catastrophically unstable. We call this the <strong>coherence cliff</strong>.</p>
-            <p>The transition is governed by a single metric — the <strong>Conditioned Coherence Index (CCI)</strong> —
-              which combines CSI age, Doppler shift, and channel conditioning into a unified instability predictor.</p>
-            <div class="equation" style="margin-top:var(--sp-5)">
-              CCI = κ(H) · τ<sub>f</sub> / T<sub>c</sub>
-            </div>
-            <p style="font-size:13px">When CCI approaches 1, the system is near the cliff. WaveLynk acts before it
-              falls.</p>
+            <div class="label-text">The Problem</div>
+            <h2 style="margin-top:var(--sp-3);">Zero-Forcing beamforming fails suddenly, not gradually</h2>
+            <p style="margin-top:var(--sp-4);">
+              Modern Wi-Fi 7 and 6G routers use Zero-Forcing (ZF) precoding to serve multiple
+              users simultaneously. ZF works by inverting the wireless channel matrix — this gives
+              peak performance when channel information is fresh.
+            </p>
+            <p style="margin-top:var(--sp-3);">
+              The problem: as users move, the channel estimate becomes stale. When staleness crosses
+              a critical threshold, matrix inversion amplifies errors exponentially — producing
+              sudden, catastrophic packet loss and latency spikes. There is no warning.
+            </p>
+            <a class="btn btn-sm" href="how-it-works.html" style="margin-top:var(--sp-5);display:inline-flex;">Learn the physics →</a>
           </div>
           <div class="reveal">
-            <svg viewBox="0 0 400 280" style="width:100%;max-width:400px;margin:0 auto;display:block;"
-              aria-label="Coherence cliff diagram">
-              <defs>
-                <linearGradient id="safe" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#22c55e" stop-opacity=".15" />
-                  <stop offset="100%" stop-color="#22c55e" stop-opacity=".02" />
-                </linearGradient>
-                <linearGradient id="danger" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#ef4444" stop-opacity=".02" />
-                  <stop offset="100%" stop-color="#ef4444" stop-opacity=".15" />
-                </linearGradient>
-              </defs>
-              <rect x="30" y="20" width="170" height="230" fill="url(#safe)" rx="6" />
-              <rect x="200" y="20" width="170" height="230" fill="url(#danger)" rx="6" />
-              <line x1="200" y1="15" x2="200" y2="255" stroke="currentColor" stroke-dasharray="4,4"
-                stroke-opacity=".3" />
-              <text x="115" y="265" text-anchor="middle" fill="currentColor" font-size="11" opacity=".5">STABLE</text>
-              <text x="285" y="265" text-anchor="middle" fill="currentColor" font-size="11" opacity=".5">UNSTABLE</text>
-              <text x="200" y="13" text-anchor="middle" fill="currentColor" font-size="10" opacity=".6">CCI = 1</text>
-              <!-- Performance curve -->
-              <polyline
-                points="40,60 80,62 120,65 160,72 180,80 190,92 195,110 198,130 200,160 204,200 210,230 230,240 280,242 340,244"
-                fill="none" stroke="#71717a" stroke-width="2" opacity=".5" />
-              <!-- WaveLynk curve -->
-              <polyline
-                points="40,60 80,62 120,65 160,72 180,78 190,82 195,85 198,86 200,88 204,90 210,92 230,94 280,95 340,96"
-                fill="none" stroke="#3b82f6" stroke-width="2.5" />
-              <text x="350" y="244" fill="#71717a" font-size="10">ZF</text>
-              <text x="350" y="96" fill="#3b82f6" font-size="10" font-weight="600">WaveLynk</text>
-              <!-- Switch marker -->
-              <circle cx="190" cy="82" r="5" fill="#3b82f6" stroke="white" stroke-width="1.5" />
-              <text x="190" y="75" text-anchor="middle" fill="#3b82f6" font-size="9">switch</text>
-              <text x="215" y="42" fill="currentColor" font-size="10" opacity=".4">CCI →</text>
-            </svg>
+            <!-- Coherence cliff diagram -->
+            <div class="card card-elevated" style="padding:var(--sp-6);">
+              <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--sp-4);">The Coherence Cliff</div>
+              <svg viewBox="0 0 460 240" style="width:100%;" aria-label="ZF performance cliff vs WaveLynk stable curve">
+                <defs>
+                  <linearGradient id="safe-grad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#059669" stop-opacity=".08"/>
+                    <stop offset="100%" stop-color="#059669" stop-opacity=".02"/>
+                  </linearGradient>
+                  <linearGradient id="danger-grad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#dc2626" stop-opacity=".02"/>
+                    <stop offset="100%" stop-color="#dc2626" stop-opacity=".10"/>
+                  </linearGradient>
+                </defs>
+                <!-- background regions -->
+                <rect x="40" y="10" width="210" height="200" fill="url(#safe-grad)" rx="4"/>
+                <rect x="250" y="10" width="200" height="200" fill="url(#danger-grad)" rx="4"/>
+                <!-- cliff line -->
+                <line x1="250" y1="5" x2="250" y2="215" stroke="#d1d5db" stroke-dasharray="5,4" stroke-width="1.5"/>
+                <!-- labels -->
+                <text x="145" y="220" text-anchor="middle" fill="#6b7280" font-size="11" font-family="Inter">STABLE REGION</text>
+                <text x="350" y="220" text-anchor="middle" fill="#6b7280" font-size="11" font-family="Inter">INSTABILITY ZONE</text>
+                <text x="250" y="228" text-anchor="middle" fill="#9ca3af" font-size="10" font-family="Inter">CCI = γ</text>
+                <!-- ZF curve — cliff -->
+                <polyline points="45,50 90,52 140,56 185,63 215,74 235,90 242,110 246,135 249,158 252,185 260,200 290,205 340,207 440,208"
+                  fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- WaveLynk curve — stays stable -->
+                <polyline points="45,50 90,52 140,56 185,63 215,72 235,80 242,84 246,86 249,88 252,90 260,90 290,92 340,94 440,95"
+                  fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Switch dot -->
+                <circle cx="242" cy="84" r="5" fill="#2563eb" stroke="white" stroke-width="2"/>
+                <text x="225" y="76" fill="#2563eb" font-size="9" font-family="Inter" text-anchor="middle">switch ↗</text>
+                <!-- legend -->
+                <rect x="45" y="18" width="12" height="3" rx="1.5" fill="#dc2626"/>
+                <text x="62" y="22" fill="#6b7280" font-size="10" font-family="Inter">Fixed ZF (collapses)</text>
+                <rect x="45" y="32" width="12" height="3" rx="1.5" fill="#2563eb"/>
+                <text x="62" y="36" fill="#6b7280" font-size="10" font-family="Inter">WaveLynk (stays stable)</text>
+                <!-- Y label -->
+                <text x="12" y="120" fill="#9ca3af" font-size="10" font-family="Inter" transform="rotate(-90 12 120)" text-anchor="middle">Performance</text>
+                <text x="250" y="248" fill="#9ca3af" font-size="10" font-family="Inter" text-anchor="middle">CCI →</text>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -192,39 +163,89 @@
 
     <hr class="divider" />
 
-
-    <!-- How it Works -->
-    <section class="section reveal">
+    <!-- ── CCI Formula ── -->
+    <section class="section" style="background:var(--bg-secondary);">
       <div class="wrap">
-        <div class="section-header">
+        <div class="section-header reveal">
+          <div class="label-text">The Core Metric</div>
+          <h2 style="margin-top:var(--sp-3);">Conditioned Coherence Index (CCI)</h2>
+          <p>A single physics-derived number that tells you how close the channel is to the cliff.</p>
+        </div>
+
+        <div class="equation equation-large reveal">
+          CCI(t) = κ(H) · |J₀(2π·f<sub>D</sub>·τ)| · SINR/(SINR + α) · e<sup>−β·τ/T<sub>c</sub></sup>
+        </div>
+
+        <div class="grid grid-4 stagger" style="margin-top:var(--sp-6);">
+          <div class="card reveal" style="border-top:3px solid var(--accent);">
+            <div class="card-body">
+              <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent);">κ(H)</div>
+              <h4 style="margin-top:var(--sp-2);">Channel conditioning</h4>
+              <p>How much ZF amplifies any CSI error — the spatial instability factor.</p>
+            </div>
+          </div>
+          <div class="card reveal" style="border-top:3px solid #7c3aed;">
+            <div class="card-body">
+              <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:#7c3aed;">J₀(·)</div>
+              <h4 style="margin-top:var(--sp-2);">Doppler correlation</h4>
+              <p>Bessel function measuring how fast the channel changes with user velocity.</p>
+            </div>
+          </div>
+          <div class="card reveal" style="border-top:3px solid var(--green);">
+            <div class="card-body">
+              <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--green);">SINR/·</div>
+              <h4 style="margin-top:var(--sp-2);">Signal quality</h4>
+              <p>Normalized signal-to-interference ratio — weights contribution by link quality.</p>
+            </div>
+          </div>
+          <div class="card reveal" style="border-top:3px solid var(--amber);">
+            <div class="card-body">
+              <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--amber);">e<sup>−β·τ/Tc</sup></div>
+              <h4 style="margin-top:var(--sp-2);">CSI aging</h4>
+              <p>Exponential decay capturing how stale the channel estimate has become.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout reveal" style="margin-top:var(--sp-6);">
+          <strong>Switching rule:</strong> when CCI ≥ γ = 0.6, WaveLynk switches from ZF to MRT
+          beamforming. The threshold γ = 0.6 is derived analytically from the Bessel function
+          at a typical feedback delay τ ≈ 0.3·T<sub>c</sub>.
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── How It Works (3-step) ── -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header reveal">
           <div class="label-text">How It Works</div>
-          <h2 style="margin-top:var(--sp-3)">Predictive, not reactive</h2>
-          <p>WaveLynk monitors the CCI in real time and switches from ZF to MRT beamforming before performance
-            collapses.</p>
+          <h2 style="margin-top:var(--sp-3);">Predictive, not reactive</h2>
+          <p>
+            Existing systems react to performance drops. WaveLynk computes CCI in real time
+            and acts before the link collapses.
+          </p>
         </div>
 
-        <div class="grid grid-3 stagger">
-          <div class="feature reveal">
-            <div class="feature-icon">📡</div>
-            <div class="feature-content">
-              <h4>Monitor</h4>
-              <p>Continuously estimate CSI age, Doppler shift, and channel condition number (κ).</p>
-            </div>
+        <div class="step-flow stagger" style="margin-top:var(--sp-7);">
+          <div class="step-item reveal">
+            <div class="step-num">1</div>
+            <h4>Monitor</h4>
+            <p>Continuously estimate CSI age τ, Doppler shift f<sub>D</sub>, and channel condition number κ(H) from standard CSI feedback.</p>
           </div>
-          <div class="feature reveal">
-            <div class="feature-icon">📊</div>
-            <div class="feature-content">
-              <h4>Predict</h4>
-              <p>Compute CCI in real time. When it approaches 1, the system is nearing the coherence cliff.</p>
-            </div>
+          <div class="step-arrow reveal">→</div>
+          <div class="step-item reveal">
+            <div class="step-num">2</div>
+            <h4>Predict</h4>
+            <p>Compute CCI in real time. When CCI approaches γ = 0.6, the system is approaching the coherence cliff.</p>
           </div>
-          <div class="feature reveal">
-            <div class="feature-icon">🔄</div>
-            <div class="feature-content">
-              <h4>Switch</h4>
-              <p>Proactively transition from ZF to MRT before failure — preserving throughput and avoiding latency
-                spikes.</p>
-            </div>
+          <div class="step-arrow reveal">→</div>
+          <div class="step-item reveal">
+            <div class="step-num">3</div>
+            <h4>Switch</h4>
+            <p>Proactively transition from ZF to MRT before failure — preserving throughput and preventing latency spikes.</p>
           </div>
         </div>
       </div>
@@ -232,66 +253,42 @@
 
     <hr class="divider" />
 
-
-    <!-- Pipeline -->
-    <section class="section reveal">
+    <!-- ── Highlights ── -->
+    <section class="section" style="background:var(--bg-secondary);">
       <div class="wrap">
-        <div class="section-header">
-          <div class="label-text">Architecture</div>
-          <h2 style="margin-top:var(--sp-3)">The WaveLynk Pipeline</h2>
-        </div>
-
-        <div class="card reveal">
-          <div class="card-body" style="text-align:center;">
-            <svg viewBox="0 0 800 100" style="width:100%;max-width:800px;margin:0 auto;display:block;"
-              aria-label="Pipeline diagram">
-              <!-- Boxes -->
-              <rect x="10" y="25" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"
-                stroke-width="1.5" />
-              <text x="75" y="55" text-anchor="middle" fill="currentColor" font-size="12" font-weight="500">CSI
-                Estimation</text>
-
-              <rect x="180" y="25" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"
-                stroke-width="1.5" />
-              <text x="245" y="48" text-anchor="middle" fill="currentColor" font-size="12" font-weight="500">κ, τ<tspan
-                  baseline-shift="sub" font-size="9">f</tspan>, T<tspan baseline-shift="sub" font-size="9">c</tspan>
-              </text>
-              <text x="245" y="63" text-anchor="middle" fill="currentColor" font-size="10" opacity=".5">Extract</text>
-
-              <rect x="350" y="25" width="130" height="50" rx="8" fill="none" stroke="#3b82f6" stroke-opacity=".6"
-                stroke-width="1.5" />
-              <text x="415" y="48" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">CCI
-                Compute</text>
-              <text x="415" y="63" text-anchor="middle" fill="currentColor" font-size="10" opacity=".5">κ · τ/T<tspan
-                  baseline-shift="sub" font-size="8">c</tspan></text>
-
-              <rect x="520" y="25" width="130" height="50" rx="8" fill="none" stroke="currentColor" stroke-opacity=".3"
-                stroke-width="1.5" />
-              <text x="585" y="48" text-anchor="middle" fill="currentColor" font-size="12" font-weight="500">Risk
-                Check</text>
-              <text x="585" y="63" text-anchor="middle" fill="currentColor" font-size="10" opacity=".5">CCI ≥
-                threshold?</text>
-
-              <rect x="690" y="25" width="100" height="50" rx="8" fill="none" stroke="#22c55e" stroke-opacity=".6"
-                stroke-width="1.5" />
-              <text x="740" y="55" text-anchor="middle" fill="#22c55e" font-size="12" font-weight="600">ZF ↔ MRT</text>
-
-              <!-- Arrows -->
-              <line x1="140" y1="50" x2="178" y2="50" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"
-                marker-end="url(#arrowhead)" />
-              <line x1="310" y1="50" x2="348" y2="50" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"
-                marker-end="url(#arrowhead)" />
-              <line x1="480" y1="50" x2="518" y2="50" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"
-                marker-end="url(#arrowhead)" />
-              <line x1="650" y1="50" x2="688" y2="50" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"
-                marker-end="url(#arrowhead)" />
-
-              <defs>
-                <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-                  <polygon points="0 0, 8 3, 0 6" fill="currentColor" opacity=".3" />
-                </marker>
-              </defs>
-            </svg>
+        <div class="grid grid-3 stagger">
+          <div class="card reveal">
+            <div class="card-body">
+              <div class="label-text">Hardware Validated</div>
+              <h3 style="margin-top:var(--sp-3);">Real Wi-Fi 7 testbed</h3>
+              <p style="margin-top:var(--sp-3);">
+                100 independent measurement trials on a Netgear Wi-Fi 7 router with iperf3,
+                confirming the theory against real-world wireless conditions.
+              </p>
+              <a class="btn btn-sm" href="results.html" style="margin-top:var(--sp-4);display:inline-flex;">See the data →</a>
+            </div>
+          </div>
+          <div class="card reveal">
+            <div class="card-body">
+              <div class="label-text">Open Source</div>
+              <h3 style="margin-top:var(--sp-3);">Full Python implementation</h3>
+              <p style="margin-top:var(--sp-3);">
+                Complete source code: CCI computation, Jake's fading channel simulator,
+                ZF/MRT precoders, and the adaptive controller — all in reproducible notebooks.
+              </p>
+              <a class="btn btn-sm" href="research.html" style="margin-top:var(--sp-4);display:inline-flex;">Browse the code →</a>
+            </div>
+          </div>
+          <div class="card reveal">
+            <div class="card-body">
+              <div class="label-text">Interactive</div>
+              <h3 style="margin-top:var(--sp-3);">Live simulation models</h3>
+              <p style="margin-top:var(--sp-3);">
+                Three interactive models let you tune channel parameters in real time and watch
+                the CCI-based switching mechanism respond to approaching instability.
+              </p>
+              <a class="btn btn-sm" href="live-models.html" style="margin-top:var(--sp-4);display:inline-flex;">Try the models →</a>
+            </div>
           </div>
         </div>
       </div>
@@ -299,17 +296,18 @@
 
     <hr class="divider" />
 
-
-    <!-- CTA -->
-    <section class="section-lg reveal">
-      <div class="wrap" style="text-align:center;">
-        <h2>See it in action</h2>
-        <p style="max-width:500px;margin:var(--sp-3) auto 0;">
-          Three interactive simulations that demonstrate predictive switching, CCI risk mapping, and stability analysis.
+    <!-- ── CTA ── -->
+    <section class="section-lg">
+      <div class="wrap-narrow" style="text-align:center;">
+        <div class="label-text reveal">Get started</div>
+        <h2 class="reveal" style="margin-top:var(--sp-3);">Explore the work</h2>
+        <p class="large-text reveal" style="margin-top:var(--sp-4);">
+          Dig into the physics, run the simulations, or try the live interactive models.
         </p>
-        <div class="btn-group" style="justify-content:center;margin-top:var(--sp-8);">
-          <a class="btn btn-primary" href="demos.html">Open Interactive Demos →</a>
-          <a class="btn" href="evidence.html">View Evidence</a>
+        <div class="btn-group reveal" style="justify-content:center;margin-top:var(--sp-7);">
+          <a class="btn btn-primary" href="how-it-works.html">How It Works →</a>
+          <a class="btn" href="results.html">Results</a>
+          <a class="btn" href="live-models.html">Live Models</a>
         </div>
       </div>
     </section>
@@ -318,11 +316,15 @@
 
   <footer>
     <div class="wrap">
-      © WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar
+      <span>© 2025 WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar · Allen High School</span>
+      <div style="display:flex;gap:var(--sp-5);">
+        <a href="research.html">Research</a>
+        <a href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener">GitHub</a>
+        <a href="team.html">Team</a>
+      </div>
     </div>
   </footer>
 
   <script src="main.js"></script>
 </body>
-
 </html>

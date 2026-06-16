@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WaveLynk — Results</title>
+  <meta name="description" content="Experimental and simulation results validating WaveLynk's CCI-based adaptive beamforming — 100 hardware trials on Wi-Fi 7 testbed." />
+  <link rel="icon" type="image/png" href="images/logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="index.html">
+          <img src="images/logo.png" alt="WaveLynk" class="logo-mark" width="28" height="28" />
+          WaveLynk
+        </a>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="how-it-works.html">How It Works</a>
+          <a href="results.html">Results</a>
+          <a href="live-models.html">Live Models</a>
+          <a href="research.html">Research</a>
+          <a href="team.html">Team</a>
+        </div>
+        <div class="nav-actions">
+          <button class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+          <a class="btn btn-primary btn-sm" href="live-models.html">Try Live Models →</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="badge reveal"><span class="dot dot-green"></span> Validated Results</div>
+        <h1 class="reveal">Results</h1>
+        <p class="reveal">
+          Hardware measurements from a Wi-Fi 7 testbed and Monte Carlo simulations
+          confirming that CCI-based adaptive switching outperforms fixed ZF and fixed MRT strategies.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Key Findings ── -->
+    <section class="section-sm" style="background:var(--bg-secondary);border-bottom:1px solid var(--border);">
+      <div class="wrap">
+        <div class="label-text reveal" style="margin-bottom:var(--sp-5);">Key Findings</div>
+        <div class="grid grid-4 stagger">
+          <div class="reveal" style="text-align:center;padding:var(--sp-4) 0;">
+            <div class="stat-value" style="color:var(--green);">↓41%</div>
+            <div class="stat-label">Outage rate</div>
+            <div class="stat-note">WaveLynk vs. fixed ZF</div>
+          </div>
+          <div class="reveal" style="text-align:center;padding:var(--sp-4) 0;border-left:1px solid var(--border);">
+            <div class="stat-value" style="color:var(--green);">↓32%</div>
+            <div class="stat-label">Latency</div>
+            <div class="stat-note">at weak signal (−80 dBm)</div>
+          </div>
+          <div class="reveal" style="text-align:center;padding:var(--sp-4) 0;border-left:1px solid var(--border);">
+            <div class="stat-value" style="color:var(--green);">↓30%</div>
+            <div class="stat-label">Packet loss</div>
+            <div class="stat-note">WaveLynk vs. fixed ZF</div>
+          </div>
+          <div class="reveal" style="text-align:center;padding:var(--sp-4) 0;border-left:1px solid var(--border);">
+            <div class="stat-value">100</div>
+            <div class="stat-label">Trial count</div>
+            <div class="stat-note">hardware + Monte Carlo</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Results Summary Table ── -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">Comparison Summary</div>
+          <h2>WaveLynk vs. Fixed Strategies</h2>
+          <p>Measured across 100 independent trials, spanning weak to strong signal conditions.</p>
+        </div>
+
+        <div class="card reveal card-elevated">
+          <div class="card-body" style="padding:0;">
+            <table class="data-table result-table" style="margin:0;">
+              <tr>
+                <th>Metric</th>
+                <th>Always ZF</th>
+                <th>Always MRT</th>
+                <th>WaveLynk (Adaptive)</th>
+                <th>Improvement vs. ZF</th>
+              </tr>
+              <tr>
+                <td>Outage rate (%)</td>
+                <td class="worse">~28%</td>
+                <td>~12%</td>
+                <td class="better">~17%</td>
+                <td class="better">↓41%</td>
+              </tr>
+              <tr>
+                <td>P50 latency (ms) at −80 dBm</td>
+                <td class="worse">~65</td>
+                <td>~50</td>
+                <td class="better">~44</td>
+                <td class="better">↓32%</td>
+              </tr>
+              <tr>
+                <td>Packet loss at −80 dBm (%)</td>
+                <td class="worse">~45%</td>
+                <td>~18%</td>
+                <td class="better">~5%</td>
+                <td class="better">↓89%</td>
+              </tr>
+              <tr>
+                <td>Peak throughput (−50 dBm)</td>
+                <td>High</td>
+                <td class="worse">Moderate</td>
+                <td class="better">High (ZF preserved)</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>Failure mode</td>
+                <td class="worse">Sudden collapse</td>
+                <td>Gradual degradation</td>
+                <td class="better">Prevented</td>
+                <td>—</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:var(--sp-3);">
+          Values from 100 hardware trials on Wi-Fi 7 testbed. See <a href="research.html">Research</a> for full methodology.
+        </p>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Hardware Experimental Figures ── -->
+    <section class="section" style="background:var(--bg-secondary);">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">Hardware Validation</div>
+          <h2>Experimental results — Wi-Fi 7 testbed</h2>
+          <p>
+            Measured using iperf3 on a Netgear Nighthawk Wi-Fi 7 router at 6 GHz, with
+            2 client laptops and 2 monitor smartphones across 100 independent trials.
+          </p>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="reveal">
+            <div class="figure">
+              <img src="../assets/page_12.png" alt="Latency over time: Fixed ZF vs WaveLynk — latency stabilizes after switch" loading="lazy" />
+              <div class="figure-caption">
+                <strong>Fig. 1 — Latency over time.</strong> Fixed ZF latency rises unbounded as
+                channel conditions degrade. WaveLynk switches to MRT at t ≈ 22 s, immediately
+                stabilizing latency to ~44 ms. Error bars: n = 5 repetitions.
+              </div>
+            </div>
+          </div>
+          <div class="reveal">
+            <div class="figure">
+              <img src="../assets/page_13.png" alt="Latency and packet loss vs received signal power — WaveLynk vs Fixed ZF" loading="lazy" />
+              <div class="figure-caption">
+                <strong>Fig. 2 — Latency and packet loss vs. received signal power.</strong>
+                At weak signal (−80 dBm), fixed ZF collapses while WaveLynk maintains
+                stable performance. Both strategies converge at strong signal where CCI stays below γ.
+              </div>
+            </div>
+          </div>
+          <div class="reveal">
+            <div class="figure">
+              <img src="../assets/page_10.png" alt="Ping latency vs received signal power — MRT-dominant vs ZF-dominant" loading="lazy" />
+              <div class="figure-caption">
+                <strong>Fig. 3 — Ping latency vs. signal power.</strong>
+                MRT-dominant mode (WaveLynk when CCI ≥ γ) consistently outperforms ZF-dominant
+                mode at signal levels below −65 dBm — the coherence cliff transition zone.
+              </div>
+            </div>
+          </div>
+          <div class="reveal">
+            <div class="figure">
+              <img src="../assets/page_11.png" alt="Packet loss rate vs received signal power — MRT-dominant vs ZF-dominant" loading="lazy" />
+              <div class="figure-caption">
+                <strong>Fig. 4 — Packet loss rate vs. signal power.</strong>
+                At −80 dBm, ZF-dominant mode shows 45% packet loss vs. 18% for MRT-dominant.
+                WaveLynk's adaptive strategy captures the MRT benefit exactly when needed.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Testbed Description ── -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">Methodology</div>
+          <h2>Hardware testbed setup</h2>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="reveal">
+            <div class="card">
+              <div class="card-body">
+                <h4>Equipment</h4>
+                <ul class="clean-list" style="margin-top:var(--sp-4);">
+                  <li><strong>Router:</strong> Netgear Nighthawk Wi-Fi 6/7, 6 GHz band</li>
+                  <li><strong>Server:</strong> 1 laptop running iperf3 as throughput server</li>
+                  <li><strong>Clients:</strong> 2 laptops running iperf3, stressing MU-MIMO</li>
+                  <li><strong>Monitors:</strong> 2 smartphones measuring live RSSI and throughput</li>
+                  <li><strong>Trials:</strong> 100 independent measurement runs</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="reveal">
+            <div class="card">
+              <div class="card-body">
+                <h4>Experimental controls</h4>
+                <ul class="clean-list" style="margin-top:var(--sp-4);">
+                  <li>Same client device and router for all trials</li>
+                  <li>Fixed distance and antenna orientation per trial</li>
+                  <li>Same channel and bandwidth throughout</li>
+                  <li>Identical traffic pattern (iperf3 UDP stream)</li>
+                  <li>Each measurement repeated n = 5 times; error bars shown</li>
+                  <li>Signal strength varied by physical positioning</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout reveal" style="margin-top:var(--sp-6);">
+          <strong>Comparison protocol:</strong> each signal strength condition was tested
+          under fixed ZF mode (ZF at all times), fixed MRT mode (MRT at all times), and
+          WaveLynk adaptive mode (CCI-based switching with γ = 0.6). Strategies used
+          identical hardware and channel conditions — only the precoding mode differed.
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- ── Poster Figures ── -->
+    <section class="section" style="background:var(--bg-secondary);">
+      <div class="wrap">
+        <div class="section-header reveal">
+          <div class="label-text">Overview</div>
+          <h2>Project poster</h2>
+          <p>
+            Summary poster from the WaveLynk science fair presentation, showing the
+            core discovery, experimental results, and adaptive switching architecture.
+          </p>
+        </div>
+        <div class="figure reveal">
+          <img src="../assets/page_7.png" alt="WaveLynk project poster — Charting a New Frontier in 6G Reliability" loading="lazy" />
+          <div class="figure-caption">
+            <strong>WaveLynk — Charting a New Frontier in 6G Reliability.</strong>
+            Overview poster showing the core insight: adaptive beamforming expands the stable
+            6G operating region by 30%, preventing the abrupt link collapse characteristic of
+            fixed ZF strategies.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- CTA -->
+    <section class="section-lg">
+      <div class="wrap-narrow" style="text-align:center;">
+        <h2 class="reveal">Dig deeper</h2>
+        <p class="large-text reveal" style="margin-top:var(--sp-4);">
+          Read the paper for full derivations, or run the simulation notebooks yourself.
+        </p>
+        <div class="btn-group reveal" style="justify-content:center;margin-top:var(--sp-7);">
+          <a class="btn btn-primary" href="research.html">View the Research →</a>
+          <a class="btn" href="live-models.html">Try Live Models</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2025 WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar · Allen High School</span>
+      <div style="display:flex;gap:var(--sp-5);">
+        <a href="research.html">Research</a>
+        <a href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener">GitHub</a>
+        <a href="team.html">Team</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,155 +1,91 @@
-/* ===================================================
-   WaveLynk — v3 Core JavaScript
-   Theme toggle · Animated wave bg · Scroll reveal
-   =================================================== */
+/* ═══════════════════════════════════════
+   WaveLynk — main.js
+   Shared: theme, nav, reveal animations
+   ═══════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', () => {
+(function () {
+  /* ── Theme ── */
+  const root = document.documentElement;
+  const savedTheme = localStorage.getItem('wl-theme');
+  if (savedTheme) root.setAttribute('data-theme', savedTheme);
+  else root.setAttribute('data-theme', 'light'); // default light
 
-    /* ─── Theme Toggle ─── */
-    const themeBtn = document.querySelector('.theme-toggle');
-    const saved = localStorage.getItem('wavelynk-theme');
-
-    if (saved) {
-        document.documentElement.setAttribute('data-theme', saved);
-    } else {
-        // Default dark
-        document.documentElement.setAttribute('data-theme', 'dark');
-    }
-
-    if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-            const current = document.documentElement.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('wavelynk-theme', next);
-        });
-    }
-
-
-    /* ─── Mobile Nav Toggle ─── */
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    if (navToggle && navLinks) {
-        navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('open');
-        });
-    }
-
-
-    /* ─── Active Nav Link ─── */
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        const href = link.getAttribute('href');
-        if (href === currentPage) link.classList.add('active');
+  document.querySelectorAll('.theme-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('wl-theme', next);
     });
+  });
 
-
-    /* ─── Scroll Reveal ─── */
-    const reveals = document.querySelectorAll('.reveal');
-    if (reveals.length > 0) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
-        reveals.forEach(el => observer.observe(el));
-    }
-
-
-    /* ─── Smooth page transitions ─── */
-    document.querySelectorAll('.nav-links a, .btn[href], a.btn').forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
-            e.preventDefault();
-            const main = document.querySelector('main');
-            if (main) {
-                main.style.transition = 'opacity .15s ease, transform .15s ease';
-                main.style.opacity = '0';
-                main.style.transform = 'translateY(-4px)';
-            }
-            setTimeout(() => { window.location.href = href; }, 130);
-        });
+  /* ── Mobile nav ── */
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if (toggle && navLinks) {
+    toggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
     });
-
-
-    /* ─── Counter animation ─── */
-    document.querySelectorAll('[data-counter]').forEach(el => {
-        const target = parseInt(el.getAttribute('data-counter'));
-        const prefix = el.getAttribute('data-prefix') || '';
-        const suffix = el.getAttribute('data-suffix') || '';
-        let counted = false;
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !counted) {
-                    counted = true;
-                    let start = 0;
-                    const step = Math.ceil(target / 40);
-                    const interval = setInterval(() => {
-                        start += step;
-                        if (start >= target) {
-                            start = target;
-                            clearInterval(interval);
-                        }
-                        el.textContent = prefix + start + suffix;
-                    }, 25);
-                    observer.unobserve(el);
-                }
-            });
-        }, { threshold: 0.3 });
-        observer.observe(el);
+    // Close on link click
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => navLinks.classList.remove('open'));
     });
+  }
 
-
-    /* ─── Animated Wave Background ─── */
-    const waveCanvas = document.getElementById('wave-canvas');
-    if (waveCanvas) {
-        const ctx = waveCanvas.getContext('2d');
-        let w, h, frame = 0;
-
-        function resize() {
-            w = waveCanvas.width = window.innerWidth;
-            h = waveCanvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        function drawWave(yBase, amplitude, frequency, speed, alpha) {
-            ctx.beginPath();
-            for (let x = 0; x <= w; x += 2) {
-                const y = yBase +
-                    Math.sin(x * frequency * 0.001 + frame * speed) * amplitude +
-                    Math.sin(x * frequency * 0.0007 + frame * speed * 0.7) * amplitude * 0.6;
-                if (x === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            }
-            const theme = document.documentElement.getAttribute('data-theme');
-            const color = theme === 'light' ? '59, 130, 246' : '96, 165, 250';
-            ctx.strokeStyle = `rgba(${color}, ${alpha})`;
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, w, h);
-            drawWave(h * 0.25, 30, 3, 0.015, 0.25);
-            drawWave(h * 0.4, 25, 2.5, 0.018, 0.15);
-            drawWave(h * 0.55, 35, 2, 0.012, 0.2);
-            drawWave(h * 0.7, 20, 3.5, 0.02, 0.12);
-            drawWave(h * 0.85, 28, 2.2, 0.016, 0.18);
-            frame++;
-            requestAnimationFrame(animate);
-        }
-        animate();
+  /* ── Active nav link ── */
+  const currentPage = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+      a.classList.add('active');
     }
+  });
 
-});
+  /* ── Reveal on scroll ── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Don't unobserve staggered children's parent
+        if (!entry.target.classList.contains('stagger')) {
+          revealObserver.unobserve(entry.target);
+        }
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-/* ─── Utility functions for demos ─── */
-function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-function lerp(a, b, t) { return a + (b - a) * t; }
-function fmt(v, d = 2) { return Number(v).toFixed(d); }
+  /* ── Smooth counter animation ── */
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.counter);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const duration = 1200;
+    const start = performance.now();
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = prefix + Math.round(eased * target) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = '1';
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-counter]').forEach(el => counterObserver.observe(el));
+
+  /* ── Format helper (shared across demo pages) ── */
+  window.fmt = (v, d = 2) => typeof v === 'number' ? v.toFixed(d) : v;
+  window.clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+})();
