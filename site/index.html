@@ -1,330 +1,620 @@
-<!doctype html>
-<html lang="en" data-theme="light">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WaveLynk — Predictive Beamforming for Wi-Fi 7 and 6G</title>
-  <meta name="description" content="WaveLynk predicts wireless link failure before it happens using the Conditioned Coherence Index — a physics-based metric for 6G and Wi-Fi 7 systems." />
-  <link rel="icon" type="image/png" href="images/logo.png" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WaveLynk — Predicting Beamforming Instability</title>
+<meta name="description" content="WaveLynk computes the Conditioned Coherence Index — a physics-derived early warning for beamforming instability in Wi-Fi 7 and 6G MU-MIMO links — and switches precoding strategy before the link collapses." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <header>
-    <div class="wrap">
-      <nav>
-        <a class="brand" href="index.html">
-          <img src="images/logo.png" alt="WaveLynk" class="logo-mark" width="28" height="28" />
-          WaveLynk
-        </a>
-        <button class="nav-toggle" aria-label="Toggle navigation">
-          <span></span><span></span><span></span>
-        </button>
-        <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="how-it-works.html">How It Works</a>
-          <a href="results.html">Results</a>
-          <a href="live-models.html">Live Models</a>
-          <a href="research.html">Research</a>
-          <a href="team.html">Team</a>
-        </div>
-        <div class="nav-actions">
-          <button class="theme-toggle" aria-label="Toggle theme">
-            <span class="icon-sun">☀️</span>
-            <span class="icon-moon">🌙</span>
-          </button>
-          <a class="btn btn-primary btn-sm" href="live-models.html">Try Live Models →</a>
-        </div>
-      </nav>
-    </div>
-  </header>
+<div class="wv-progress-track"><div id="wv-progress"></div></div>
 
-  <main>
+<header>
+  <div class="wv-headerin">
+    <a href="#top" class="wv-brand">
+      <span class="wv-brand-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <span class="wv-brand-name">WaveLynk</span>
+    </a>
+    <nav class="wv-nav">
+      <a data-navlink="cliff" href="#cliff">Cliff</a>
+      <a data-navlink="index" href="#index">Index</a>
+      <a data-navlink="control" href="#control">Control</a>
+      <a data-navlink="evidence" href="#evidence">Evidence</a>
+      <a data-navlink="timeline" href="#timeline">Timeline</a>
+      <a data-navlink="team" href="#team">Team</a>
+      <a href="#paper" class="wv-nav-cta">Paper</a>
+    </nav>
+  </div>
+</header>
 
-    <!-- ── Hero ── -->
-    <section class="hero">
-      <div class="wrap" style="position:relative;z-index:1;">
-        <div class="badge reveal">
-          <span class="dot dot-green"></span>
-          Research project · Allen High School · Wi-Fi 7 &amp; 6G
-        </div>
-        <h1 class="reveal" style="margin-top:var(--sp-6);">
-          Wireless links fail<br />without warning.<br />
-          <span style="color:var(--accent);">WaveLynk predicts it.</span>
-        </h1>
-        <p class="reveal" style="margin-top:var(--sp-5);">
-          We discovered a sharp instability boundary — the Coherence Cliff — where Zero-Forcing
-          beamforming transitions from stable to catastrophically unreliable. WaveLynk uses a
-          physics-derived metric to detect it <em>before</em> the link fails.
+<main id="top">
+
+  <section class="wv-hero">
+    <canvas id="wv-wave" aria-hidden="true"></canvas>
+    <div class="wv-hero-fade" aria-hidden="true"></div>
+
+    <div id="wv-heroin">
+      <div class="wv-eyebrow" data-reveal>
+        <span class="wv-eyebrow-rule"></span>
+        Allen High School · IEEE-format research · 2026
+      </div>
+
+      <h1 data-reveal>The link is fine.<br />Then it is <span class="warn">gone.</span></h1>
+
+      <div class="wv-hero-sub">
+        <p data-reveal>
+          Wi-Fi 7 and 6G beamforming does not degrade. It collapses — at a sharp boundary we call the
+          Coherence Cliff. WaveLynk computes one physics-derived number, sees the edge coming, and
+          changes precoding strategy before the fall.
         </p>
-        <div class="btn-group reveal" style="justify-content:center;margin-top:var(--sp-7);">
-          <a class="btn btn-primary" href="how-it-works.html">How It Works →</a>
-          <a class="btn" href="results.html">View Results</a>
-          <a class="btn" href="research.html">Read the Paper</a>
+        <div class="wv-hero-side" data-reveal>
+          <div>Conditioned Coherence Index</div>
+          <div class="big">A predictive instability metric for MU-MIMO precoding, validated on a physical Wi-Fi 7 testbed.</div>
         </div>
       </div>
-    </section>
 
-    <!-- ── Stats ── -->
-    <section class="section-sm" style="background:var(--bg-secondary);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-      <div class="wrap">
-        <div class="grid grid-3 stagger">
-          <div class="reveal" style="text-align:center;padding:var(--sp-5) 0;">
-            <div class="stat-value">
-              <span data-counter="41" data-prefix="↓" data-suffix="%">↓0%</span>
+      <div class="wv-hero-ctas" data-reveal>
+        <a href="#cliff" class="wv-btn wv-btn-primary">Walk the cliff <span class="mono">↓</span></a>
+        <a href="#timeline" class="wv-btn wv-btn-secondary">How we built it</a>
+      </div>
+
+      <div class="wv-scroll-cue" data-reveal><span>↓</span> Scroll</div>
+    </div>
+  </section>
+
+  <section class="wv-marquee">
+    <div class="wv-marquee-track" aria-hidden="true">
+      <div class="grp">
+        <span>γ = 0.60 threshold</span><span class="acc">↓41% outage</span><span>100 hardware trials</span><span class="acc">↓32% p50 latency</span><span>6 GHz band</span><span class="acc">↓89% packet loss</span><span>ZF → MRT handover</span><span>T_c ≈ 14 ms</span>
+      </div>
+      <div class="grp">
+        <span>γ = 0.60 threshold</span><span class="acc">↓41% outage</span><span>100 hardware trials</span><span class="acc">↓32% p50 latency</span><span>6 GHz band</span><span class="acc">↓89% packet loss</span><span>ZF → MRT handover</span><span>T_c ≈ 14 ms</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="cliff">
+    <div class="wv-section-in tight">
+      <div class="wv-kicker" data-reveal><span class="num">01</span><span>The failure</span></div>
+      <h2 data-reveal>Walking speed breaks it.</h2>
+      <p class="wv-lede" data-reveal>
+        Zero-Forcing removes interference by inverting the channel matrix. That inverse is also the
+        weakness: the moment the estimate goes stale, it amplifies error instead of cancelling it.
+        Keep scrolling to raise the index and watch the two strategies separate.
+      </p>
+    </div>
+
+    <div id="wv-scrub">
+      <div class="wv-sticky">
+        <div class="wv-pane">
+          <div>
+            <svg viewBox="0 0 840 430" style="width:100%;display:block;overflow:visible">
+              <g stroke="rgba(16,22,31,.07)" stroke-width="1">
+                <line x1="70" y1="90" x2="790" y2="90"></line>
+                <line x1="70" y1="180" x2="790" y2="180"></line>
+                <line x1="70" y1="270" x2="790" y2="270"></line>
+                <line x1="70" y1="360" x2="790" y2="360"></line>
+              </g>
+              <rect id="wv-danger" x="490" y="40" width="300" height="320" fill="#b4472c" fill-opacity="0"></rect>
+              <line x1="490" y1="34" x2="490" y2="374" stroke="rgba(16,22,31,.3)" stroke-width="1" stroke-dasharray="4 5"></line>
+              <text x="490" y="398" fill="rgba(16,22,31,.5)" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="middle">γ = 0.60</text>
+              <text x="70" y="398" fill="rgba(16,22,31,.32)" font-family="JetBrains Mono, monospace" font-size="12">CCI 0.0</text>
+              <text x="790" y="398" fill="rgba(16,22,31,.32)" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="end">1.0</text>
+              <text x="30" y="215" fill="rgba(16,22,31,.32)" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="middle" transform="rotate(-90 30 215)">Link performance</text>
+              <path id="wv-zf" d="M70,110 C210,118 390,142 470,178 C502,206 512,278 522,330 C554,350 630,354 790,356" fill="none" stroke="#b4472c" stroke-width="2.5" stroke-linecap="round"></path>
+              <path id="wv-ad" d="M70,110 C210,118 390,142 470,178 L492,192 C534,200 640,204 790,208" fill="none" stroke="#2f6fed" stroke-width="2.5" stroke-linecap="round"></path>
+              <circle id="wv-dotzf" cx="70" cy="110" r="5" fill="#b4472c" stroke="#f6f8fc" stroke-width="3" opacity="0"></circle>
+              <circle id="wv-dot" cx="70" cy="110" r="6" fill="#2f6fed" stroke="#f6f8fc" stroke-width="3"></circle>
+              <g id="wv-switch" opacity="0">
+                <circle cx="492" cy="192" r="12" fill="none" stroke="#2f6fed" stroke-width="1.5"></circle>
+                <text x="492" y="166" fill="#2f6fed" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="middle">switch → MRT</text>
+              </g>
+            </svg>
+            <div class="wv-legend">
+              <span class="k"><span class="sw"></span>Fixed ZF</span>
+              <span class="k"><span class="sw acc"></span>WaveLynk</span>
             </div>
-            <div class="stat-label">Outage rate reduction</div>
-            <div class="stat-note">vs. fixed ZF strategy · 100 trials</div>
           </div>
-          <div class="reveal" style="text-align:center;padding:var(--sp-5) 0;border-left:1px solid var(--border);border-right:1px solid var(--border);">
-            <div class="stat-value">
-              <span data-counter="32" data-prefix="↓" data-suffix="%">↓0%</span>
+
+          <div class="wv-readout">
+            <div>
+              <div class="wv-label">CCI(t)</div>
+              <div id="wv-cci" class="wv-num">0.00</div>
+              <div class="wv-threshbar"><div id="wv-bar"></div></div>
             </div>
-            <div class="stat-label">Latency reduction</div>
-            <div class="stat-note">measured at weak signal conditions</div>
-          </div>
-          <div class="reveal" style="text-align:center;padding:var(--sp-5) 0;">
-            <div class="stat-value">100</div>
-            <div class="stat-label">Validated trials</div>
-            <div class="stat-note">hardware testbed + Monte Carlo simulation</div>
+            <div>
+              <div class="wv-label">Precoder</div>
+              <div id="wv-mode">ZERO-FORCING</div>
+            </div>
+            <div>
+              <div class="wv-label">State</div>
+              <p id="wv-note">Estimate is fresh. The inversion is well conditioned and ZF delivers peak throughput.</p>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <hr class="divider" />
+    <div class="wv-facts">
+      <div data-reveal>
+        <div class="val">f_D = 30 Hz</div>
+        <p>Doppler frequency of a 1.5 m/s walk at 6 GHz.</p>
+      </div>
+      <div data-reveal>
+        <div class="val">T_c ≈ 14 ms</div>
+        <p>Coherence time — how long the estimate stays true.</p>
+      </div>
+      <div data-reveal>
+        <div class="val warn">τ = 5–8 ms</div>
+        <p>Typical CSI feedback delay: already 36–57% of T_c.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- ── What is WaveLynk ── -->
-    <section class="section">
-      <div class="wrap">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-10);align-items:center;">
-          <div class="reveal">
-            <div class="label-text">The Problem</div>
-            <h2 style="margin-top:var(--sp-3);">Zero-Forcing beamforming fails suddenly, not gradually</h2>
-            <p style="margin-top:var(--sp-4);">
-              Modern Wi-Fi 7 and 6G routers use Zero-Forcing (ZF) precoding to serve multiple
-              users simultaneously. ZF works by inverting the wireless channel matrix — this gives
-              peak performance when channel information is fresh.
-            </p>
-            <p style="margin-top:var(--sp-3);">
-              The problem: as users move, the channel estimate becomes stale. When staleness crosses
-              a critical threshold, matrix inversion amplifies errors exponentially — producing
-              sudden, catastrophic packet loss and latency spikes. There is no warning.
-            </p>
-            <a class="btn btn-sm" href="how-it-works.html" style="margin-top:var(--sp-5);display:inline-flex;">Learn the physics →</a>
-          </div>
-          <div class="reveal">
-            <!-- Coherence cliff diagram -->
-            <div class="card card-elevated" style="padding:var(--sp-6);">
-              <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--sp-4);">The Coherence Cliff</div>
-              <svg viewBox="0 0 460 240" style="width:100%;" aria-label="ZF performance cliff vs WaveLynk stable curve">
-                <defs>
-                  <linearGradient id="safe-grad" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#059669" stop-opacity=".08"/>
-                    <stop offset="100%" stop-color="#059669" stop-opacity=".02"/>
-                  </linearGradient>
-                  <linearGradient id="danger-grad" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stop-color="#dc2626" stop-opacity=".02"/>
-                    <stop offset="100%" stop-color="#dc2626" stop-opacity=".10"/>
-                  </linearGradient>
-                </defs>
-                <!-- background regions -->
-                <rect x="40" y="10" width="210" height="200" fill="url(#safe-grad)" rx="4"/>
-                <rect x="250" y="10" width="200" height="200" fill="url(#danger-grad)" rx="4"/>
-                <!-- cliff line -->
-                <line x1="250" y1="5" x2="250" y2="215" stroke="#d1d5db" stroke-dasharray="5,4" stroke-width="1.5"/>
-                <!-- labels -->
-                <text x="145" y="220" text-anchor="middle" fill="#6b7280" font-size="11" font-family="Inter">STABLE REGION</text>
-                <text x="350" y="220" text-anchor="middle" fill="#6b7280" font-size="11" font-family="Inter">INSTABILITY ZONE</text>
-                <text x="250" y="228" text-anchor="middle" fill="#9ca3af" font-size="10" font-family="Inter">CCI = γ</text>
-                <!-- ZF curve — cliff -->
-                <polyline points="45,50 90,52 140,56 185,63 215,74 235,90 242,110 246,135 249,158 252,185 260,200 290,205 340,207 440,208"
-                  fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
-                <!-- WaveLynk curve — stays stable -->
-                <polyline points="45,50 90,52 140,56 185,63 215,72 235,80 242,84 246,86 249,88 252,90 260,90 290,92 340,94 440,95"
-                  fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/>
-                <!-- Switch dot -->
-                <circle cx="242" cy="84" r="5" fill="#2563eb" stroke="white" stroke-width="2"/>
-                <text x="225" y="76" fill="#2563eb" font-size="9" font-family="Inter" text-anchor="middle">switch ↗</text>
-                <!-- legend -->
-                <rect x="45" y="18" width="12" height="3" rx="1.5" fill="#dc2626"/>
-                <text x="62" y="22" fill="#6b7280" font-size="10" font-family="Inter">Fixed ZF (collapses)</text>
-                <rect x="45" y="32" width="12" height="3" rx="1.5" fill="#2563eb"/>
-                <text x="62" y="36" fill="#6b7280" font-size="10" font-family="Inter">WaveLynk (stays stable)</text>
-                <!-- Y label -->
-                <text x="12" y="120" fill="#9ca3af" font-size="10" font-family="Inter" transform="rotate(-90 12 120)" text-anchor="middle">Performance</text>
-                <text x="250" y="248" fill="#9ca3af" font-size="10" font-family="Inter" text-anchor="middle">CCI →</text>
+  <section id="index">
+    <div class="wv-section-in">
+      <div class="wv-kicker" data-reveal><span class="num">02</span><span>The index</span></div>
+      <h2 data-reveal>Four failure modes, multiplied.</h2>
+      <p class="wv-lede" data-reveal>
+        The Conditioned Coherence Index folds spatial conditioning, temporal decorrelation, signal
+        quality and estimate age into one product. Any single term going bad drags the whole index
+        toward the threshold — which is exactly the early warning ZF never had.
+      </p>
+
+      <div class="wv-equation" data-reveal>
+        CCI(t) = <span id="wv-t-k" class="term">κ(H)</span> · <span id="wv-t-j" class="term">|J₀(2π·f<sub>D</sub>·τ)|</span> · <span id="wv-t-s" class="term">SINR/(SINR + α)</span> · <span id="wv-t-a" class="term">e<sup>−β·τ/T<sub>c</sub></sup></span>
+      </div>
+
+      <div class="wv-scrub-caption">Scroll to age the estimate</div>
+
+      <div id="wv-fscrub">
+        <div class="wv-sticky">
+          <div class="wv-fpane">
+            <div>
+              <svg viewBox="0 0 820 400" style="width:100%;display:block;overflow:visible">
+                <g stroke="rgba(11,12,14,.07)" stroke-width="1">
+                  <line x1="70" y1="40" x2="770" y2="40"></line>
+                  <line x1="70" y1="112" x2="770" y2="112"></line>
+                  <line x1="70" y1="185" x2="770" y2="185"></line>
+                  <line x1="70" y1="257" x2="770" y2="257"></line>
+                  <line x1="70" y1="330" x2="770" y2="330"></line>
+                </g>
+                <rect id="wv-f-band" x="70" y="185" width="700" height="145" fill="#b4472c" fill-opacity="0"></rect>
+                <line x1="70" y1="185" x2="770" y2="185" stroke="rgba(11,12,14,.32)" stroke-width="1" stroke-dasharray="4 5"></line>
+                <text x="62" y="189" fill="rgba(11,12,14,.5)" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="end">γ 0.60</text>
+                <text x="62" y="44" fill="rgba(11,12,14,.3)" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="end">1.00</text>
+                <text x="62" y="334" fill="rgba(11,12,14,.3)" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="end">0.00</text>
+                <text x="70" y="358" fill="rgba(11,12,14,.32)" font-family="JetBrains Mono, monospace" font-size="12">τ = 0 ms</text>
+                <text x="770" y="358" fill="rgba(11,12,14,.32)" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="end">12 ms</text>
+                <text x="420" y="384" fill="rgba(11,12,14,.32)" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="1.6" text-anchor="middle">CSI FEEDBACK DELAY</text>
+                <path id="wv-f-jpath" d="" fill="none" stroke="rgba(11,12,14,.22)" stroke-width="1.5" stroke-dasharray="3 4"></path>
+                <path id="wv-f-path" d="" fill="none" stroke="#1a4fc4" stroke-width="2.5" stroke-linecap="round"></path>
+                <line id="wv-f-vline" x1="70" y1="30" x2="70" y2="330" stroke="rgba(11,12,14,.2)" stroke-width="1"></line>
+                <circle id="wv-f-dot" cx="70" cy="40" r="6" fill="#1a4fc4" stroke="#e9eef7" stroke-width="3"></circle>
+                <g id="wv-f-cross" opacity="0">
+                  <circle id="wv-f-crossdot" cx="70" cy="185" r="11" fill="none" stroke="#b4472c" stroke-width="1.5"></circle>
+                  <text id="wv-f-crosstx" x="70" y="160" fill="#b4472c" font-family="JetBrains Mono, monospace" font-size="12" text-anchor="middle">crosses γ</text>
+                </g>
               </svg>
+              <div class="wv-legend">
+                <span class="k"><span class="sw acc" style="background:#1a4fc4"></span>CCI (all four terms)</span>
+                <span class="k"><span class="sw dash"></span>Doppler term alone</span>
+              </div>
+            </div>
+
+            <div class="wv-frail">
+              <div>
+                <div class="lab">Estimate age τ</div>
+                <div id="wv-f-tau">0.0 ms</div>
+              </div>
+
+              <div class="wv-terms">
+                <div>
+                  <div class="wv-term-row"><span>κ(H)</span><span id="wv-f-k">0.95</span></div>
+                  <div class="wv-term-bar"><div id="wv-fb-k" style="width:95%"></div></div>
+                </div>
+                <div>
+                  <div class="wv-term-row"><span>|J₀|</span><span id="wv-f-j">1.00</span></div>
+                  <div class="wv-term-bar"><div id="wv-fb-j" style="width:100%"></div></div>
+                </div>
+                <div>
+                  <div class="wv-term-row"><span>SINR wt.</span><span id="wv-f-s">0.83</span></div>
+                  <div class="wv-term-bar"><div id="wv-fb-s" style="width:83%"></div></div>
+                </div>
+                <div>
+                  <div class="wv-term-row"><span>aging</span><span id="wv-f-a">1.00</span></div>
+                  <div class="wv-term-bar"><div id="wv-fb-a" style="width:100%"></div></div>
+                </div>
+              </div>
+
+              <div class="wv-product">
+                <div class="lab">CCI = product</div>
+                <div id="wv-f-cci">0.79</div>
+                <p id="wv-f-verdict">Fresh estimate. Every term near its ceiling — ZF inverts a channel it still knows.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <hr class="divider" />
-
-    <!-- ── CCI Formula ── -->
-    <section class="section" style="background:var(--bg-secondary);">
-      <div class="wrap">
-        <div class="section-header reveal">
-          <div class="label-text">The Core Metric</div>
-          <h2 style="margin-top:var(--sp-3);">Conditioned Coherence Index (CCI)</h2>
-          <p>A single physics-derived number that tells you how close the channel is to the cliff.</p>
+      <div class="wv-terms-table">
+        <div class="wv-term-def" data-reveal>
+          <div class="sym">κ(H)</div>
+          <div class="name">Channel conditioning</div>
+          <p>How violently ZF amplifies a CSI error — the spatial instability factor.</p>
         </div>
-
-        <div class="equation equation-large reveal">
-          CCI(t) = κ(H) · |J₀(2π·f<sub>D</sub>·τ)| · SINR/(SINR + α) · e<sup>−β·τ/T<sub>c</sub></sup>
+        <div class="wv-term-def" data-reveal>
+          <div class="sym">|J₀(2π·f<sub>D</sub>·τ)|</div>
+          <div class="name">Doppler decorrelation</div>
+          <p>Bessel function of the first kind: how fast the channel moves with the user.</p>
         </div>
-
-        <div class="grid grid-4 stagger" style="margin-top:var(--sp-6);">
-          <div class="card reveal" style="border-top:3px solid var(--accent);">
-            <div class="card-body">
-              <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent);">κ(H)</div>
-              <h4 style="margin-top:var(--sp-2);">Channel conditioning</h4>
-              <p>How much ZF amplifies any CSI error — the spatial instability factor.</p>
-            </div>
-          </div>
-          <div class="card reveal" style="border-top:3px solid #7c3aed;">
-            <div class="card-body">
-              <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:#7c3aed;">J₀(·)</div>
-              <h4 style="margin-top:var(--sp-2);">Doppler correlation</h4>
-              <p>Bessel function measuring how fast the channel changes with user velocity.</p>
-            </div>
-          </div>
-          <div class="card reveal" style="border-top:3px solid var(--green);">
-            <div class="card-body">
-              <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--green);">SINR/·</div>
-              <h4 style="margin-top:var(--sp-2);">Signal quality</h4>
-              <p>Normalized signal-to-interference ratio — weights contribution by link quality.</p>
-            </div>
-          </div>
-          <div class="card reveal" style="border-top:3px solid var(--amber);">
-            <div class="card-body">
-              <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--amber);">e<sup>−β·τ/Tc</sup></div>
-              <h4 style="margin-top:var(--sp-2);">CSI aging</h4>
-              <p>Exponential decay capturing how stale the channel estimate has become.</p>
-            </div>
-          </div>
+        <div class="wv-term-def" data-reveal>
+          <div class="sym">SINR/(SINR+α)</div>
+          <div class="name">Signal quality weight</div>
+          <p>Normalized signal-to-interference term, so link quality scales the verdict.</p>
         </div>
-
-        <div class="callout reveal" style="margin-top:var(--sp-6);">
-          <strong>Switching rule:</strong> when CCI ≥ γ = 0.6, WaveLynk switches from ZF to MRT
-          beamforming. The threshold γ = 0.6 is derived analytically from the Bessel function
-          at a typical feedback delay τ ≈ 0.3·T<sub>c</sub>.
+        <div class="wv-term-def" data-reveal>
+          <div class="sym">e<sup>−β·τ/T<sub>c</sub></sup></div>
+          <div class="name">CSI aging decay</div>
+          <p>Exponential penalty on how stale the channel estimate has become.</p>
         </div>
       </div>
-    </section>
 
-    <hr class="divider" />
-
-    <!-- ── How It Works (3-step) ── -->
-    <section class="section">
-      <div class="wrap">
-        <div class="section-header reveal">
-          <div class="label-text">How It Works</div>
-          <h2 style="margin-top:var(--sp-3);">Predictive, not reactive</h2>
+      <div class="wv-rule-grid" data-reveal>
+        <div>
+          <div class="lab">Switching rule</div>
+          <div class="switching">
+            W = W<sub>ZF</sub>&nbsp;&nbsp;if CCI &lt; γ<br />
+            W = W<sub>MRT</sub>&nbsp;&nbsp;if CCI ≥ γ
+          </div>
+          <p>Hysteresis on the return path keeps the controller from oscillating at the boundary.</p>
+        </div>
+        <div class="why">
+          <div class="lab">Why γ = 0.6</div>
           <p>
-            Existing systems react to performance drops. WaveLynk computes CCI in real time
-            and acts before the link collapses.
+            Substituting a typical feedback delay τ ≈ 0.3·T<sub>c</sub> into the Bessel term gives
+            J₀(0.8) ≈ 0.7. The normalized correlation product crosses below 0.6 at that operating
+            point — the onset of ZF instability. The threshold is derived, not tuned.
           </p>
         </div>
-
-        <div class="step-flow stagger" style="margin-top:var(--sp-7);">
-          <div class="step-item reveal">
-            <div class="step-num">1</div>
-            <h4>Monitor</h4>
-            <p>Continuously estimate CSI age τ, Doppler shift f<sub>D</sub>, and channel condition number κ(H) from standard CSI feedback.</p>
-          </div>
-          <div class="step-arrow reveal">→</div>
-          <div class="step-item reveal">
-            <div class="step-num">2</div>
-            <h4>Predict</h4>
-            <p>Compute CCI in real time. When CCI approaches γ = 0.6, the system is approaching the coherence cliff.</p>
-          </div>
-          <div class="step-arrow reveal">→</div>
-          <div class="step-item reveal">
-            <div class="step-num">3</div>
-            <h4>Switch</h4>
-            <p>Proactively transition from ZF to MRT before failure — preserving throughput and preventing latency spikes.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="divider" />
-
-    <!-- ── Highlights ── -->
-    <section class="section" style="background:var(--bg-secondary);">
-      <div class="wrap">
-        <div class="grid grid-3 stagger">
-          <div class="card reveal">
-            <div class="card-body">
-              <div class="label-text">Hardware Validated</div>
-              <h3 style="margin-top:var(--sp-3);">Real Wi-Fi 7 testbed</h3>
-              <p style="margin-top:var(--sp-3);">
-                100 independent measurement trials on a Netgear Wi-Fi 7 router with iperf3,
-                confirming the theory against real-world wireless conditions.
-              </p>
-              <a class="btn btn-sm" href="results.html" style="margin-top:var(--sp-4);display:inline-flex;">See the data →</a>
-            </div>
-          </div>
-          <div class="card reveal">
-            <div class="card-body">
-              <div class="label-text">Open Source</div>
-              <h3 style="margin-top:var(--sp-3);">Full Python implementation</h3>
-              <p style="margin-top:var(--sp-3);">
-                Complete source code: CCI computation, Jake's fading channel simulator,
-                ZF/MRT precoders, and the adaptive controller — all in reproducible notebooks.
-              </p>
-              <a class="btn btn-sm" href="research.html" style="margin-top:var(--sp-4);display:inline-flex;">Browse the code →</a>
-            </div>
-          </div>
-          <div class="card reveal">
-            <div class="card-body">
-              <div class="label-text">Interactive</div>
-              <h3 style="margin-top:var(--sp-3);">Live simulation models</h3>
-              <p style="margin-top:var(--sp-3);">
-                Three interactive models let you tune channel parameters in real time and watch
-                the CCI-based switching mechanism respond to approaching instability.
-              </p>
-              <a class="btn btn-sm" href="live-models.html" style="margin-top:var(--sp-4);display:inline-flex;">Try the models →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="divider" />
-
-    <!-- ── CTA ── -->
-    <section class="section-lg">
-      <div class="wrap-narrow" style="text-align:center;">
-        <div class="label-text reveal">Get started</div>
-        <h2 class="reveal" style="margin-top:var(--sp-3);">Explore the work</h2>
-        <p class="large-text reveal" style="margin-top:var(--sp-4);">
-          Dig into the physics, run the simulations, or try the live interactive models.
-        </p>
-        <div class="btn-group reveal" style="justify-content:center;margin-top:var(--sp-7);">
-          <a class="btn btn-primary" href="how-it-works.html">How It Works →</a>
-          <a class="btn" href="results.html">Results</a>
-          <a class="btn" href="live-models.html">Live Models</a>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <span>© 2025 WaveLynk · Neha Abin, Sahil Shah, Yajat Parmar · Allen High School</span>
-      <div style="display:flex;gap:var(--sp-5);">
-        <a href="research.html">Research</a>
-        <a href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener">GitHub</a>
-        <a href="team.html">Team</a>
       </div>
     </div>
-  </footer>
+  </section>
 
-  <script src="main.js"></script>
+  <section id="control">
+    <div class="wv-section-in">
+      <div class="wv-kicker" data-reveal><span class="num">03</span><span>The control loop</span></div>
+      <h2 data-reveal>Predictive, not reactive.</h2>
+      <p class="wv-lede" data-reveal>
+        Every existing mechanism waits for a measurable drop. By then the cliff is behind you. WaveLynk
+        runs entirely on quantities the base station already has.
+      </p>
+
+      <div class="wv-cards3">
+        <div data-reveal>
+          <div class="step">01 / MONITOR</div>
+          <h3>Read what you already have</h3>
+          <p>Estimate CSI age τ, Doppler shift f<sub>D</sub> and condition number κ(H) from standard CSI feedback. No new hardware, no extra signalling overhead.</p>
+        </div>
+        <div data-reveal>
+          <div class="step">02 / PREDICT</div>
+          <h3>Score the channel each frame</h3>
+          <p>Compute CCI in real time. As it climbs toward γ = 0.6 the controller knows the cliff is ahead, while throughput still looks perfectly healthy.</p>
+        </div>
+        <div data-reveal>
+          <div class="step">03 / SWITCH</div>
+          <h3>Hand off before the fall</h3>
+          <p>Move the precoder to MRT, which tolerates stale CSI, then return to ZF once the channel settles. Peak throughput kept, collapse never reached.</p>
+        </div>
+      </div>
+
+      <div id="wv-loop" data-reveal>
+        <div class="wv-loop-head">
+          <div class="lab">The loop, one frame at a time</div>
+          <div class="wv-loop-readouts">
+            <span>frame <span id="wv-l-frame">0000</span></span>
+            <span>CCI <span id="wv-l-cci">0.31</span></span>
+            <span>W = <span id="wv-l-mode" style="color:#1a4fc4">ZF</span></span>
+          </div>
+        </div>
+        <svg viewBox="0 0 1180 300">
+          <g font-family="JetBrains Mono, monospace">
+            <g id="wv-l-s1" opacity="0.25">
+              <rect x="24" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
+              <text x="44" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">01 MONITOR</text>
+              <text x="44" y="158" font-size="14" fill="#10161f">τ, f_D, κ(H)</text>
+              <text x="44" y="182" font-size="12" fill="rgba(16,22,31,.5)">from CSI feedback</text>
+            </g>
+            <g id="wv-l-s2" opacity="0.25">
+              <rect x="316" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
+              <text x="336" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">02 PREDICT</text>
+              <text x="336" y="158" font-size="14" fill="#10161f">CCI = Πterms</text>
+              <text x="336" y="182" font-size="12" fill="rgba(16,22,31,.5)">compare to γ = 0.6</text>
+            </g>
+            <g id="wv-l-s3" opacity="0.25">
+              <rect id="wv-l-s3box" x="608" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
+              <text x="628" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">03 SWITCH</text>
+              <text id="wv-l-w" x="628" y="158" font-size="14" fill="#10161f">W ← W_ZF</text>
+              <text x="628" y="182" font-size="12" fill="rgba(16,22,31,.5)">hysteresis ±0.05</text>
+            </g>
+            <g id="wv-l-s4" opacity="0.25">
+              <rect x="900" y="96" width="256" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
+              <text x="920" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">04 TRANSMIT</text>
+              <text x="920" y="158" font-size="14" fill="#10161f">next frame</text>
+              <text x="920" y="182" font-size="12" fill="rgba(16,22,31,.5)">loop re-enters at 01</text>
+            </g>
+            <g stroke="rgba(16,22,31,.2)" fill="none">
+              <path d="M252 150 L316 150"></path>
+              <path d="M544 150 L608 150"></path>
+              <path d="M836 150 L900 150"></path>
+              <path d="M1028 204 L1028 254 L138 254 L138 204" stroke-dasharray="4 5"></path>
+            </g>
+            <circle id="wv-l-pulse" cx="252" cy="150" r="5" fill="#1a4fc4" opacity="0"></circle>
+            <text x="583" y="276" font-size="11" letter-spacing="1.6" fill="rgba(16,22,31,.35)" text-anchor="middle">EVERY FRAME · NO EXTRA SIGNALLING</text>
+          </g>
+        </svg>
+      </div>
+
+      <div class="wv-loop-caption" data-reveal>
+        <div>
+          <div class="wv-label">Implementation</div>
+          <p>
+            The whole framework is open source — CCI computation, a Jake's-fading MIMO simulator, both
+            precoders, and the adaptive controller — with four notebooks that reproduce every figure
+            in the paper from scratch.
+          </p>
+        </div>
+        <div class="wv-filelist">
+          <div>src/cci.py <span>— CCI + Doppler utilities</span></div>
+          <div>src/channel_model.py <span>— Rayleigh / Jake's fading</span></div>
+          <div>src/beamforming.py <span>— ZF and MRT precoders</span></div>
+          <div>src/switching.py <span>— controller, hysteresis</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="evidence">
+    <div class="wv-section-in">
+      <div class="wv-kicker" data-reveal><span class="num">04</span><span>The evidence</span></div>
+      <h2 data-reveal>100 trials on real hardware.</h2>
+      <p class="wv-lede" data-reveal>
+        Netgear Nighthawk Wi-Fi 6/7 router on the 6 GHz band. One laptop serving iperf3, two clients
+        stressing the MU-MIMO link, two phones logging throughput and RSSI — 100 independent trials
+        comparing WaveLynk against always-ZF and always-MRT.
+      </p>
+
+      <div class="wv-stats">
+        <div data-reveal>
+          <div class="count" data-count="41" data-pre="↓" data-suf="%">↓0%</div>
+          <div class="lab">Outage rate</div>
+          <p>28% under always-ZF, 17% under WaveLynk.</p>
+        </div>
+        <div data-reveal>
+          <div class="count" data-count="32" data-pre="↓" data-suf="%">↓0%</div>
+          <div class="lab">P50 latency</div>
+          <p>65 ms down to 44 ms at −80 dBm.</p>
+        </div>
+        <div data-reveal>
+          <div class="count" data-count="89" data-pre="↓" data-suf="%">↓0%</div>
+          <div class="lab">Packet loss</div>
+          <p>45% down to 5% at the same signal power.</p>
+        </div>
+      </div>
+
+      <div class="wv-tblwrap" data-reveal>
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Always ZF</th>
+              <th>Always MRT</th>
+              <th>WaveLynk</th>
+              <th>vs. ZF</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Outage rate</td>
+              <td class="warn">~28%</td>
+              <td class="mid">~12%</td>
+              <td>~17%</td>
+              <td class="acc">↓41%</td>
+            </tr>
+            <tr>
+              <td>P50 latency at −80 dBm</td>
+              <td class="warn">~65 ms</td>
+              <td class="mid">~50 ms</td>
+              <td>~44 ms</td>
+              <td class="acc">↓32%</td>
+            </tr>
+            <tr>
+              <td>Packet loss at −80 dBm</td>
+              <td class="warn">~45%</td>
+              <td class="mid">~18%</td>
+              <td>~5%</td>
+              <td class="acc">↓89%</td>
+            </tr>
+            <tr>
+              <td>Failure mode</td>
+              <td class="warn">Sudden collapse</td>
+              <td class="mid">Gradual decay</td>
+              <td>Prevented</td>
+              <td class="dim">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="wv-figs">
+        <figure data-reveal>
+          <div class="frame"><img src="images/fig_latency_time.png" alt="Latency over time: fixed ZF vs WaveLynk" /></div>
+          <figcaption><strong>Fig. 1 — Latency over time.</strong> Fixed ZF rises unbounded as conditions degrade. WaveLynk switches at t ≈ 22 s and settles near 44 ms. n = 5 repetitions.</figcaption>
+        </figure>
+        <figure data-reveal>
+          <div class="frame"><img src="images/fig_latency_loss.png" alt="Latency and packet loss vs received signal power" /></div>
+          <figcaption><strong>Fig. 2 — Latency and loss vs. signal power.</strong> At −80 dBm fixed ZF collapses while WaveLynk holds. Both converge at strong signal, where CCI stays below γ.</figcaption>
+        </figure>
+        <figure data-reveal>
+          <div class="frame"><img src="images/fig_ping.png" alt="Ping latency vs received signal power" /></div>
+          <figcaption><strong>Fig. 3 — Ping latency vs. signal power.</strong> MRT-dominant mode wins consistently below −65 dBm, the coherence-cliff transition zone.</figcaption>
+        </figure>
+        <figure data-reveal>
+          <div class="frame"><img src="images/fig_loss.png" alt="Packet loss rate vs received signal power" /></div>
+          <figcaption><strong>Fig. 4 — Packet loss vs. signal power.</strong> At −80 dBm, ZF-dominant shows 45% loss against 18% for MRT-dominant. Adaptive switching captures that benefit only when it is needed.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="wv-section-in tight">
+      <div class="wv-kicker" data-reveal><span class="num">05</span><span>The timeline</span></div>
+      <h2 data-reveal>How the project was built.</h2>
+      <p class="wv-lede" data-reveal>
+        From an unexplained latency spike on a home router to a derived threshold, a simulator, a
+        testbed and an IEEE-format paper.
+      </p>
+    </div>
+
+    <div id="wv-track">
+      <div class="wv-rail wv-rail-track"></div>
+      <div id="wv-fill" class="wv-rail"></div>
+      <div>
+
+        <div class="wv-node" data-reveal data-node="1">
+          <div class="wv-node-dot"></div>
+          <div class="wv-phase">Phase 01<div class="stage">Observation</div></div>
+          <div>
+            <h3>A collapse that no model explained</h3>
+            <p>Repeated throughput cliffs on a 6 GHz link while a user walked across the room. Existing link-adaptation models predicted a gradual decay; the measurements showed a step. That gap became the research question.</p>
+          </div>
+        </div>
+
+        <div class="wv-node" data-reveal data-node="1">
+          <div class="wv-node-dot"></div>
+          <div class="wv-phase">Phase 02<div class="stage">Theory</div></div>
+          <div>
+            <h3>Deriving the Conditioned Coherence Index</h3>
+            <p>Four known quantities — condition number, Jakes' Doppler correlation, normalized SINR and CSI-age decay — combined into a single product, then differentiated to locate the instability onset. γ = 0.6 fell out of the algebra rather than a parameter sweep.</p>
+            <div class="nb">notebooks/01_cci_derivation.ipynb</div>
+          </div>
+        </div>
+
+        <div class="wv-node" data-reveal data-node="1">
+          <div class="wv-node-dot"></div>
+          <div class="wv-phase">Phase 03<div class="stage">Simulation</div></div>
+          <div>
+            <h3>A Jakes-fading MIMO testbench in Python</h3>
+            <p>Rayleigh channel generation with realistic temporal correlation, both precoders implemented from the definitions, and the controller wrapped around them. Every paper figure is reproducible from the notebook.</p>
+            <div class="nb">notebooks/02_simulation_figures.ipynb</div>
+          </div>
+        </div>
+
+        <div class="wv-node" data-reveal data-node="1">
+          <div class="wv-node-dot"></div>
+          <div class="wv-phase">Phase 04<div class="stage">Robustness</div></div>
+          <div>
+            <h3>100-trial Monte Carlo sweep</h3>
+            <p>Randomized channel realizations, mobility profiles and feedback delays, to check the threshold was not an artifact of one configuration. The outage and latency gains held across the sweep.</p>
+            <div class="nb">notebooks/03_monte_carlo.ipynb</div>
+          </div>
+        </div>
+
+        <div class="wv-node" data-reveal data-node="1">
+          <div class="wv-node-dot"></div>
+          <div class="wv-phase">Phase 05<div class="stage">Hardware</div></div>
+          <div>
+            <h3>Wi-Fi 7 testbed validation</h3>
+            <p>A Netgear Nighthawk router at 6 GHz, one iperf3 server, two client laptops and two phones logging RSSI and throughput, across 100 trials from −50 to −80 dBm. Theory and measurement agreed on where the cliff sits.</p>
+            <div class="nb">notebooks/04_hardware_validation.ipynb</div>
+          </div>
+        </div>
+
+        <div class="wv-node" data-reveal data-node="1" style="padding-bottom:0">
+          <div class="wv-node-dot"></div>
+          <div class="wv-phase">Phase 06<div class="stage">Publication</div></div>
+          <div>
+            <h3>Paper, poster and open-source release</h3>
+            <p>Written up in IEEE format, with the full implementation, data dictionary and notebooks released under MIT so the result can be checked line by line.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="team">
+    <div class="wv-section-in">
+      <div class="wv-kicker" data-reveal><span class="num">06</span><span>The team</span></div>
+      <h2 data-reveal>Three authors, one high school.</h2>
+
+      <div class="wv-team-grid">
+        <div data-reveal>
+          <div class="wv-portrait"><span>portrait</span></div>
+          <h3>Neha Abin</h3>
+          <div class="role">Theory &amp; simulation</div>
+          <p class="bio">Derived the CCI and the γ threshold; built the fading channel model and simulation figures.</p>
+        </div>
+        <div data-reveal>
+          <div class="wv-portrait"><span>portrait</span></div>
+          <h3>Sahil Shah</h3>
+          <div class="role">Hardware &amp; validation</div>
+          <p class="bio">Designed and ran the Wi-Fi 7 testbed protocol across 100 measurement trials.</p>
+        </div>
+        <div data-reveal>
+          <div class="wv-portrait"><span>portrait</span></div>
+          <h3>Yajat Parmar</h3>
+          <div class="role">Implementation</div>
+          <p class="bio">Built the controller implementation, the notebook pipeline and the project site.</p>
+        </div>
+      </div>
+
+      <div class="wv-team-affil" data-reveal>Allen High School · Allen, Texas</div>
+    </div>
+  </section>
+
+  <section id="paper">
+    <div class="wv-section-in">
+      <div class="wv-paper-grid" data-reveal>
+        <div>
+          <h2>Read the paper.</h2>
+          <p>
+            Neha Abin, Sahil Shah, Yajat Parmar. "Predicting Beamforming Instability in Wi-Fi 7 and
+            6G Systems Using a Conditioned Coherence Framework." IEEE format, 2026.
+          </p>
+          <div class="wv-paper-ctas">
+            <a href="../paper/WaveLynk_Paper.pdf" target="_blank" rel="noopener" class="wv-btn wv-btn-primary">Open the PDF</a>
+            <a href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener" class="wv-btn wv-btn-secondary">Source on GitHub</a>
+          </div>
+        </div>
+        <div class="wv-refs">
+          <div>Tse &amp; Viswanath — Fundamentals of Wireless Communication</div>
+          <div>Jakes — Microwave Mobile Communications</div>
+          <div>Marzetta — IEEE Trans. Wireless Commun., 2010</div>
+          <div>Rappaport et al. — IEEE Access, 2013</div>
+          <div>IEEE 802.11be (Wi-Fi 7) EHT, 2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<a id="wv-top" href="#top" aria-label="Back to top">↑</a>
+
+<footer>
+  <div class="wv-footin">
+    <span>© 2026 WaveLynk · MIT License</span>
+    <span class="wv-footlinks"><a href="#top">Back to top</a><a href="https://github.com/yajatp/WaveLynk" target="_blank" rel="noopener">GitHub</a></span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
 </body>
 </html>
