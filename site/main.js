@@ -176,42 +176,94 @@
   ];
 
   // ---- control loop animation (section 03) ----
+  // Ball travels continuously along the connector lines, fades in/out exactly
+  // at each box's edge, and disappears behind each box (z-order: lines -> ball
+  // -> boxes, each box with an opaque backdrop rect) while highlighted.
   const loopEl = q("#wv-loop");
   if (loopEl && !reduceMotion) {
-    const stages = [q("#wv-l-s1"), q("#wv-l-s2"), q("#wv-l-s3"), q("#wv-l-s4")];
-    const pulse = q("#wv-l-pulse"), s3box = q("#wv-l-s3box");
+    const stages = [q("#wv-l-s1c"), q("#wv-l-s2c"), q("#wv-l-s3c"), q("#wv-l-s4c")];
+    const pulse = q("#wv-l-pulse"), s3box = q("#wv-l-s3box"), returnPath = q("#wv-l-return");
     const frameEl = q("#wv-l-frame"), cciEl = q("#wv-l-cci"), modeEl = q("#wv-l-mode"), wEl = q("#wv-l-w");
-    const stops = [138, 430, 722, 1028];
-    let frame = 0, step = 0, zfMode = true, live = false, last = 0, acc = 0;
+    const pts = [
+      { entry: [138, 204], exit: [252, 150], center: [138, 150] },
+      { entry: [316, 150], exit: [544, 150], center: [430, 150] },
+      { entry: [608, 150], exit: [836, 150], center: [722, 150] },
+      { entry: [900, 150], exit: [1028, 204], center: [1028, 150] }
+    ];
+    const returnLen = returnPath ? returnPath.getTotalLength() : 0;
+    const DURS = { travel: 750, travelFast: 500, enter: 350, hold: 600, exit: 350 };
+    const ease = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    let frame = 0, cci = 0.31, zfMode = true, live = false, last = 0;
+    let stageIndex = 0, phase = "enter", elapsed = 0;
     const loopIo = new IntersectionObserver((es) => {
       es.forEach((e) => { live = e.isIntersecting; });
     }, { threshold: 0.35 });
     loopIo.observe(loopEl);
+    const setStageOpacity = (i, v) => { if (stages[i]) stages[i].setAttribute("opacity", v.toFixed(2)); };
+    const enterStageHold = (i) => {
+      if (i === 0) {
+        frame++;
+        // CCI wanders; hysteresis at 0.60 / 0.55 prevents chatter (SwitchingConfig.hysteresis = 0.05)
+        cci = clamp(0.42 + 0.34 * Math.sin(frame / 5.5) + 0.1 * Math.sin(frame / 1.7), 0.05, 0.99);
+        if (frameEl) frameEl.textContent = String(frame % 10000).padStart(4, "0");
+        if (cciEl) { cciEl.textContent = cci.toFixed(2); cciEl.style.color = cci >= 0.6 ? "#b4472c" : "#10161f"; }
+      }
+      if (i === 2) {
+        if (zfMode && cci >= 0.6) zfMode = false;
+        else if (!zfMode && cci < 0.55) zfMode = true;
+        if (modeEl) { modeEl.textContent = zfMode ? "ZF" : "MRT"; modeEl.style.color = zfMode ? "#1a4fc4" : "#b4472c"; }
+        if (wEl) wEl.textContent = zfMode ? "W ← W_ZF" : "W ← W_MRT";
+        if (s3box) s3box.setAttribute("stroke", !zfMode ? "#b4472c" : "rgba(16,22,31,.3)");
+        const rect = stages[2] ? stages[2].querySelector("rect") : null;
+        if (rect) rect.setAttribute("fill", !zfMode ? "rgba(180,71,44,.07)" : "rgba(26,79,196,.05)");
+      }
+    };
     const tick = (ts) => {
       requestAnimationFrame(tick);
       if (!live) { last = ts; return; }
-      acc += ts - (last || ts);
+      let dt = ts - (last || ts);
       last = ts;
-      if (acc < 620) return;
-      acc = 0;
-      step = (step + 1) % 4;
-      if (step === 0) frame++;
-      // CCI wanders; hysteresis at 0.60 / 0.55 prevents chatter (SwitchingConfig.hysteresis = 0.05)
-      const cci = 0.42 + 0.34 * Math.sin(frame / 5.5) + 0.1 * Math.sin(frame / 1.7);
-      const c = clamp(cci, 0.05, 0.99);
-      if (zfMode && c >= 0.6) zfMode = false;
-      else if (!zfMode && c < 0.55) zfMode = true;
-      stages.forEach((g, i) => { if (g) g.setAttribute("opacity", i === step ? "1" : "0.25"); });
-      if (frameEl) frameEl.textContent = String(frame % 10000).padStart(4, "0");
-      if (cciEl) { cciEl.textContent = c.toFixed(2); cciEl.style.color = c >= 0.6 ? "#b4472c" : "#10161f"; }
-      if (modeEl) { modeEl.textContent = zfMode ? "ZF" : "MRT"; modeEl.style.color = zfMode ? "#1a4fc4" : "#b4472c"; }
-      if (wEl) wEl.textContent = zfMode ? "W ← W_ZF" : "W ← W_MRT";
-      if (s3box) s3box.setAttribute("stroke", !zfMode && step === 2 ? "#b4472c" : "rgba(16,22,31,.3)");
-      if (pulse) {
-        pulse.setAttribute("cx", stops[step]);
-        pulse.setAttribute("cy", 150);
-        pulse.setAttribute("fill", zfMode ? "#1a4fc4" : "#b4472c");
+      if (dt > 200) dt = 16;
+      elapsed += dt;
+      const p = pts[stageIndex];
+      if (phase === "travel") {
+        const isReturn = stageIndex === 0;
+        const dur = isReturn ? DURS.travelFast : DURS.travel;
+        const t = clamp(elapsed / dur, 0, 1);
+        const et = ease(t);
+        if (isReturn && returnPath) {
+          const pt = returnPath.getPointAtLength(returnLen * et);
+          pulse.setAttribute("cx", pt.x.toFixed(1));
+          pulse.setAttribute("cy", pt.y.toFixed(1));
+        } else {
+          const from = pts[(stageIndex + 3) % 4].exit;
+          pulse.setAttribute("cx", lerp(from[0], p.entry[0], et).toFixed(1));
+          pulse.setAttribute("cy", lerp(from[1], p.entry[1], et).toFixed(1));
+        }
         pulse.setAttribute("opacity", "1");
+        pulse.setAttribute("fill", zfMode ? "#1a4fc4" : "#b4472c");
+        if (t >= 1) { phase = "enter"; elapsed = 0; }
+      } else if (phase === "enter") {
+        const t = clamp(elapsed / DURS.enter, 0, 1);
+        const et = ease(t);
+        pulse.setAttribute("cx", lerp(p.entry[0], p.center[0], et).toFixed(1));
+        pulse.setAttribute("cy", lerp(p.entry[1], p.center[1], et).toFixed(1));
+        pulse.setAttribute("opacity", (1 - t).toFixed(2));
+        setStageOpacity(stageIndex, lerp(0.25, 1, et));
+        if (t >= 1) { enterStageHold(stageIndex); phase = "hold"; elapsed = 0; }
+      } else if (phase === "hold") {
+        setStageOpacity(stageIndex, 1);
+        pulse.setAttribute("opacity", "0");
+        if (elapsed >= DURS.hold) { phase = "exit"; elapsed = 0; }
+      } else if (phase === "exit") {
+        const t = clamp(elapsed / DURS.exit, 0, 1);
+        const et = ease(t);
+        pulse.setAttribute("cx", lerp(p.center[0], p.exit[0], et).toFixed(1));
+        pulse.setAttribute("cy", lerp(p.center[1], p.exit[1], et).toFixed(1));
+        pulse.setAttribute("opacity", t.toFixed(2));
+        setStageOpacity(stageIndex, lerp(1, 0.25, et));
+        if (t >= 1) { stageIndex = (stageIndex + 1) % 4; phase = "travel"; elapsed = 0; }
       }
     };
     requestAnimationFrame(tick);

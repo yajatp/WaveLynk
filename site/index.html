@@ -328,37 +328,49 @@
         </div>
         <svg viewBox="0 0 1180 300">
           <g font-family="JetBrains Mono, monospace">
-            <g id="wv-l-s1" opacity="0.25">
-              <rect x="24" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
-              <text x="44" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">01 MONITOR</text>
-              <text x="44" y="158" font-size="14" fill="#10161f">τ, f_D, κ(H)</text>
-              <text x="44" y="182" font-size="12" fill="rgba(16,22,31,.5)">from CSI feedback</text>
-            </g>
-            <g id="wv-l-s2" opacity="0.25">
-              <rect x="316" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
-              <text x="336" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">02 PREDICT</text>
-              <text x="336" y="158" font-size="14" fill="#10161f">CCI = Πterms</text>
-              <text x="336" y="182" font-size="12" fill="rgba(16,22,31,.5)">compare to γ = 0.6</text>
-            </g>
-            <g id="wv-l-s3" opacity="0.25">
-              <rect id="wv-l-s3box" x="608" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
-              <text x="628" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">03 SWITCH</text>
-              <text id="wv-l-w" x="628" y="158" font-size="14" fill="#10161f">W ← W_ZF</text>
-              <text x="628" y="182" font-size="12" fill="rgba(16,22,31,.5)">hysteresis ±0.05</text>
-            </g>
-            <g id="wv-l-s4" opacity="0.25">
-              <rect x="900" y="96" width="256" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
-              <text x="920" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">04 TRANSMIT</text>
-              <text x="920" y="158" font-size="14" fill="#10161f">next frame</text>
-              <text x="920" y="182" font-size="12" fill="rgba(16,22,31,.5)">loop re-enters at 01</text>
-            </g>
             <g stroke="rgba(16,22,31,.2)" fill="none">
               <path d="M252 150 L316 150"></path>
               <path d="M544 150 L608 150"></path>
               <path d="M836 150 L900 150"></path>
-              <path d="M1028 204 L1028 254 L138 254 L138 204" stroke-dasharray="4 5"></path>
+              <path id="wv-l-return" d="M1028 204 L1028 254 L138 254 L138 204" stroke-dasharray="4 5"></path>
             </g>
-            <circle id="wv-l-pulse" cx="252" cy="150" r="5" fill="#1a4fc4" opacity="0"></circle>
+            <circle id="wv-l-pulse" cx="138" cy="204" r="5" fill="#1a4fc4" opacity="0"></circle>
+            <g id="wv-l-s1">
+              <rect x="24" y="96" width="228" height="108" fill="#f6f8fc"></rect>
+              <g id="wv-l-s1c" opacity="0.25">
+                <rect x="24" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
+                <text x="44" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">01 MONITOR</text>
+                <text x="44" y="158" font-size="14" fill="#10161f">τ, f_D, κ(H)</text>
+                <text x="44" y="182" font-size="12" fill="rgba(16,22,31,.5)">from CSI feedback</text>
+              </g>
+            </g>
+            <g id="wv-l-s2">
+              <rect x="316" y="96" width="228" height="108" fill="#f6f8fc"></rect>
+              <g id="wv-l-s2c" opacity="0.25">
+                <rect x="316" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
+                <text x="336" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">02 PREDICT</text>
+                <text x="336" y="158" font-size="14" fill="#10161f">CCI = Πterms</text>
+                <text x="336" y="182" font-size="12" fill="rgba(16,22,31,.5)">compare to γ = 0.6</text>
+              </g>
+            </g>
+            <g id="wv-l-s3">
+              <rect x="608" y="96" width="228" height="108" fill="#f6f8fc"></rect>
+              <g id="wv-l-s3c" opacity="0.25">
+                <rect id="wv-l-s3box" x="608" y="96" width="228" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
+                <text x="628" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">03 SWITCH</text>
+                <text id="wv-l-w" x="628" y="158" font-size="14" fill="#10161f">W ← W_ZF</text>
+                <text x="628" y="182" font-size="12" fill="rgba(16,22,31,.5)">hysteresis ±0.05</text>
+              </g>
+            </g>
+            <g id="wv-l-s4">
+              <rect x="900" y="96" width="256" height="108" fill="#f6f8fc"></rect>
+              <g id="wv-l-s4c" opacity="0.25">
+                <rect x="900" y="96" width="256" height="108" fill="none" stroke="rgba(16,22,31,.3)"></rect>
+                <text x="920" y="128" font-size="11" letter-spacing="1.6" fill="#1a4fc4">04 TRANSMIT</text>
+                <text x="920" y="158" font-size="14" fill="#10161f">next frame</text>
+                <text x="920" y="182" font-size="12" fill="rgba(16,22,31,.5)">loop re-enters at 01</text>
+              </g>
+            </g>
             <text x="583" y="276" font-size="11" letter-spacing="1.6" fill="rgba(16,22,31,.35)" text-anchor="middle">EVERY FRAME · NO EXTRA SIGNALLING</text>
           </g>
         </svg>
