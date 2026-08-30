@@ -1,9 +1,9 @@
 # WaveLynk: Predictive Beamforming Switching for Wi-Fi 7 and 6G Systems
 
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)](https://python.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Status: Active](https://img.shields.io/badge/Status-Active-22c55e)](https://github.com/yajatp/WaveLynk)
+[![Code License: MIT](https://img.shields.io/badge/Code_License-MIT-green.svg)](LICENSE)
 [![Paper: IEEE Format](https://img.shields.io/badge/Paper-IEEE_Format-0077B5)](paper/WaveLynk_Paper.pdf)
+[![Status: Active](https://img.shields.io/badge/Status-Active-22c55e)](https://github.com/yajatp/WaveLynk)
 
 > **Turning the Coherence Cliff from a failure mode into a predictable, preventable event.**
 
@@ -13,11 +13,11 @@ WaveLynk is a predictive beamforming control framework that detects approaching 
 
 ## Overview
 
-High-frequency wireless systems — including Wi-Fi 7 (6 GHz), mmWave 5G, and emerging 6G — rely on MIMO beamforming to serve multiple users simultaneously. The dominant precoding strategy, **Zero-Forcing (ZF)**, works by inverting the channel matrix to cancel inter-user interference. This works remarkably well when the Channel State Information (CSI) is fresh and accurate.
+High-frequency wireless systems — including Wi-Fi 7 (6 GHz), mmWave 5G, and emerging 6G — rely on Multi-User MIMO (MU-MIMO) beamforming to serve multiple users simultaneously. The dominant precoding strategy, **Zero-Forcing (ZF)**, works by inverting the channel matrix to cancel inter-user interference. This works remarkably well when the Channel State Information (CSI) is fresh and accurate.
 
-The problem is that it fails *suddenly*. Unlike legacy systems that degrade gradually, these high-frequency systems experience a sharp, nonlinear collapse in throughput and reliability when CSI becomes stale — a phenomenon we call the **Coherence Cliff**. A user simply walking across a room at 1.5 m/s can push the system past this boundary, causing packet loss to spike and latency to explode.
+The problem is that it fails *suddenly*. Unlike legacy systems that degrade gradually, these high-frequency systems experience a sharp, nonlinear collapse in throughput and reliability when CSI becomes stale — a phenomenon known as the **Coherence Cliff**. A user simply walking across a room at 1.5 m/s can push the system past this boundary, causing packet loss to spike and latency to explode.
 
-WaveLynk introduces the **Conditioned Coherence Index (CCI)**, a unified analytical metric that predicts when a MIMO channel is approaching the Coherence Cliff. When CCI crosses a derived threshold, WaveLynk proactively switches from ZF to the more robust Maximum Ratio Transmission (MRT) precoding — preserving connectivity and preventing outages.
+WaveLynk introduces the **Conditioned Coherence Index (CCI)**, a unified analytical metric that predicts when a MIMO channel is approaching the Coherence Cliff. When CCI crosses a derived threshold ($\gamma = 0.6$), WaveLynk proactively switches from ZF to the more robust Maximum Ratio Transmission (MRT) precoding — preserving connectivity and preventing outages.
 
 ---
 
@@ -29,29 +29,29 @@ $$\text{CCI}(t) = \kappa(\mathbf{H}) \cdot \left|J_0(2\pi f_D \tau)\right| \cdot
 
 | Term | Name | What It Captures |
 |------|------|-----------------|
-| $\kappa(\mathbf{H})$ | Channel condition number | Spatial instability — how much ZF amplifies errors |
-| $\|J_0(2\pi f_D \tau)\|$ | Doppler decorrelation | Temporal channel variation due to user mobility |
-| $\frac{\text{SINR}}{\text{SINR} + \alpha}$ | Signal quality weight | Normalized signal-to-interference measure |
-| $e^{-\beta \tau / T_c}$ | CSI aging decay | How stale the channel estimate has become |
+| $\kappa(\mathbf{H})$ | Channel condition number | Spatial instability — how much ZF amplifies channel estimation errors |
+| $\|J_0(2\pi f_D \tau)\|$ | Doppler decorrelation | Temporal channel variation due to user mobility (Bessel function order 0) |
+| $\frac{\text{SINR}}{\text{SINR} + \alpha}$ | Signal quality weight | Normalized signal-to-interference measure ($\alpha$ sensitivity parameter) |
+| $e^{-\beta \tau / T_c}$ | CSI aging decay | Channel estimate staleness relative to coherence time $T_c$ |
 
 ### Switching Rule
 
 $$W_{\text{opt}} = \begin{cases} W_{\text{ZF}} & \text{if } \text{CCI}(t) < \gamma \\ W_{\text{MRT}} & \text{if } \text{CCI}(t) \geq \gamma \end{cases}$$
 
-The threshold **γ = 0.6** is derived analytically: substituting a typical feedback delay τ ≈ 0.3·Tc into the Bessel function gives J₀(0.8) ≈ 0.7, and the normalized correlation product drops below 0.6 at this operating point — marking the onset of ZF instability.
+The threshold **$\gamma = 0.6$** is derived analytically: substituting a typical feedback delay $\tau \approx 0.3 \cdot T_c$ into the Bessel function gives $J_0(0.8) \approx 0.7$, and the normalized correlation product drops below 0.6 at this operating point — marking the onset of ZF instability.
 
 ---
 
 ## Key Results
 
-| Metric | Always-ZF | WaveLynk | Improvement |
-|--------|-----------|----------|-------------|
-| Outage Rate | High at mobility | Near-zero | ↓ 41% |
-| Peak Latency | Spikes past cliff | Stable | ↓ 32% |
-| Packet Loss | Catastrophic collapse | Controlled | Prevented |
-| Validated Trials | — | 100 | — |
+| Metric | Always-ZF | Always-MRT | WaveLynk (Adaptive) | Improvement |
+|--------|-----------|------------|---------------------|-------------|
+| Outage Rate | High under mobility | Moderate | **Near-zero** | **↓ 41%** |
+| Peak Latency | Spikes past cliff | High base | **Stable & Low** | **↓ 32%** |
+| Packet Loss | Catastrophic collapse | Moderate | **Controlled** | **Prevented** |
+| Validated Trials | — | — | **100 Trials** | — |
 
-*Simulation values shown. See [`notebooks/03_monte_carlo.ipynb`](notebooks/03_monte_carlo.ipynb) for full statistical results.*
+*Empirical testbed data from 100 trials on a 6 GHz Wi-Fi 7 router. See [`notebooks/03_monte_carlo.ipynb`](notebooks/03_monte_carlo.ipynb) and [`notebooks/04_hardware_validation.ipynb`](notebooks/04_hardware_validation.ipynb) for full results.*
 
 ---
 
@@ -60,43 +60,45 @@ The threshold **γ = 0.6** is derived analytically: substituting a typical feedb
 ```
 WaveLynk/
 │
-├── README.md                          ← This file
+├── README.md                          ← Main project documentation
+├── LICENSE                            ← Dual MIT Code License & IEEE Paper Copyright
+├── requirements.txt                   ← Python dependencies
+├── vercel.json                        ← Web deployment configuration
 │
-├── paper/
-│   └── WaveLynk_Paper.pdf            ← IEEE-format research paper (add manually)
-│
-├── poster/
-│   └── WaveLynk_Poster.pdf           ← Conference poster (add manually)
-│
-├── src/
-│   ├── __init__.py                    ← Package init, exposes core API
-│   ├── cci.py                         ← CCI formula + Doppler/coherence utilities
-│   ├── channel_model.py               ← Rayleigh/Jake's fading MIMO simulator
-│   ├── beamforming.py                 ← ZF and MRT precoder implementations
+├── src/                               ← Core Python package
+│   ├── __init__.py                    ← Package init, exposes top-level API
+│   ├── cci.py                         ← CCI formulation & Doppler/coherence functions
+│   ├── beamforming.py                 ← Zero-Forcing (ZF) and MRT precoders
+│   ├── channel_model.py               ← Jake's fading Rayleigh MIMO simulator
 │   └── switching.py                   ← WaveLynk adaptive controller with hysteresis
 │
-├── notebooks/
-│   ├── 01_cci_derivation.ipynb        ← CCI math walkthrough, γ=0.6 derivation
-│   ├── 02_simulation_figures.ipynb    ← Reproduces all 3 paper figures in Python
-│   ├── 03_monte_carlo.ipynb           ← 100-trial robustness sweep
-│   └── 04_hardware_validation.ipynb   ← Real testbed data vs. theory comparison
+├── notebooks/                         ← Jupyter research notebooks
+│   ├── 01_cci_derivation.ipynb        ← CCI mathematical derivation & γ=0.6 threshold
+│   ├── 02_simulation_figures.ipynb    ← 3D surfaces & stability analysis figures
+│   ├── 03_monte_carlo.ipynb           ← 100-trial Monte Carlo robustness sweep
+│   └── 04_hardware_validation.ipynb   ← Testbed measurements vs. theoretical bounds
 │
-├── data/
-│   ├── README.md                      ← Data dictionary and collection methodology
-│   ├── hardware/                      ← Real Wi-Fi 6/7 testbed measurements
-│   └── simulation/                    ← Monte Carlo output CSVs
+├── paper/                             ← Research publication materials
+│   ├── README.md                      ← Paper abstract, citation & copyright notice
+│   ├── WaveLynk_Paper.pdf             ← Complete IEEE format research paper
+│   └── WaveLynk_Manuscript.docx       ← Source manuscript document
 │
-├── site/
-│   ├── index.html                     ← Interactive demo site with live simulations
-│   ├── science.html                   ← Science explanation page
-│   ├── demos.html                     ← Interactive demo page
-│   ├── evidence.html                  ← Evidence and results page
-│   └── team.html                      ← Team page
+├── poster/                            ← Conference presentation materials
+│   ├── README.md                      ← Poster summary & visual outline
+│   └── .gitkeep
 │
-├── assets/                            ← Poster/paper image assets
-├── requirements.txt                   ← Python dependencies
-├── .gitignore
-└── LICENSE                            ← MIT License
+├── data/                              ← Experimental & simulation datasets
+│   ├── README.md                      ← Data dictionary & measurement protocol
+│   ├── hardware/                      ← Wi-Fi 7 testbed trial measurements
+│   └── simulation/                    ← Monte Carlo generated CSVs
+│
+├── site/                              ← Interactive web application & live demo
+│   ├── index.html                     ← Responsive SPA (Science, Demos, Evidence, Team)
+│   ├── styles.css                     ← Custom styling & responsive layouts
+│   ├── main.js                        ← Interactive simulation engine & visualizer
+│   └── images/                        ← Author photos, system figures & diagrams
+│
+└── assets/                            ← Presentation assets & rendered notebook figures
 ```
 
 ---
@@ -116,63 +118,86 @@ cd WaveLynk
 pip install -r requirements.txt
 ```
 
-### Run the Simulations
+### Run the Research Notebooks
 
 ```bash
 cd notebooks
 jupyter notebook
 ```
 
-Start with `01_cci_derivation.ipynb` for the mathematical foundations, then proceed through the notebooks in order.
+Follow the notebooks in numerical order:
+1. `01_cci_derivation.ipynb`: Step-by-step mathematical derivation of the CCI equation and the $\gamma = 0.6$ threshold.
+2. `02_simulation_figures.ipynb`: Reproduces 3D stability surfaces and multi-panel performance figures.
+3. `03_monte_carlo.ipynb`: 100-run Monte Carlo sweep evaluating outage probability under stochastic channels.
+4. `04_hardware_validation.ipynb`: Validates theoretical bounds against physical 6 GHz testbed data.
 
-### Run the Demo Site
+### Run the Interactive Web Demo
 
 ```bash
 cd site
-python -m http.server 8000
-# Open http://127.0.0.1:8000/
+python3 -m http.server 8000
+# Open http://localhost:8000 in your browser
 ```
 
 ---
 
 ## Hardware Testbed
 
-Experimental validation was performed on a physical Wi-Fi 6/7 testbed:
+Experimental validation was conducted on a physical Wi-Fi 6/7 testbed:
 
 - **Router:** Netgear Nighthawk Wi-Fi 6/7 router operating on the 6 GHz band
-- **Server:** 1 laptop running `iperf3` as the throughput measurement server
-- **Clients:** 2 laptops running `iperf3` as clients, stressing the MU-MIMO link
-- **Monitors:** 2 smartphones measuring live throughput and signal quality metrics
-- **Protocol:** 100 independent trials comparing WaveLynk vs. always-ZF vs. always-MRT
-- **Metrics:** Packet loss (%), ping latency (ms), RSSI (dBm), throughput (Mbps)
-
-Results confirmed that WaveLynk prevents the throughput collapse observed under always-ZF while maintaining higher peak performance than always-MRT.
+- **Server:** Laptop running `iperf3` in server mode
+- **Clients:** 2 laptops running `iperf3` client streams stressing the MU-MIMO downlink
+- **Monitors:** 2 mobile devices logging RSSI, throughput, and ping latency
+- **Protocol:** 100 randomized trials comparing WaveLynk vs. always-ZF vs. always-MRT
+- **Key Metric Findings:** WaveLynk prevented the catastrophic throughput collapse observed in always-ZF during mobility, achieving the robustness of MRT while maintaining the high peak capacity of ZF in static states.
 
 ---
 
-## Paper
+## Paper & Citation
 
-> Neha Abin, Sahil Shah, Yajat Parmar. "Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework." *IEEE Format*, 2025.
+> **Paper Title:** Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework  
+> **Authors:** Neha Abin, Sahil Shah, Yajat Parmar (Allen High School, Allen, TX)  
+> **Conference:** IEEE Conference Proceedings, 2025/2026.
 
-📄 [Read the paper](paper/WaveLynk_Paper.pdf)
+📄 **[Read the Full Paper PDF](paper/WaveLynk_Paper.pdf)**
+
+### IEEE Citation Format
+```text
+N. Abin, S. Shah, and Y. Parmar, "Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework," in IEEE Conference Proceedings, 2025/2026.
+```
+
+### BibTeX
+```bibtex
+@inproceedings{abin2025wavelynk,
+  author    = {Abin, Neha and Shah, Sahil and Parmar, Yajat},
+  title     = {Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework},
+  booktitle = {IEEE Conference Proceedings},
+  year      = {2025},
+  month     = {October},
+  note      = {WaveLynk Project}
+}
+```
 
 ---
 
 ## Authors
 
-| Name | Role |
-|------|------|
-| **Neha Abin** | Co-author, theoretical framework and simulations |
-| **Sahil Shah** | Co-author, hardware testbed and validation |
-| **Yajat Parmar** | Co-author, implementation and demo site |
+| Name | Role | Focus Areas |
+|------|------|-------------|
+| **Neha Abin** | Co-author | Theoretical framework, CCI derivation, and fading channel simulation |
+| **Sahil Shah** | Co-author | Wi-Fi 7 hardware testbed design, validation protocol, and data collection |
+| **Yajat Parmar** | Co-author | Adaptive switching controller implementation, notebook pipeline, and interactive demo site |
 
-Allen High School, Allen, TX
+**Affiliation:** Allen High School, Allen, TX
 
 ---
 
-## License
+## License & Copyright
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+- **Software, Notebooks & Code:** Released under the [MIT License](LICENSE). Free for academic, educational, and commercial reuse with attribution.
+- **Research Paper & Publication Materials:**  
+  > **© 2025–2026 IEEE.** Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works.
 
 ---
 
@@ -183,3 +208,4 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 3. T.L. Marzetta, "Noncooperative Cellular Wireless with Unlimited Numbers of Base Station Antennas," *IEEE Trans. Wireless Commun.*, vol. 9, no. 11, 2010.
 4. T.S. Rappaport et al., "Millimeter Wave Mobile Communications for 5G Cellular," *IEEE Access*, vol. 1, 2013.
 5. IEEE 802.11be (Wi-Fi 7), "Extremely High Throughput (EHT)," IEEE Standards Association, 2024.
+

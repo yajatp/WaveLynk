@@ -1,6 +1,12 @@
-MIT License
+WaveLynk Research & Software License
+=====================================
 
-Copyright (c) 2025 Neha Abin, Sahil Shah, Yajat Parmar
+This repository contains both open-source software (code, algorithms, and simulation notebooks) and academic publication materials (research paper, preprints, and figures). The respective terms are detailed below:
+
+--------------------------------------------------------------------------------
+1. SOFTWARE & SIMULATION CODE (MIT License)
+--------------------------------------------------------------------------------
+Copyright (c) 2025-2026 Neha Abin, Sahil Shah, Yajat Parmar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +25,21 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+--------------------------------------------------------------------------------
+2. IEEE CONFERENCE PAPER & PUBLICATION MATERIALS (IEEE Copyright Notice)
+--------------------------------------------------------------------------------
+© 2025-2026 IEEE. Personal use of this material is permitted. Permission from
+IEEE must be obtained for all other uses, in any current or future media,
+including reprinting/republishing this material for advertising or promotional
+purposes, creating new collective works, for resale or redistribution to
+servers or lists, or reuse of any copyrighted component of this work in other
+works.
+
+This notice applies to the research paper manuscript, accepted drafts,
+figures, and academic documentation associated with the IEEE conference paper:
+
+    Neha Abin, Sahil Shah, and Yajat Parmar,
+    "Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using
+    a Conditioned Coherence Framework," IEEE Conference Proceedings, 2025/2026.
+

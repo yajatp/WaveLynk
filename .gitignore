@@ -1,10 +1,40 @@
+# Byte-compiled / optimized files
 __pycache__/
-*.pyc
-*.pyo
-.ipynb_checkpoints/
-*.egg-info/
-dist/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging / build
 build/
+dist/
+*.egg-info/
+.eggs/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Environments
 .env
-*.DS_Store
+.venv
+env/
+venv/
+
+# Testing & Cache
+.pytest_cache/
+.coverage
+
+# IDEs and Editors
+.vscode/
+.idea/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Archives
 *.zip
+*.tar.gz
+
+# Deployment
+.vercel/
+
