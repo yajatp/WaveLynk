@@ -1,14 +1,15 @@
 # WaveLynk: Predictive Beamforming Switching for Wi-Fi 7 and 6G Systems
 
+[![Version: Final External Release v1.0.0](https://img.shields.io/badge/Version-v1.0.0_(Final_External_Release)-007acc.svg)](https://github.com/yajatp/WaveLynk/releases/tag/v1.0.0)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-wavelynk.us-6366f1)](https://wavelynk.us)
 [![Code License: MIT](https://img.shields.io/badge/Code_License-MIT-green.svg)](LICENSE)
 [![Paper: IEEE Format](https://img.shields.io/badge/Paper-IEEE_Format-0077B5)](paper/WaveLynk_Paper.pdf)
-[![Status: Active](https://img.shields.io/badge/Status-Active-22c55e)](https://github.com/yajatp/WaveLynk)
+[![Status: Complete](https://img.shields.io/badge/Status-Final_Release-22c55e)](https://github.com/yajatp/WaveLynk)
 
-> **Turning the Coherence Cliff from a failure mode into a predictable, preventable event.**
-
-WaveLynk is a predictive beamforming control framework that detects approaching wireless link instability and switches precoding strategy *before* catastrophic failure — not after.
+> **Official Final External Version (v1.0.0)**  
+> This repository contains the finalized research code, simulation notebooks, hardware testbed dataset, and publication materials for the accepted IEEE conference paper:  
+> *“Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework”* (2025/2026).
 
 ---
 
