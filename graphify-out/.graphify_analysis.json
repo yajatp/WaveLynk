@@ -1,0 +1,290 @@
+{
+  "communities": {
+    "0": [
+      "src_cci",
+      "src_cci_channel_autocorrelation",
+      "src_cci_coherence_time",
+      "src_cci_compute_cci",
+      "src_cci_condition_number",
+      "src_cci_doppler_frequency",
+      "src_cci_py_ndarray",
+      "src_cci_rationale_1",
+      "src_cci_rationale_100",
+      "src_cci_rationale_137",
+      "src_cci_rationale_188",
+      "src_cci_rationale_22",
+      "src_cci_rationale_48",
+      "src_cci_rationale_74",
+      "src_cci_should_switch_to_mrt",
+      "src_init",
+      "src_init_rationale_1",
+      "src_switching",
+      "src_switching_rationale_1"
+    ],
+    "1": [
+      "src_beamforming",
+      "src_beamforming_compute_sinr",
+      "src_beamforming_mrt_precoder",
+      "src_beamforming_normalize_precoder",
+      "src_beamforming_precoding_error",
+      "src_beamforming_py_ndarray",
+      "src_beamforming_rationale_1",
+      "src_beamforming_rationale_107",
+      "src_beamforming_rationale_12",
+      "src_beamforming_rationale_146",
+      "src_beamforming_rationale_42",
+      "src_beamforming_rationale_71",
+      "src_beamforming_zf_precoder"
+    ],
+    "2": [
+      "src_switching_py_ndarray",
+      "src_switching_rationale_100",
+      "src_switching_rationale_154",
+      "src_switching_rationale_159",
+      "src_switching_rationale_167",
+      "src_switching_rationale_42",
+      "src_switching_rationale_62",
+      "src_switching_switchevent",
+      "src_switching_wavelynkcontroller",
+      "src_switching_wavelynkcontroller_reset",
+      "src_switching_wavelynkcontroller_select_precoder",
+      "src_switching_wavelynkcontroller_summary",
+      "src_switching_wavelynkcontroller_trigger_switch"
+    ],
+    "3": [
+      "src_channel_model",
+      "src_channel_model_add_csi_error",
+      "src_channel_model_channelconfig",
+      "src_channel_model_generate_channel_matrix",
+      "src_channel_model_py_ndarray",
+      "src_channel_model_rationale_1",
+      "src_channel_model_rationale_116",
+      "src_channel_model_rationale_173",
+      "src_channel_model_rationale_19",
+      "src_channel_model_rationale_52",
+      "src_channel_model_simulate_channel_sequence"
+    ],
+    "4": [
+      "site_images_fig_loss",
+      "site_images_fig_ping",
+      "site_images_latency_comparison",
+      "site_images_logo",
+      "site_images_outage_map",
+      "site_images_risk_threshold_sweep",
+      "site_paper_wavelynk_paper",
+      "wavelynk_system"
+    ],
+    "5": [
+      "data_hardware_latency",
+      "data_hardware_packet_loss",
+      "site_images_fig_latency_loss",
+      "site_images_fig_latency_time",
+      "site_index"
+    ],
+    "6": [
+      "src_switching_rationale_17",
+      "src_switching_rationale_77",
+      "src_switching_switchingconfig",
+      "src_switching_wavelynkcontroller_init"
+    ],
+    "7": [
+      "paper_wavelynk_paper",
+      "readme"
+    ],
+    "8": [
+      "vercel",
+      "vercel_outputdirectory"
+    ],
+    "9": [
+      "assets_impact_car"
+    ],
+    "10": [
+      "coherence_cliff"
+    ],
+    "11": [
+      "conditioned_coherence_index"
+    ],
+    "12": [
+      "data_hardware_throughput"
+    ],
+    "13": [
+      "data_simulation_monte_carlo"
+    ],
+    "14": [
+      "site_images_cin_distribution"
+    ],
+    "15": [
+      "site_images_neha"
+    ],
+    "16": [
+      "site_images_sahil"
+    ],
+    "17": [
+      "site_images_team_placeholder"
+    ],
+    "18": [
+      "site_images_yajat"
+    ],
+    "19": [
+      "site_main"
+    ]
+  },
+  "cohesion": {
+    "0": 0.17543859649122806,
+    "1": 0.20512820512820512,
+    "2": 0.16666666666666666,
+    "3": 0.2727272727272727,
+    "4": 0.25,
+    "5": 0.4,
+    "6": 0.5,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0
+  },
+  "gods": [
+    {
+      "id": "src_cci_compute_cci",
+      "label": "compute_cci()",
+      "degree": 10
+    },
+    {
+      "id": "src_switching_wavelynkcontroller",
+      "label": "WaveLynkController",
+      "degree": 8
+    },
+    {
+      "id": "wavelynk_system",
+      "label": "WaveLynk System",
+      "degree": 7
+    },
+    {
+      "id": "src_beamforming_zf_precoder",
+      "label": "zf_precoder()",
+      "degree": 6
+    },
+    {
+      "id": "src_beamforming_mrt_precoder",
+      "label": "mrt_precoder()",
+      "degree": 6
+    },
+    {
+      "id": "src_channel_model_generate_channel_matrix",
+      "label": "generate_channel_matrix()",
+      "degree": 5
+    },
+    {
+      "id": "src_channel_model_simulate_channel_sequence",
+      "label": "simulate_channel_sequence()",
+      "degree": 5
+    },
+    {
+      "id": "src_cci_doppler_frequency",
+      "label": "doppler_frequency()",
+      "degree": 4
+    },
+    {
+      "id": "src_cci_coherence_time",
+      "label": "coherence_time()",
+      "degree": 4
+    },
+    {
+      "id": "src_cci_condition_number",
+      "label": "condition_number()",
+      "degree": 4
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Latency and Loss Figure",
+      "target": "Hardware Packet Loss Data",
+      "source_files": [
+        "site/images/fig_latency_loss.png",
+        "data/hardware/packet_loss.csv"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (doc ↔ image); connects across different repos/directories; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "Latency vs Time Figure",
+      "target": "Hardware Latency Data",
+      "source_files": [
+        "site/images/fig_latency_time.png",
+        "data/hardware/latency_ms.csv"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (doc ↔ image); connects across different repos/directories; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "WaveLynk README",
+      "target": "WaveLynk Research Paper",
+      "source_files": [
+        "README.md",
+        "paper/WaveLynk_Paper.pdf"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "crosses file types (doc ↔ paper); connects across different repos/directories"
+    },
+    {
+      "source": "WaveLynk Logo",
+      "target": "WaveLynk System",
+      "source_files": [
+        "site/images/logo.png",
+        "site/paper/WaveLynk_Paper.pdf"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (image ↔ paper); peripheral node `WaveLynk Logo` unexpectedly reaches hub `WaveLynk System`"
+    },
+    {
+      "source": "Packet Loss vs Received Signal Power Chart",
+      "target": "WaveLynk System",
+      "source_files": [
+        "site/images/fig_loss.png",
+        "site/paper/WaveLynk_Paper.pdf"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "crosses file types (image ↔ paper); peripheral node `Packet Loss vs Received Signal Power Chart` unexpectedly reaches hub `WaveLynk System`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `WaveLynkController` connect `Adaptive Beamforming Controller` to `Channel Coherence Metrics`, `SwitchingConfig`?",
+      "why": "High betweenness centrality (0.080) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `compute_cci()` connect `Channel Coherence Metrics` to `Adaptive Beamforming Controller`?",
+      "why": "High betweenness centrality (0.058) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `zf_precoder()` connect `Beamforming and Precoding` to `Channel Coherence Metrics`, `Adaptive Beamforming Controller`?",
+      "why": "High betweenness centrality (0.023) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `WaveLynk System` (e.g. with `WaveLynk Logo` and `WaveLynk Paper`) actually correct?",
+      "why": "`WaveLynk System` has 2 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `outputDirectory`, `WaveLynk README`, `WaveLynk Research Paper` to the rest of the system?",
+      "why": "22 weakly-connected nodes found - possible documentation gaps or missing edges."
+    }
+  ]
+}

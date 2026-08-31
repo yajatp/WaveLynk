@@ -1,0 +1,2033 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "wavelynk_performance_metrics",
+        "label": "WaveLynk Performance Evaluation",
+        "nodes": [
+          "site_images_fig_loss",
+          "site_images_fig_ping",
+          "site_images_latency_comparison",
+          "site_images_risk_threshold_sweep"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 0.95,
+        "source_file": "site/paper/WaveLynk_Paper.pdf"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "label": "main.js",
+      "file_type": "code",
+      "source_file": "site/main.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "site_main",
+      "community": 19,
+      "norm_label": "main.js"
+    },
+    {
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "src/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_init",
+      "community": 0,
+      "norm_label": "__init__.py"
+    },
+    {
+      "label": "WaveLynk \u2014 Predictive Beamforming Switching for Wi-Fi 7 and 6G Systems. This\u2026",
+      "file_type": "rationale",
+      "source_file": "src/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_init_rationale_1",
+      "community": 0,
+      "norm_label": "wavelynk \u2014 predictive beamforming switching for wi-fi 7 and 6g systems. this..."
+    },
+    {
+      "label": "beamforming.py",
+      "file_type": "code",
+      "source_file": "src/beamforming.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_beamforming",
+      "community": 1,
+      "norm_label": "beamforming.py"
+    },
+    {
+      "label": "zf_precoder()",
+      "file_type": "code",
+      "source_file": "src/beamforming.py",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "src_beamforming_zf_precoder",
+      "community": 1,
+      "norm_label": "zf_precoder()"
+    },
+    {
+      "label": "ndarray",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "src_beamforming_py_ndarray",
+      "community": 1,
+      "norm_label": "ndarray"
+    },
+    {
+      "label": "mrt_precoder()",
+      "file_type": "code",
+      "source_file": "src/beamforming.py",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_beamforming_mrt_precoder",
+      "community": 1,
+      "norm_label": "mrt_precoder()"
+    },
+    {
+      "label": "precoding_error()",
+      "file_type": "code",
+      "source_file": "src/beamforming.py",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "src_beamforming_precoding_error",
+      "community": 1,
+      "norm_label": "precoding_error()"
+    },
+    {
+      "label": "compute_sinr()",
+      "file_type": "code",
+      "source_file": "src/beamforming.py",
+      "source_location": "L101",
+      "_origin": "ast",
+      "id": "src_beamforming_compute_sinr",
+      "community": 1,
+      "norm_label": "compute_sinr()"
+    },
+    {
+      "label": "normalize_precoder()",
+      "file_type": "code",
+      "source_file": "src/beamforming.py",
+      "source_location": "L145",
+      "_origin": "ast",
+      "id": "src_beamforming_normalize_precoder",
+      "community": 1,
+      "norm_label": "normalize_precoder()"
+    },
+    {
+      "label": "beamforming.py \u2014 Zero-Forcing and MRT precoder implementations. ZF precoder:\u2026",
+      "file_type": "rationale",
+      "source_file": "src/beamforming.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_beamforming_rationale_1",
+      "community": 1,
+      "norm_label": "beamforming.py \u2014 zero-forcing and mrt precoder implementations. zf precoder:..."
+    },
+    {
+      "label": "Compute Zero-Forcing precoding matrix. W_ZF = H^H \u00b7 (H \u00b7 H^H)^{-1} Minimizes\u2026",
+      "file_type": "rationale",
+      "source_file": "src/beamforming.py",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "src_beamforming_rationale_12",
+      "community": 1,
+      "norm_label": "compute zero-forcing precoding matrix. w_zf = h^h \u00b7 (h \u00b7 h^h)^{-1} minimizes..."
+    },
+    {
+      "label": "Compute Maximum Ratio Transmission precoding matrix. W_MRT = H^H Maximizes\u2026",
+      "file_type": "rationale",
+      "source_file": "src/beamforming.py",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "src_beamforming_rationale_42",
+      "community": 1,
+      "norm_label": "compute maximum ratio transmission precoding matrix. w_mrt = h^h maximizes..."
+    },
+    {
+      "label": "Compute normalized precoding perturbation error. \u2016\u0394W\u2016 / \u2016W\u2016 This measures how\u2026",
+      "file_type": "rationale",
+      "source_file": "src/beamforming.py",
+      "source_location": "L71",
+      "_origin": "ast",
+      "id": "src_beamforming_rationale_71",
+      "community": 1,
+      "norm_label": "compute normalized precoding perturbation error. \u2016\u03b4w\u2016 / \u2016w\u2016 this measures how..."
+    },
+    {
+      "label": "Compute per-user SINR for a given channel and precoder. SINR_k = |h_k^H w_k|\u00b2 /\u2026",
+      "file_type": "rationale",
+      "source_file": "src/beamforming.py",
+      "source_location": "L107",
+      "_origin": "ast",
+      "id": "src_beamforming_rationale_107",
+      "community": 1,
+      "norm_label": "compute per-user sinr for a given channel and precoder. sinr_k = |h_k^h w_k|2 /..."
+    },
+    {
+      "label": "Normalize precoding matrix to a given total transmit power. Parameters\u2026",
+      "file_type": "rationale",
+      "source_file": "src/beamforming.py",
+      "source_location": "L146",
+      "_origin": "ast",
+      "id": "src_beamforming_rationale_146",
+      "community": 1,
+      "norm_label": "normalize precoding matrix to a given total transmit power. parameters..."
+    },
+    {
+      "label": "cci.py",
+      "file_type": "code",
+      "source_file": "src/cci.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_cci",
+      "community": 0,
+      "norm_label": "cci.py"
+    },
+    {
+      "label": "doppler_frequency()",
+      "file_type": "code",
+      "source_file": "src/cci.py",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "src_cci_doppler_frequency",
+      "community": 0,
+      "norm_label": "doppler_frequency()"
+    },
+    {
+      "label": "coherence_time()",
+      "file_type": "code",
+      "source_file": "src/cci.py",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "src_cci_coherence_time",
+      "community": 0,
+      "norm_label": "coherence_time()"
+    },
+    {
+      "label": "channel_autocorrelation()",
+      "file_type": "code",
+      "source_file": "src/cci.py",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "src_cci_channel_autocorrelation",
+      "community": 0,
+      "norm_label": "channel_autocorrelation()"
+    },
+    {
+      "label": "condition_number()",
+      "file_type": "code",
+      "source_file": "src/cci.py",
+      "source_location": "L99",
+      "_origin": "ast",
+      "id": "src_cci_condition_number",
+      "community": 0,
+      "norm_label": "condition_number()"
+    },
+    {
+      "label": "ndarray",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "src_cci_py_ndarray",
+      "community": 0,
+      "norm_label": "ndarray"
+    },
+    {
+      "label": "compute_cci()",
+      "file_type": "code",
+      "source_file": "src/cci.py",
+      "source_location": "L128",
+      "_origin": "ast",
+      "id": "src_cci_compute_cci",
+      "community": 0,
+      "norm_label": "compute_cci()"
+    },
+    {
+      "label": "should_switch_to_mrt()",
+      "file_type": "code",
+      "source_file": "src/cci.py",
+      "source_location": "L187",
+      "_origin": "ast",
+      "id": "src_cci_should_switch_to_mrt",
+      "community": 0,
+      "norm_label": "should_switch_to_mrt()"
+    },
+    {
+      "label": "cci.py \u2014 Conditioned Coherence Index (CCI) implementation. The CCI is defined\u2026",
+      "file_type": "rationale",
+      "source_file": "src/cci.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_cci_rationale_1",
+      "community": 0,
+      "norm_label": "cci.py \u2014 conditioned coherence index (cci) implementation. the cci is defined..."
+    },
+    {
+      "label": "Compute maximum Doppler frequency. fD = v * fc / c Parameters ----------\u2026",
+      "file_type": "rationale",
+      "source_file": "src/cci.py",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "src_cci_rationale_22",
+      "community": 0,
+      "norm_label": "compute maximum doppler frequency. fd = v * fc / c parameters ----------..."
+    },
+    {
+      "label": "Estimate channel coherence time using Clarke's model. Tc \u2248 0.423 / fD\u2026",
+      "file_type": "rationale",
+      "source_file": "src/cci.py",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "src_cci_rationale_48",
+      "community": 0,
+      "norm_label": "estimate channel coherence time using clarke's model. tc \u2248 0.423 / fd..."
+    },
+    {
+      "label": "Compute temporal channel autocorrelation using Jake's model. \u03c1(\u03c4) = J\u2080(2\u03c0 * fD\u2026",
+      "file_type": "rationale",
+      "source_file": "src/cci.py",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "src_cci_rationale_74",
+      "community": 0,
+      "norm_label": "compute temporal channel autocorrelation using jake's model. \u03c1(\u03c4) = j0(2\u03c0 * fd..."
+    },
+    {
+      "label": "Compute the condition number of a MIMO channel matrix. \u03ba(H) = \u03c3_max(H) /\u2026",
+      "file_type": "rationale",
+      "source_file": "src/cci.py",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "src_cci_rationale_100",
+      "community": 0,
+      "norm_label": "compute the condition number of a mimo channel matrix. \u03ba(h) = \u03c3_max(h) /..."
+    },
+    {
+      "label": "Compute the Conditioned Coherence Index (CCI). CCI(t) = \u03ba(H) \u00b7 |J\u2080(2\u03c0\u00b7fD\u00b7\u03c4)| \u00b7\u2026",
+      "file_type": "rationale",
+      "source_file": "src/cci.py",
+      "source_location": "L137",
+      "_origin": "ast",
+      "id": "src_cci_rationale_137",
+      "community": 0,
+      "norm_label": "compute the conditioned coherence index (cci). cci(t) = \u03ba(h) \u00b7 |j0(2\u03c0\u00b7fd\u00b7\u03c4)| \u00b7..."
+    },
+    {
+      "label": "Apply the WaveLynk switching rule. Parameters ---------- cci_value : float\u2026",
+      "file_type": "rationale",
+      "source_file": "src/cci.py",
+      "source_location": "L188",
+      "_origin": "ast",
+      "id": "src_cci_rationale_188",
+      "community": 0,
+      "norm_label": "apply the wavelynk switching rule. parameters ---------- cci_value : float..."
+    },
+    {
+      "label": "channel_model.py",
+      "file_type": "code",
+      "source_file": "src/channel_model.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_channel_model",
+      "community": 3,
+      "norm_label": "channel_model.py"
+    },
+    {
+      "label": "ChannelConfig",
+      "file_type": "code",
+      "source_file": "src/channel_model.py",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "src_channel_model_channelconfig",
+      "community": 3,
+      "norm_label": "channelconfig"
+    },
+    {
+      "label": "generate_channel_matrix()",
+      "file_type": "code",
+      "source_file": "src/channel_model.py",
+      "source_location": "L47",
+      "_origin": "ast",
+      "id": "src_channel_model_generate_channel_matrix",
+      "community": 3,
+      "norm_label": "generate_channel_matrix()"
+    },
+    {
+      "label": "ndarray",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "src_channel_model_py_ndarray",
+      "community": 3,
+      "norm_label": "ndarray"
+    },
+    {
+      "label": "simulate_channel_sequence()",
+      "file_type": "code",
+      "source_file": "src/channel_model.py",
+      "source_location": "L111",
+      "_origin": "ast",
+      "id": "src_channel_model_simulate_channel_sequence",
+      "community": 3,
+      "norm_label": "simulate_channel_sequence()"
+    },
+    {
+      "label": "add_csi_error()",
+      "file_type": "code",
+      "source_file": "src/channel_model.py",
+      "source_location": "L166",
+      "_origin": "ast",
+      "id": "src_channel_model_add_csi_error",
+      "community": 3,
+      "norm_label": "add_csi_error()"
+    },
+    {
+      "label": "channel_model.py \u2014 MIMO channel simulator for WaveLynk experiments. Implements:\u2026",
+      "file_type": "rationale",
+      "source_file": "src/channel_model.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_channel_model_rationale_1",
+      "community": 3,
+      "norm_label": "channel_model.py \u2014 mimo channel simulator for wavelynk experiments. implements:..."
+    },
+    {
+      "label": "Configuration for a MIMO channel simulation. Parameters ---------- Nr : int\u2026",
+      "file_type": "rationale",
+      "source_file": "src/channel_model.py",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "src_channel_model_rationale_19",
+      "community": 3,
+      "norm_label": "configuration for a mimo channel simulation. parameters ---------- nr : int..."
+    },
+    {
+      "label": "Generate a time-varying MIMO channel matrix at time t. Uses Jake's model with\u2026",
+      "file_type": "rationale",
+      "source_file": "src/channel_model.py",
+      "source_location": "L52",
+      "_origin": "ast",
+      "id": "src_channel_model_rationale_52",
+      "community": 3,
+      "norm_label": "generate a time-varying mimo channel matrix at time t. uses jake's model with..."
+    },
+    {
+      "label": "Simulate a time-varying MIMO channel over a duration. Generates a sequence of\u2026",
+      "file_type": "rationale",
+      "source_file": "src/channel_model.py",
+      "source_location": "L116",
+      "_origin": "ast",
+      "id": "src_channel_model_rationale_116",
+      "community": 3,
+      "norm_label": "simulate a time-varying mimo channel over a duration. generates a sequence of..."
+    },
+    {
+      "label": "Return an aged + noisy CSI estimate. Simulates the effect of feedback delay and\u2026",
+      "file_type": "rationale",
+      "source_file": "src/channel_model.py",
+      "source_location": "L173",
+      "_origin": "ast",
+      "id": "src_channel_model_rationale_173",
+      "community": 3,
+      "norm_label": "return an aged + noisy csi estimate. simulates the effect of feedback delay and..."
+    },
+    {
+      "label": "switching.py",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_switching",
+      "community": 0,
+      "norm_label": "switching.py"
+    },
+    {
+      "label": "SwitchingConfig",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "src_switching_switchingconfig",
+      "community": 6,
+      "norm_label": "switchingconfig"
+    },
+    {
+      "label": "SwitchEvent",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_switching_switchevent",
+      "community": 2,
+      "norm_label": "switchevent"
+    },
+    {
+      "label": "WaveLynkController",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "src_switching_wavelynkcontroller",
+      "community": 2,
+      "norm_label": "wavelynkcontroller"
+    },
+    {
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L76",
+      "_origin": "ast",
+      "id": "src_switching_wavelynkcontroller_init",
+      "community": 6,
+      "norm_label": ".__init__()"
+    },
+    {
+      "label": ".select_precoder()",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L92",
+      "_origin": "ast",
+      "id": "src_switching_wavelynkcontroller_select_precoder",
+      "community": 2,
+      "norm_label": ".select_precoder()"
+    },
+    {
+      "label": "ndarray",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast",
+      "id": "src_switching_py_ndarray",
+      "community": 2,
+      "norm_label": "ndarray"
+    },
+    {
+      "label": "._trigger_switch()",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L153",
+      "_origin": "ast",
+      "id": "src_switching_wavelynkcontroller_trigger_switch",
+      "community": 2,
+      "norm_label": "._trigger_switch()"
+    },
+    {
+      "label": ".reset()",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L158",
+      "_origin": "ast",
+      "id": "src_switching_wavelynkcontroller_reset",
+      "community": 2,
+      "norm_label": ".reset()"
+    },
+    {
+      "label": ".summary()",
+      "file_type": "code",
+      "source_file": "src/switching.py",
+      "source_location": "L166",
+      "_origin": "ast",
+      "id": "src_switching_wavelynkcontroller_summary",
+      "community": 2,
+      "norm_label": ".summary()"
+    },
+    {
+      "label": "switching.py \u2014 WaveLynk adaptive beamforming controller. Implements the\u2026",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_switching_rationale_1",
+      "community": 0,
+      "norm_label": "switching.py \u2014 wavelynk adaptive beamforming controller. implements the..."
+    },
+    {
+      "label": "Configuration for the WaveLynk adaptive switching controller. Parameters\u2026",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "src_switching_rationale_17",
+      "community": 6,
+      "norm_label": "configuration for the wavelynk adaptive switching controller. parameters..."
+    },
+    {
+      "label": "Record of a single beamforming mode switch. Parameters ---------- time_s :\u2026",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "src_switching_rationale_42",
+      "community": 2,
+      "norm_label": "record of a single beamforming mode switch. parameters ---------- time_s :..."
+    },
+    {
+      "label": "Adaptive beamforming controller implementing CCI-based predictive switching.\u2026",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "src_switching_rationale_62",
+      "community": 2,
+      "norm_label": "adaptive beamforming controller implementing cci-based predictive switching...."
+    },
+    {
+      "label": "Initialize the WaveLynk adaptive controller. Parameters ---------- config :\u2026",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "src_switching_rationale_77",
+      "community": 6,
+      "norm_label": "initialize the wavelynk adaptive controller. parameters ---------- config :..."
+    },
+    {
+      "label": "Select optimal precoder for current channel conditions. Computes CCI from the\u2026",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "src_switching_rationale_100",
+      "community": 2,
+      "norm_label": "select optimal precoder for current channel conditions. computes cci from the..."
+    },
+    {
+      "label": "Record a switch event and update current mode.",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L154",
+      "_origin": "ast",
+      "id": "src_switching_rationale_154",
+      "community": 2,
+      "norm_label": "record a switch event and update current mode."
+    },
+    {
+      "label": "Reset controller state for a new simulation run.",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L159",
+      "_origin": "ast",
+      "id": "src_switching_rationale_159",
+      "community": 2,
+      "norm_label": "reset controller state for a new simulation run."
+    },
+    {
+      "label": "Return a summary of controller performance. Returns ------- dict Dictionary\u2026",
+      "file_type": "rationale",
+      "source_file": "src/switching.py",
+      "source_location": "L167",
+      "_origin": "ast",
+      "id": "src_switching_rationale_167",
+      "community": 2,
+      "norm_label": "return a summary of controller performance. returns ------- dict dictionary..."
+    },
+    {
+      "label": "vercel.json",
+      "file_type": "code",
+      "source_file": "vercel.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "vercel",
+      "community": 8,
+      "norm_label": "vercel.json"
+    },
+    {
+      "label": "outputDirectory",
+      "file_type": "code",
+      "source_file": "vercel.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "vercel_outputdirectory",
+      "community": 8,
+      "norm_label": "outputdirectory"
+    },
+    {
+      "label": "WaveLynk README",
+      "file_type": "document",
+      "source_file": "README.md",
+      "id": "readme",
+      "community": 7,
+      "norm_label": "wavelynk readme"
+    },
+    {
+      "label": "WaveLynk Research Paper",
+      "file_type": "document",
+      "source_file": "paper/WaveLynk_Paper.pdf",
+      "id": "paper_wavelynk_paper",
+      "community": 7,
+      "norm_label": "wavelynk research paper"
+    },
+    {
+      "label": "Hardware Packet Loss Data",
+      "file_type": "document",
+      "source_file": "data/hardware/packet_loss.csv",
+      "id": "data_hardware_packet_loss",
+      "community": 5,
+      "norm_label": "hardware packet loss data"
+    },
+    {
+      "label": "Hardware Latency Data",
+      "file_type": "document",
+      "source_file": "data/hardware/latency_ms.csv",
+      "id": "data_hardware_latency",
+      "community": 5,
+      "norm_label": "hardware latency data"
+    },
+    {
+      "label": "Hardware Throughput Data",
+      "file_type": "document",
+      "source_file": "data/hardware/throughput_mbps.csv",
+      "id": "data_hardware_throughput",
+      "community": 12,
+      "norm_label": "hardware throughput data"
+    },
+    {
+      "label": "Monte Carlo Results",
+      "file_type": "document",
+      "source_file": "data/simulation/monte_carlo_results.csv",
+      "id": "data_simulation_monte_carlo",
+      "community": 13,
+      "norm_label": "monte carlo results"
+    },
+    {
+      "label": "WaveLynk Web Demo",
+      "file_type": "document",
+      "source_file": "site/index.html",
+      "id": "site_index",
+      "community": 5,
+      "norm_label": "wavelynk web demo"
+    },
+    {
+      "label": "Latency and Loss Figure",
+      "file_type": "image",
+      "source_file": "site/images/fig_latency_loss.png",
+      "id": "site_images_fig_latency_loss",
+      "community": 5,
+      "norm_label": "latency and loss figure"
+    },
+    {
+      "label": "Latency vs Time Figure",
+      "file_type": "image",
+      "source_file": "site/images/fig_latency_time.png",
+      "id": "site_images_fig_latency_time",
+      "community": 5,
+      "norm_label": "latency vs time figure"
+    },
+    {
+      "label": "CIN Distribution Chart",
+      "file_type": "image",
+      "source_file": "site/images/cin_distribution.png",
+      "id": "site_images_cin_distribution",
+      "community": 14,
+      "norm_label": "cin distribution chart"
+    },
+    {
+      "label": "Impact Car Visual",
+      "file_type": "image",
+      "source_file": "assets/impact_car.jpg",
+      "id": "assets_impact_car",
+      "community": 9,
+      "norm_label": "impact car visual"
+    },
+    {
+      "label": "Conditioned Coherence Index (CCI)",
+      "file_type": "concept",
+      "source_file": "README.md",
+      "id": "conditioned_coherence_index",
+      "community": 11,
+      "norm_label": "conditioned coherence index (cci)"
+    },
+    {
+      "label": "Coherence Cliff",
+      "file_type": "concept",
+      "source_file": "README.md",
+      "id": "coherence_cliff",
+      "community": 10,
+      "norm_label": "coherence cliff"
+    },
+    {
+      "label": "WaveLynk Paper",
+      "file_type": "document",
+      "source_file": "site/paper/WaveLynk_Paper.pdf",
+      "id": "site_paper_wavelynk_paper",
+      "community": 4,
+      "norm_label": "wavelynk paper"
+    },
+    {
+      "label": "Packet Loss vs Received Signal Power Chart",
+      "file_type": "image",
+      "source_file": "site/images/fig_loss.png",
+      "id": "site_images_fig_loss",
+      "community": 4,
+      "norm_label": "packet loss vs received signal power chart"
+    },
+    {
+      "label": "Ping Latency vs Received Signal Power Chart",
+      "file_type": "image",
+      "source_file": "site/images/fig_ping.png",
+      "id": "site_images_fig_ping",
+      "community": 4,
+      "norm_label": "ping latency vs received signal power chart"
+    },
+    {
+      "label": "Latency Comparison: WaveLynk (Predictive) vs ZF (Reactive)",
+      "file_type": "image",
+      "source_file": "site/images/latency_comparison.png",
+      "id": "site_images_latency_comparison",
+      "community": 4,
+      "norm_label": "latency comparison: wavelynk (predictive) vs zf (reactive)"
+    },
+    {
+      "label": "WaveLynk Logo",
+      "file_type": "image",
+      "source_file": "site/images/logo.png",
+      "id": "site_images_logo",
+      "community": 4,
+      "norm_label": "wavelynk logo"
+    },
+    {
+      "label": "Neha - Team Member Photo",
+      "file_type": "image",
+      "source_file": "site/images/neha.png",
+      "id": "site_images_neha",
+      "community": 15,
+      "norm_label": "neha - team member photo"
+    },
+    {
+      "label": "Outage Map: Wireless Signal Testing (CSI Age vs Doppler Shift)",
+      "file_type": "image",
+      "source_file": "site/images/outage_map.png",
+      "id": "site_images_outage_map",
+      "community": 4,
+      "norm_label": "outage map: wireless signal testing (csi age vs doppler shift)"
+    },
+    {
+      "label": "Risk Threshold Sweep for Wireless Performance Optimization",
+      "file_type": "image",
+      "source_file": "site/images/risk_threshold_sweep.png",
+      "id": "site_images_risk_threshold_sweep",
+      "community": 4,
+      "norm_label": "risk threshold sweep for wireless performance optimization"
+    },
+    {
+      "label": "Sahil - Team Member Photo",
+      "file_type": "image",
+      "source_file": "site/images/sahil.png",
+      "id": "site_images_sahil",
+      "community": 16,
+      "norm_label": "sahil - team member photo"
+    },
+    {
+      "label": "Team Placeholder Avatars",
+      "file_type": "image",
+      "source_file": "site/images/team_placeholder.png",
+      "id": "site_images_team_placeholder",
+      "community": 17,
+      "norm_label": "team placeholder avatars"
+    },
+    {
+      "label": "Yajat - Team Member Photo",
+      "file_type": "image",
+      "source_file": "site/images/yajat.png",
+      "id": "site_images_yajat",
+      "community": 18,
+      "norm_label": "yajat - team member photo"
+    },
+    {
+      "label": "WaveLynk System",
+      "file_type": "concept",
+      "source_file": "site/paper/WaveLynk_Paper.pdf",
+      "id": "wavelynk_system",
+      "community": 4,
+      "norm_label": "wavelynk system"
+    }
+  ],
+  "links": [
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_beamforming",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_beamforming_mrt_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_beamforming_zf_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_cci",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_cci_coherence_time",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_cci_compute_cci",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_cci_doppler_frequency",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_cci_should_switch_to_mrt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_switching",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_switching_switchingconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init",
+      "target": "src_switching_wavelynkcontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/__init__.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_init_rationale_1",
+      "target": "src_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L101",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming",
+      "target": "src_beamforming_compute_sinr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming",
+      "target": "src_beamforming_mrt_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming",
+      "target": "src_beamforming_normalize_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming",
+      "target": "src_beamforming_precoding_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming",
+      "target": "src_beamforming_zf_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_rationale_1",
+      "target": "src_beamforming",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_beamforming",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_rationale_12",
+      "target": "src_beamforming_zf_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_zf_precoder",
+      "target": "src_beamforming_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_beamforming_zf_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/switching.py",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller_select_precoder",
+      "target": "src_beamforming_zf_precoder"
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L101",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_compute_sinr",
+      "target": "src_beamforming_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_mrt_precoder",
+      "target": "src_beamforming_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_normalize_precoder",
+      "target": "src_beamforming_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_precoding_error",
+      "target": "src_beamforming_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_rationale_42",
+      "target": "src_beamforming_mrt_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_beamforming_mrt_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/switching.py",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller_select_precoder",
+      "target": "src_beamforming_mrt_precoder"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L71",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_rationale_71",
+      "target": "src_beamforming_precoding_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L107",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_rationale_107",
+      "target": "src_beamforming_compute_sinr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/beamforming.py",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_beamforming_rationale_146",
+      "target": "src_beamforming_normalize_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci",
+      "target": "src_cci_channel_autocorrelation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci",
+      "target": "src_cci_coherence_time",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L128",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci",
+      "target": "src_cci_compute_cci",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L99",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci",
+      "target": "src_cci_condition_number",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci",
+      "target": "src_cci_doppler_frequency",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L187",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci",
+      "target": "src_cci_should_switch_to_mrt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_rationale_1",
+      "target": "src_cci",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_cci",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L177",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_compute_cci",
+      "target": "src_cci_doppler_frequency",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_rationale_22",
+      "target": "src_cci_doppler_frequency",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L178",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_compute_cci",
+      "target": "src_cci_coherence_time",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_rationale_48",
+      "target": "src_cci_coherence_time",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L179",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_compute_cci",
+      "target": "src_cci_channel_autocorrelation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_rationale_74",
+      "target": "src_cci_channel_autocorrelation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L176",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_compute_cci",
+      "target": "src_cci_condition_number",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L99",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_condition_number",
+      "target": "src_cci_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_rationale_100",
+      "target": "src_cci_condition_number",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L128",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_compute_cci",
+      "target": "src_cci_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L137",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_rationale_137",
+      "target": "src_cci_compute_cci",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_cci_compute_cci",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/switching.py",
+      "source_location": "L129",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller_select_precoder",
+      "target": "src_cci_compute_cci"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/cci.py",
+      "source_location": "L188",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_cci_rationale_188",
+      "target": "src_cci_should_switch_to_mrt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_cci_should_switch_to_mrt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L166",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model",
+      "target": "src_channel_model_add_csi_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model",
+      "target": "src_channel_model_channelconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model",
+      "target": "src_channel_model_generate_channel_matrix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model",
+      "target": "src_channel_model_simulate_channel_sequence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_rationale_1",
+      "target": "src_channel_model",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_generate_channel_matrix",
+      "target": "src_channel_model_channelconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_rationale_19",
+      "target": "src_channel_model_channelconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_simulate_channel_sequence",
+      "target": "src_channel_model_channelconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_generate_channel_matrix",
+      "target": "src_channel_model_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_rationale_52",
+      "target": "src_channel_model_generate_channel_matrix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L159",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_simulate_channel_sequence",
+      "target": "src_channel_model_generate_channel_matrix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L166",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_add_csi_error",
+      "target": "src_channel_model_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_simulate_channel_sequence",
+      "target": "src_channel_model_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L116",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_rationale_116",
+      "target": "src_channel_model_simulate_channel_sequence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/channel_model.py",
+      "source_location": "L173",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_channel_model_rationale_173",
+      "target": "src_channel_model_add_csi_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_switching_switchevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_switching_switchingconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching",
+      "target": "src_switching_wavelynkcontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_1",
+      "target": "src_switching",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_17",
+      "target": "src_switching_switchingconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller_init",
+      "target": "src_switching_switchingconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_42",
+      "target": "src_switching_switchevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller_trigger_switch",
+      "target": "src_switching_switchevent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L62",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_62",
+      "target": "src_switching_wavelynkcontroller",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller",
+      "target": "src_switching_wavelynkcontroller_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L158",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller",
+      "target": "src_switching_wavelynkcontroller_reset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller",
+      "target": "src_switching_wavelynkcontroller_select_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L166",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller",
+      "target": "src_switching_wavelynkcontroller_summary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L153",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller",
+      "target": "src_switching_wavelynkcontroller_trigger_switch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_77",
+      "target": "src_switching_wavelynkcontroller_init",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_100",
+      "target": "src_switching_wavelynkcontroller_select_precoder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller_select_precoder",
+      "target": "src_switching_py_ndarray",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L141",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_wavelynkcontroller_select_precoder",
+      "target": "src_switching_wavelynkcontroller_trigger_switch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L154",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_154",
+      "target": "src_switching_wavelynkcontroller_trigger_switch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L159",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_159",
+      "target": "src_switching_wavelynkcontroller_reset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "src/switching.py",
+      "source_location": "L167",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_switching_rationale_167",
+      "target": "src_switching_wavelynkcontroller_summary",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "vercel.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "vercel",
+      "target": "vercel_outputdirectory",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source": "readme",
+      "target": "paper_wavelynk_paper"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "site/images/fig_latency_loss.png",
+      "source": "site_images_fig_latency_loss",
+      "target": "data_hardware_packet_loss"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "site/images/fig_latency_time.png",
+      "source": "site_images_fig_latency_time",
+      "target": "data_hardware_latency"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/index.html",
+      "source": "site_index",
+      "target": "site_images_fig_latency_loss"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/index.html",
+      "source": "site_index",
+      "target": "site_images_fig_latency_time"
+    },
+    {
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "site/paper/WaveLynk_Paper.pdf",
+      "source": "site_paper_wavelynk_paper",
+      "target": "wavelynk_system"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/images/fig_loss.png",
+      "source": "site_images_fig_loss",
+      "target": "wavelynk_system"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/images/fig_ping.png",
+      "source": "site_images_fig_ping",
+      "target": "wavelynk_system"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/images/latency_comparison.png",
+      "source": "site_images_latency_comparison",
+      "target": "wavelynk_system"
+    },
+    {
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "site/images/logo.png",
+      "source": "site_images_logo",
+      "target": "wavelynk_system"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/images/outage_map.png",
+      "source": "site_images_outage_map",
+      "target": "wavelynk_system"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/images/risk_threshold_sweep.png",
+      "source": "site_images_risk_threshold_sweep",
+      "target": "wavelynk_system"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "wavelynk_performance_metrics",
+      "label": "WaveLynk Performance Evaluation",
+      "nodes": [
+        "site_images_fig_loss",
+        "site_images_fig_ping",
+        "site_images_latency_comparison",
+        "site_images_risk_threshold_sweep"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 0.95,
+      "source_file": "site/paper/WaveLynk_Paper.pdf"
+    }
+  ],
+  "built_at_commit": "4e6db29510be263fb37ef14184f795b41232e717"
+}
