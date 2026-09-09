@@ -38,3 +38,15 @@ ehthumbs.db
 # Deployment
 .vercel/
 
+# AI agent tooling (local only, not part of the published project)
+.agents/
+.claude/
+.codex/
+.cursor/
+.gemini/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.gitattributes
+graphify-out/
+
