@@ -15,6 +15,7 @@
 
 - 📄 **[Full Paper PDF](WaveLynk_Paper.pdf)** — IEEE format manuscript with complete mathematical derivations, system diagrams, and hardware testbed evaluation.
 - 📝 **[Paper Manuscript (.docx)](WaveLynk_Manuscript.docx)** — Source manuscript draft.
+- 🏆 **[Certificate of Participation, IEEE ATNT 2026](WaveLynk_ATNT2026_Certificate.pdf)** — Issued to Neha Abin, Sahil Shah and Yajat Parmar by IEEE Malaysia AP/MTT/EMC Joint Chapter and Universiti Teknologi Malaysia.
 
 ---
 

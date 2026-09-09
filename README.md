@@ -181,7 +181,7 @@ Experimental validation was conducted on a physical Wi-Fi 6/7 testbed:
 > **Conference:** IEEE Conference Proceedings, 2025/2026.  
 > **Presented at:** 2026 IEEE International Conference on Advanced Telecommunication and Networking Technologies (ATNT), Johor Bahru, Malaysia — 2–3 September 2026.
 
-📄 **[Read the Full Paper PDF](paper/WaveLynk_Paper.pdf)** &nbsp;·&nbsp; 📺 **[Watch the Presentation](https://drive.google.com/file/d/17n9q5sTKiTaddbjyqyONXyL3162-JXLD/view)**
+📄 **[Read the Full Paper PDF](paper/WaveLynk_Paper.pdf)** &nbsp;·&nbsp; 📺 **[Watch the Presentation](https://drive.google.com/file/d/17n9q5sTKiTaddbjyqyONXyL3162-JXLD/view)** &nbsp;·&nbsp; 🏆 **[Certificate of Participation](paper/WaveLynk_ATNT2026_Certificate.pdf)**
 
 ### IEEE Citation Format
 ```text
