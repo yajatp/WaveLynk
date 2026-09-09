@@ -6,10 +6,17 @@
 [![Code License: MIT](https://img.shields.io/badge/Code_License-MIT-green.svg)](LICENSE)
 [![Paper: IEEE Format](https://img.shields.io/badge/Paper-IEEE_Format-0077B5)](paper/WaveLynk_Paper.pdf)
 [![Status: Complete](https://img.shields.io/badge/Status-Final_Release-22c55e)](https://github.com/yajatp/WaveLynk)
+[![Presented: IEEE ATNT 2026](https://img.shields.io/badge/Presented-IEEE_ATNT_2026-e5484d)](https://wavelynk.us#presentation)
 
 > **Official Final External Version (v1.0.0)**  
-> This repository contains the finalized research code, simulation notebooks, hardware testbed dataset, and publication materials for the accepted IEEE conference paper:  
-> *“Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework”* (2025/2026).
+> This repository contains the finalized research code, simulation notebooks, hardware testbed dataset, and publication materials for the IEEE conference paper:  
+> *“Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework”*, presented at the **2026 IEEE International Conference on Advanced Telecommunication and Networking Technologies (ATNT)**, 2–3 September 2026, Johor Bahru, Malaysia.
+
+### 📺 Watch the conference presentation
+
+[![Watch the WaveLynk conference presentation](assets/presentation_thumbnail.jpg)](https://drive.google.com/file/d/17n9q5sTKiTaddbjyqyONXyL3162-JXLD/view)
+
+*Click the thumbnail above to watch the recording of our IEEE ATNT 2026 session (Session S7: AI/ML-Driven & Emerging Technologies).*
 
 ---
 
@@ -94,6 +101,9 @@ WaveLynk/
 │   ├── hardware/                      ← Wi-Fi 7 testbed trial measurements
 │   └── simulation/                    ← Monte Carlo generated CSVs
 │
+├── tests/                             ← Unit tests for the core src/ package
+│   └── test_cci.py                    ← Tests for CCI, Doppler & coherence-time functions
+│
 ├── site/                              ← Interactive web application & live demo
 │   ├── index.html                     ← Responsive SPA (Science, Demos, Evidence, Team)
 │   ├── styles.css                     ← Custom styling & responsive layouts
@@ -133,6 +143,14 @@ Follow the notebooks in numerical order:
 3. `03_monte_carlo.ipynb`: 100-run Monte Carlo sweep evaluating outage probability under stochastic channels.
 4. `04_hardware_validation.ipynb`: Validates theoretical bounds against physical 6 GHz testbed data.
 
+### Run the Tests
+
+```bash
+pytest tests/
+```
+
+Verifies the CCI, Doppler frequency, coherence time, and switching-rule functions in `src/cci.py` against the closed-form equations in the paper.
+
 ### Run the Interactive Web Demo
 
 ```bash
@@ -160,9 +178,10 @@ Experimental validation was conducted on a physical Wi-Fi 6/7 testbed:
 
 > **Paper Title:** Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework  
 > **Authors:** Neha Abin, Sahil Shah, Yajat Parmar (Allen High School, Allen, TX)  
-> **Conference:** IEEE Conference Proceedings, 2025/2026.
+> **Conference:** IEEE Conference Proceedings, 2025/2026.  
+> **Presented at:** 2026 IEEE International Conference on Advanced Telecommunication and Networking Technologies (ATNT), Johor Bahru, Malaysia — 2–3 September 2026.
 
-📄 **[Read the Full Paper PDF](paper/WaveLynk_Paper.pdf)**
+📄 **[Read the Full Paper PDF](paper/WaveLynk_Paper.pdf)** &nbsp;·&nbsp; 📺 **[Watch the Presentation](https://drive.google.com/file/d/17n9q5sTKiTaddbjyqyONXyL3162-JXLD/view)**
 
 ### IEEE Citation Format
 ```text

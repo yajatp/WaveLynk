@@ -3,8 +3,11 @@
 > **Paper Title:** Predicting Beamforming Instability in Wi-Fi 7 and 6G Systems Using a Conditioned Coherence Framework  
 > **Authors:** Neha Abin, Sahil Shah, Yajat Parmar  
 > **Affiliation:** Allen High School, Allen, TX  
-> **Status:** Accepted / IEEE Conference Proceedings (2025–2026)  
+> **Status:** Presented / IEEE Conference Proceedings (2026)  
+> **Presented at:** 2026 IEEE International Conference on Advanced Telecommunication and Networking Technologies (ATNT), 2–3 September 2026, Johor Bahru, Malaysia  
 > **Release:** Official Final External Version (v1.0.0)
+
+📺 **[Watch the conference presentation](https://drive.google.com/file/d/17n9q5sTKiTaddbjyqyONXyL3162-JXLD/view)** — Session S7: AI/ML-Driven & Emerging Technologies.
 
 ---
 

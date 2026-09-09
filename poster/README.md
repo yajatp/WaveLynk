@@ -8,7 +8,9 @@
 
 ## Overview
 
-This directory contains presentation materials, poster figures, and visual summaries prepared for IEEE conference sessions and technical showcases.
+This directory contains presentation materials, poster figures, and visual summaries presented at **IEEE ATNT 2026** (Johor Bahru, Malaysia, 2–3 September 2026), Session S7: AI/ML-Driven & Emerging Technologies.
+
+📺 **[Watch the recorded presentation](https://drive.google.com/file/d/17n9q5sTKiTaddbjyqyONXyL3162-JXLD/view)**
 
 ### Key Visual Highlights
 
